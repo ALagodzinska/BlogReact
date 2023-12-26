@@ -1,6 +1,7 @@
 import { Button, Container, TextField, Typography, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/header.component";
 
 async function postNewBlog(title, content) {
   const response = await fetch("/api/blogpost", {
@@ -52,9 +53,7 @@ function AddPost() {
     <Container>
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          <Typography variant="h2" sx={{ py: 3, textAlign: "center" }}>
-            Create New Post
-          </Typography>
+          <Header title={"CREATE NEW POST"} />
           <TextField
             id="title"
             sx={{ pb: 3 }}

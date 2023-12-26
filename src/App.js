@@ -7,19 +7,7 @@ import ShowPost from "./routes/ShowPost";
 import AddPost from "./routes/AddPost";
 import EditPost from "./routes/EditPost";
 
-async function fetchWeatherForecast() {
-  const response = await fetch("/api/weatherforecast");
-  const json = await response.json();
-  return json;
-}
-
 function App() {
-  useEffect(() => {
-    fetchWeatherForecast().then((forecast) => {
-      console.log(forecast);
-    });
-  });
-
   const router = createBrowserRouter([
     {
       path: "/",
