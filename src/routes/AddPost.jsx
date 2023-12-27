@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/header.component";
 
 async function postNewBlog(title, content) {
-  const response = await fetch("/api/blogpost", {
+  const response = await fetch("/api/blogpost/postblog", {
     method: "POST",
     headers: {
       Accept: "application/json",

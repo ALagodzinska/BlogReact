@@ -7,7 +7,7 @@ function HomePost({ post }) {
         {post.title}
       </Typography>
       <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-        {post.creationDate}
+        {new Date(post.creationDate).toLocaleDateString()}
       </Typography>
       <Typography variant="subtitle1">{post.content}</Typography>
     </Grid>
