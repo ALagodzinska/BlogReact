@@ -1,4 +1,8 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Link, Typography } from "@mui/material";
+
+function truncate(str, n) {
+  return str.length > n ? str.slice(0, n - 1) + "..." : str;
+}
 
 function HomePost({ post }) {
   return (
@@ -9,7 +13,8 @@ function HomePost({ post }) {
       <Typography variant="caption" sx={{ fontStyle: "italic" }}>
         {new Date(post.creationDate).toLocaleDateString()}
       </Typography>
-      <Typography variant="subtitle1">{post.content}</Typography>
+      <Typography variant="subtitle1">{truncate(post.content, 450)}</Typography>
+      <Link href={post.blogPostId}>Read More...</Link>
     </Grid>
   );
 }

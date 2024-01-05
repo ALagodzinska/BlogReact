@@ -19,20 +19,15 @@ async function fetchPageCount() {
 function HomePage() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = React.useState(1);
-  const [pageCount, setPageCount] = React.useState(1);
+  const [pageCount, setPageCount] = React.useState(null);
   const handlePageChange = (_, value) => {
     setPage(value);
   };
 
   useEffect(() => {
-    fetchPageCount().then((count) => {
-      setPageCount(count);
-    });
-  }, []);
-
-  useEffect(() => {
-    fetchPosts(page).then((postsPerPage) => {
-      setPosts(postsPerPage);
+    Promise.all([fetchPageCount(), fetchPosts(page)]).then((values) => {
+      setPosts(values[1]);
+      setPageCount(values[0]);
     });
   }, [page]);
 
@@ -52,7 +47,10 @@ function HomePage() {
       <Pagination
         count={pageCount}
         onChange={handlePageChange}
-        sx={{ display: "flex", justifyContent: "center" }}
+        sx={{
+          display: `${pageCount ? "flex" : "none"}`,
+          justifyContent: "center",
+        }}
       />
     </Container>
   );
