@@ -44,14 +44,16 @@ function HomePage() {
           <HomePost key={post.blogPostId} post={post} />
         ))}
       </Stack>
-      <Pagination
-        count={pageCount}
-        onChange={handlePageChange}
-        sx={{
-          display: `${pageCount ? "flex" : "none"}`,
-          justifyContent: "center",
-        }}
-      />
+      {pageCount && (
+        <Pagination
+          count={pageCount}
+          onChange={handlePageChange}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        />
+      )}
     </Container>
   );
 }
