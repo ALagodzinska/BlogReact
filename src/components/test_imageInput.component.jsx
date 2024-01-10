@@ -1,24 +1,33 @@
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRef } from "react";
 
-function ImageInput(title) {
+function ImageInput({ title, onImageChange }) {
   const [selectedImage, setSelectedImage] = useState(null);
+  const inputRef = useRef(null);
 
   const imageSelectedHandler = (event) => {
-    setSelectedImage(null);
     setSelectedImage(event.target.files[0]);
   };
 
   const clearImageHandler = (event) => {
     event.preventDefault();
-    document.getElementById(title).value = "";
+    inputRef.current.value = "";
     setSelectedImage(null);
   };
+
+  useEffect(() => {
+    onImageChange(selectedImage);
+  }, [onImageChange, selectedImage]);
 
   return (
     <Box>
       <Typography sx={{ pb: 2 }}>{title}</Typography>
-      <input type="file" id={title} onChange={imageSelectedHandler} />
+      <input
+        type="file"
+        ref={inputRef}
+        onChange={imageSelectedHandler}
+      />
       {selectedImage && (
         <Box>
           <Box sx={{ pt: 3 }}>
