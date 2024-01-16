@@ -34,6 +34,7 @@ function HomePage() {
   return (
     <Container maxWidth="lg">
       <Header title="BLOG" />
+      <img src="/api/Image?postId=2" width={"300px"} />
       <Stack justifyContent="flex-end" direction="row" py={3}>
         <Button component={Link} to="/add" color="primary" variant="outlined">
           CREATE NEW POST

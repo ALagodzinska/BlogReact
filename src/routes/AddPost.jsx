@@ -22,17 +22,30 @@ async function postNewBlog(title, content, backgroundImage, previewImage) {
   return await response.json();
 }
 
+async function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsBinaryString(file);
+    reader.onload = () => {
+      resolve(btoa(reader.result));
+    };
+    reader.onerror = reject;
+  });
+}
+
 function AddPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [titleError, setTitleError] = useState(false);
   const [contentError, setContentError] = useState(false);
+  const [previewImgError, setPreviewImgError] = useState(false);
+  const [backgroundImgError, setBackgroundImgError] = useState(false);
   const [selectedBackgroundImg, setSelectedBackgroundImg] = useState(null);
   const [selectedPreviewImg, setSelectedPreviewImg] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     setTitleError(false);
@@ -44,19 +57,26 @@ function AddPost() {
     if (content.trim() === "") {
       setContentError(true);
     }
+    if (!selectedBackgroundImg) {
+      setBackgroundImgError(true);
+    }
+    if (!selectedPreviewImg) {
+      setPreviewImgError(true);
+    }
 
-    const backroundImgUrl = window.URL.createObjectURL(
-      new Blob([selectedBackgroundImg])
-    );
-    const previewImageUrl = window.URL.createObjectURL(
-      new Blob([selectedPreviewImg])
-    );
-
-    if (title && content) {
-      postNewBlog(title, content, backroundImgUrl, previewImageUrl)
-        .then((postId) => console.log(postId))
-        .catch((error) => console.error(error));
-      navigate("/");
+    if (title && content && selectedBackgroundImg && selectedPreviewImg) {
+      Promise.all([
+        getBase64(selectedBackgroundImg),
+        getBase64(selectedPreviewImg),
+      ]).then((values) => {
+        console.log(values);
+        postNewBlog(title, content, values[0], values[1])
+          .then((postId) => {
+            console.log(postId);
+            navigate("/");
+          })
+          .catch((error) => console.error(error));
+      });
     }
   };
 
@@ -89,12 +109,14 @@ function AddPost() {
               onImageChange={(img) => {
                 setSelectedBackgroundImg(img);
               }}
+              error={backgroundImgError}
             />
             <ImageInput
               title="Preview Image"
               onImageChange={(img) => {
                 setSelectedPreviewImg(img);
               }}
+              error={previewImgError}
             />
           </Stack>
           <TextField
