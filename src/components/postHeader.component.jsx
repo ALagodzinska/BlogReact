@@ -1,5 +1,4 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
-import image from "../images/flowers.jpeg";
 
 function PostHeader({ post }) {
   return (
@@ -12,7 +11,7 @@ function PostHeader({ post }) {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0)), url(${image})`,
+        backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0)), url(/api/Image/PreviewImage?postId=${post.blogPostId})`,
         height: 250,
       }}
     >
