@@ -1,5 +1,6 @@
 import { Button, Toolbar, Typography } from "@mui/material";
 import { Fragment } from "react";
+import { Link } from "react-router-dom";
 
 function Header({ title }) {
   return (
@@ -15,7 +16,7 @@ function Header({ title }) {
         >
           {title}
         </Typography>
-        <Button variant="outlined" size="small">
+        <Button component={Link} to="/login" variant="outlined" size="small">
           Sign in
         </Button>
       </Toolbar>

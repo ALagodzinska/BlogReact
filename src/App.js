@@ -6,6 +6,8 @@ import HomePage from "./routes/HomePage";
 import ShowPost from "./routes/ShowPost";
 import AddPost from "./routes/AddPost";
 import EditPost from "./routes/EditPost";
+import Login from "./routes/Login";
+import { UserProvider } from "./user.context";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,9 +27,17 @@ function App() {
       path: "/edit/:id",
       element: <EditPost />,
     },
+    {
+      path: "/login",
+      element: <Login />,
+    },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+  );
 }
 
 export default App;
