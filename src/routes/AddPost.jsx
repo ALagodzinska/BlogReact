@@ -1,6 +1,6 @@
 import { Button, Container, TextField, Stack } from "@mui/material";
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Header from "../components/header.component";
 import ImageInput from "../components/test_imageInput.component";
 import UserContext from "../user.context";
@@ -82,10 +82,9 @@ function AddPost() {
     }
   };
 
-  // if (!user) return <Redirect to="/" />;
-
   return (
     <Container>
+      {!user && <Navigate to="/" replace={true} />}
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Header title={"CREATE NEW POST"} />

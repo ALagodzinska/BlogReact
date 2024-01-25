@@ -14,8 +14,9 @@ import Container from "@mui/material/Container";
 import Header from "../components/header.component";
 import { useContext, useState } from "react";
 import UserContext from "../user.context";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { getLoggedInUser } from "../user.actions";
+import HomePage from "./HomePage";
 
 function Login() {
   const [user, setUser] = useContext(UserContext);
@@ -49,6 +50,7 @@ function Login() {
 
   return (
     <Box>
+      {user && <Navigate to="/" replace={true} />}
       <Header />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
