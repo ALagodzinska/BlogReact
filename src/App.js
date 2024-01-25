@@ -1,6 +1,4 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import HomePage from "./routes/HomePage";
 import ShowPost from "./routes/ShowPost";

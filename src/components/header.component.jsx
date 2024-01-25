@@ -1,8 +1,17 @@
-import { Button, Toolbar, Typography } from "@mui/material";
-import { Fragment } from "react";
+import { Box, Button, Toolbar, Typography } from "@mui/material";
+import { Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
+import UserContext from "../user.context";
 
 function Header({ title }) {
+  const [user, setUser] = useContext(UserContext);
+  function logoutUser() {
+    setUser(null);
+    let newObject = window.localStorage.getItem("myObject");
+    console.log(JSON.parse(newObject));
+    window.localStorage.clear();
+  }
+
   return (
     <Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -16,9 +25,26 @@ function Header({ title }) {
         >
           {title}
         </Typography>
-        <Button component={Link} to="/login" variant="outlined" size="small">
-          Sign in
-        </Button>
+        {user ? (
+          <Box>
+            <Typography
+              variant="caption"
+              position={"absolute"}
+              pr={2}
+              right={"15%"}
+              bottom={"35%"}
+            >
+              Hello, {user.username}
+            </Typography>
+            <Button onClick={logoutUser} variant="outlined" size="small">
+              Sign out
+            </Button>
+          </Box>
+        ) : (
+          <Button component={Link} to="/login" variant="outlined" size="small">
+            Sign in
+          </Button>
+        )}
       </Toolbar>
     </Fragment>
   );

@@ -14,36 +14,16 @@ import Container from "@mui/material/Container";
 import Header from "../components/header.component";
 import { useContext, useState } from "react";
 import UserContext from "../user.context";
-
-async function loginUser(email, password) {
-  const response = await fetch("/login", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  return await response.json();
-}
-
-async function getUser(token) {
-  const response = await fetch("/api/user", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return await response.json();
-}
+import { useNavigate } from "react-router-dom";
+import { getLoggedInUser } from "../user.actions";
 
 function Login() {
   const [user, setUser] = useContext(UserContext);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [userError, setUserError] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -57,18 +37,9 @@ function Login() {
 
     if (email.trim() && password.trim()) {
       try {
-        const response = await loginUser(email, password);
-        console.log(response);
-        if (response.status === 401) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
-        await getUser(response.accessToken).then((name) =>
-          setUser({
-            username: name,
-            accessToken: response.accessToken,
-            refreshToken: response.refreshToken,
-          })
-        );
+        const userObject = await getLoggedInUser(email, password);
+        setUser(userObject);
+        navigate("/");
       } catch (error) {
         console.error(error);
         setUserError(true);

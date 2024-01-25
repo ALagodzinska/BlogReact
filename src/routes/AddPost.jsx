@@ -1,8 +1,9 @@
 import { Button, Container, TextField, Stack } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/header.component";
 import ImageInput from "../components/test_imageInput.component";
+import UserContext from "../user.context";
 
 async function postNewBlog(title, content, backgroundImage, previewImage) {
   const response = await fetch("/api/blogpost/postblog", {
@@ -42,6 +43,7 @@ function AddPost() {
   const [backgroundImgError, setBackgroundImgError] = useState(false);
   const [selectedBackgroundImg, setSelectedBackgroundImg] = useState(null);
   const [selectedPreviewImg, setSelectedPreviewImg] = useState(null);
+  const [user, setUser] = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -79,6 +81,8 @@ function AddPost() {
       });
     }
   };
+
+  // if (!user) return <Redirect to="/" />;
 
   return (
     <Container>
