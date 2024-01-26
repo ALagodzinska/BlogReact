@@ -8,10 +8,15 @@ async function loginUser(email, password) {
       },
       body: JSON.stringify({ email, password }),
     });
-    if (response.status === 401) {
-      throw new Error(`Request failed with status ${response.status}`);
+    if (response.status === 200) return await response.json();
+    else {
+      if (response.status === 401) {
+        throw new Error(
+          `User does not exist. Request failed with status ${response.status}`
+        );
+      }
+      return null;
     }
-    return await response.json();
   } catch (error) {
     console.error("Login User", error);
     return null;
@@ -28,10 +33,13 @@ export async function getUsername(token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response.status === 401) {
-      throw new Error(`Request failed with status ${response.status}`);
+    if (response.status === 200) return await response.json();
+    else {
+      if (response.status === 401) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+      return null;
     }
-    return await response.json();
   } catch (error) {
     console.error("User From Local Storage", error);
     return null;
