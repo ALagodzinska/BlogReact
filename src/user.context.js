@@ -8,9 +8,12 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      const localStorageUser = await getValidUser();
-      if (localStorageUser) setUser(localStorageUser);
-      else {
+      try {
+        const localStorageUser = await getValidUser();
+        setUser(localStorageUser);
+        if (!localStorageUser) window.localStorage.clear();
+      } catch (error) {
+        console.error(error);
         setUser(null);
         window.localStorage.clear();
       }

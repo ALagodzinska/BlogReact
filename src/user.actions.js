@@ -1,65 +1,55 @@
 async function loginUser(email, password) {
-  try {
-    const response = await fetch("/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    if (response.status === 200) return await response.json();
-    else {
-      if (response.status === 401) {
-        throw new Error(
-          `User does not exist. Request failed with status ${response.status}`
-        );
-      }
-      return null;
+  const response = await fetch("/login", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+  if (response.status === 200) return await response.json();
+  else {
+    if (response.status === 401) {
+      throw new Error(
+        `User does not exist. Request failed with status ${response.status}`
+      );
     }
-  } catch (error) {
-    console.error("Login User", error);
-    return null;
   }
 }
 
 export async function getUsername(token) {
-  try {
-    const response = await fetch("/api/user", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.status === 200) return await response.json();
-    else {
-      if (response.status === 401) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-      return null;
+  const response = await fetch("/api/user", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) return await response.json();
+  else {
+    if (response.status === 401) {
+      throw new Error(`Request failed with status ${response.status}`);
     }
-  } catch (error) {
-    console.error("User From Local Storage", error);
-    return null;
   }
 }
 
 export async function getLoggedInUser(email, password) {
-  const response = await loginUser(email, password);
-  if (!response) return null;
+  try {
+    const response = await loginUser(email, password);
+    const username = await getUsername(response.accessToken);
 
-  const username = await getUsername(response.accessToken);
-  if (!username) return null;
+    const userObject = {
+      username: username,
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+    };
+    window.localStorage.setItem("user", JSON.stringify(userObject));
 
-  const userObject = {
-    username: username,
-    accessToken: response.accessToken,
-    refreshToken: response.refreshToken,
-  };
-  window.localStorage.setItem("user", JSON.stringify(userObject));
-  return userObject;
+    return userObject;
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 export function getUserFromLocalStorage() {
@@ -68,10 +58,16 @@ export function getUserFromLocalStorage() {
 }
 
 export async function getValidUser() {
-  const localStorageUser = getUserFromLocalStorage();
-  if (localStorageUser) {
-    const loggedInUserName = await getUsername(localStorageUser.accessToken);
-    if (loggedInUserName === localStorageUser.username) return localStorageUser;
+  try {
+    const localStorageUser = getUserFromLocalStorage();
+    if (localStorageUser) {
+      const loggedInUserName = await getUsername(localStorageUser.accessToken);
+      if (loggedInUserName === localStorageUser.username)
+        return localStorageUser;
+      else throw new Error("Invalid user data in local storage");
+    }
+    return null;
+  } catch (error) {
+    throw new Error(error);
   }
-  return null;
 }
