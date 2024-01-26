@@ -84,7 +84,6 @@ function AddPost() {
 
   return (
     <Container>
-      {!user && <Navigate to="/" replace={true} />}
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Header title={"CREATE NEW POST"} />

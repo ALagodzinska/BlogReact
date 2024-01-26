@@ -6,6 +6,10 @@ import AddPost from "./routes/AddPost";
 import EditPost from "./routes/EditPost";
 import Login from "./routes/Login";
 import { UserProvider } from "./user.context";
+import {
+  PrivateRouteLoggedIn,
+  PrivateRouteLoggedOut,
+} from "./components/privateRoutes.component";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,16 +22,26 @@ function App() {
       element: <ShowPost />,
     },
     {
-      path: "/add",
-      element: <AddPost />,
+      element: <PrivateRouteLoggedOut />,
+      children: [
+        {
+          path: "/add",
+          element: <AddPost />,
+        },
+        {
+          path: "/edit/:id",
+          element: <EditPost />,
+        },
+      ],
     },
     {
-      path: "/edit/:id",
-      element: <EditPost />,
-    },
-    {
-      path: "/login",
-      element: <Login />,
+      element: <PrivateRouteLoggedIn />,
+      children: [
+        {
+          path: "/login",
+          element: <Login />,
+        },
+      ],
     },
   ]);
 

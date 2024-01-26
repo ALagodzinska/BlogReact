@@ -50,7 +50,6 @@ function Login() {
 
   return (
     <Box>
-      {user && <Navigate to="/" replace={true} />}
       <Header />
       <Container component="main" maxWidth="xs">
         <CssBaseline />

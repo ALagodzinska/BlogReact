@@ -1,36 +1,50 @@
 async function loginUser(email, password) {
-  const response = await fetch("/login", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  return await response.json();
+  try {
+    const response = await fetch("/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    if (response.status === 401) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Login User", error);
+    return null;
+  }
 }
 
 export async function getUsername(token) {
-  const response = await fetch("/api/user", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return await response.json();
+  try {
+    const response = await fetch("/api/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.status === 401) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("User From Local Storage", error);
+    return null;
+  }
 }
 
 export async function getLoggedInUser(email, password) {
   const response = await loginUser(email, password);
-  if (response.status === 401) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
+  if (!response) return null;
+
   const username = await getUsername(response.accessToken);
-  if (username.status === 401) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
+  if (!username) return null;
+
   const userObject = {
     username: username,
     accessToken: response.accessToken,
@@ -42,7 +56,7 @@ export async function getLoggedInUser(email, password) {
 
 export function getUserFromLocalStorage() {
   let user = window.localStorage.getItem("user");
-  return user ? JSON.parse(user) : user;
+  return user ? JSON.parse(user) : null;
 }
 
 export async function getValidUser() {
