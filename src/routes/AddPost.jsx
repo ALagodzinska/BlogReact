@@ -1,9 +1,11 @@
-import { Button, Container, TextField, Stack } from "@mui/material";
+import { Button, Container, TextField, Stack, Box } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Header from "../components/header.component";
 import ImageInput from "../components/test_imageInput.component";
 import UserContext from "../user.context";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 async function postNewBlog(title, content, backgroundImage, previewImage) {
   const response = await fetch("/api/blogpost/postblog", {
@@ -37,12 +39,15 @@ async function getBase64(file) {
 function AddPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
+  const [selectedBackgroundImg, setSelectedBackgroundImg] = useState(null);
+  const [selectedPreviewImg, setSelectedPreviewImg] = useState(null);
+
   const [titleError, setTitleError] = useState(false);
   const [contentError, setContentError] = useState(false);
   const [previewImgError, setPreviewImgError] = useState(false);
   const [backgroundImgError, setBackgroundImgError] = useState(false);
-  const [selectedBackgroundImg, setSelectedBackgroundImg] = useState(null);
-  const [selectedPreviewImg, setSelectedPreviewImg] = useState(null);
+
   const [user, setUser] = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -121,7 +126,7 @@ function AddPost() {
               error={previewImgError}
             />
           </Stack>
-          <TextField
+          {/*<TextField
             id="content"
             sx={{ pb: 3 }}
             label="Content"
@@ -134,8 +139,9 @@ function AddPost() {
             }}
             error={contentError}
             helperText={contentError ? "This field is required" : ""}
-          />
-          <Button variant="outlined" sx={{ my: 3 }} type="submit">
+          /> */}
+          <ReactQuill theme="snow" value={content} onChange={{ setContent }} />
+          <Button variant="outlined" sx={{ mt: 7 }} type="submit">
             SAVE
           </Button>
         </Stack>
