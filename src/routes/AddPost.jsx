@@ -6,13 +6,21 @@ import ImageInput from "../components/test_imageInput.component";
 import UserContext from "../user.context";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { getUserFromLocalStorage } from "../user.actions";
 
-async function postNewBlog(title, content, backgroundImage, previewImage) {
+async function postNewBlog(
+  title,
+  content,
+  backgroundImage,
+  previewImage,
+  token
+) {
   const response = await fetch("/api/blogpost/postblog", {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       title,
@@ -71,13 +79,15 @@ function AddPost() {
       setPreviewImgError(true);
     }
 
+    const token = getUserFromLocalStorage().accessToken;
+
     if (title && content && selectedBackgroundImg && selectedPreviewImg) {
       Promise.all([
         getBase64(selectedBackgroundImg),
         getBase64(selectedPreviewImg),
       ]).then((values) => {
         console.log(values);
-        postNewBlog(title, content, values[0], values[1])
+        postNewBlog(title, content, values[0], values[1], token)
           .then((postId) => {
             console.log(postId);
             navigate("/");
@@ -126,7 +136,7 @@ function AddPost() {
               error={previewImgError}
             />
           </Stack>
-          {/*<TextField
+          <TextField
             id="content"
             sx={{ pb: 3 }}
             label="Content"
@@ -139,8 +149,8 @@ function AddPost() {
             }}
             error={contentError}
             helperText={contentError ? "This field is required" : ""}
-          /> */}
-          <ReactQuill theme="snow" value={content} onChange={{ setContent }} />
+          />
+          <ReactQuill theme="snow" value={content} onChange={setContent} />
           <Button variant="outlined" sx={{ mt: 7 }} type="submit">
             SAVE
           </Button>
