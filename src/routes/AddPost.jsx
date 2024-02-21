@@ -3,46 +3,10 @@ import React, { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Header from "../components/header.component";
 import ImageInput from "../components/test_imageInput.component";
-import UserContext from "../user.context";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { getUserFromLocalStorage } from "../user.actions";
-
-async function postNewBlog(
-  title,
-  content,
-  backgroundImage,
-  previewImage,
-  token
-) {
-  const response = await fetch("/api/blogpost/postblog", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      title,
-      content,
-      backgroundImage,
-      previewImage,
-      user: "user",
-    }),
-  });
-  return await response.json();
-}
-
-async function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsBinaryString(file);
-    reader.onload = () => {
-      resolve(btoa(reader.result));
-    };
-    reader.onerror = reject;
-  });
-}
+import { getBase64, postNewBlog } from "../post.actions";
 
 function AddPost() {
   const [title, setTitle] = useState("");
@@ -55,8 +19,6 @@ function AddPost() {
   const [contentError, setContentError] = useState(false);
   const [previewImgError, setPreviewImgError] = useState(false);
   const [backgroundImgError, setBackgroundImgError] = useState(false);
-
-  const [user, setUser] = useContext(UserContext);
 
   const navigate = useNavigate();
 

@@ -17,6 +17,10 @@ async function loginUser(email, password) {
   }
 }
 
+export function logoutUser() {
+  window.localStorage.clear();
+}
+
 export async function getUsername(token) {
   const response = await fetch("/api/user", {
     method: "GET",

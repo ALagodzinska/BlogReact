@@ -2,15 +2,10 @@ import { Box, Button, Toolbar, Typography } from "@mui/material";
 import { Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../user.context";
+import { logoutUser } from "../user.actions";
 
 function Header({ title }) {
   const [user, setUser] = useContext(UserContext);
-  function logoutUser() {
-    setUser(null);
-    let newObject = window.localStorage.getItem("myObject");
-    console.log(JSON.parse(newObject));
-    window.localStorage.clear();
-  }
 
   return (
     <Fragment>
@@ -36,7 +31,14 @@ function Header({ title }) {
             >
               Hello, {user.username}
             </Typography>
-            <Button onClick={logoutUser} variant="outlined" size="small">
+            <Button
+              onClick={() => {
+                logoutUser();
+                setUser(null);
+              }}
+              variant="outlined"
+              size="small"
+            >
               Sign out
             </Button>
           </Box>
