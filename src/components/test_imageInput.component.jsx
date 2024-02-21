@@ -1,9 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useRef } from "react";
 
-function ImageInput({ title, onImageChange, error }) {
-  const [selectedImage, setSelectedImage] = useState(null);
+function ImageInput({ title, setSelectedImage, selectedImage, error }) {
   const inputRef = useRef(null);
 
   const imageSelectedHandler = (event) => {
@@ -15,10 +13,6 @@ function ImageInput({ title, onImageChange, error }) {
     inputRef.current.value = "";
     setSelectedImage(null);
   };
-
-  useEffect(() => {
-    onImageChange(selectedImage);
-  }, [onImageChange, selectedImage]);
 
   return (
     <Box>
@@ -32,7 +26,7 @@ function ImageInput({ title, onImageChange, error }) {
       />
       {error && (
         <Typography variant="caption" color={"red"} sx={{ display: "flex" }}>
-          This field is required
+          {error}
         </Typography>
       )}
       {selectedImage && (

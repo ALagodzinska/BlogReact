@@ -1,5 +1,12 @@
-import { Button, Container, TextField, Stack, Box } from "@mui/material";
-import React, { useContext, useState } from "react";
+import {
+  Button,
+  Container,
+  TextField,
+  Stack,
+  Box,
+  Typography,
+} from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Header from "../components/header.component";
 import ImageInput from "../components/test_imageInput.component";
@@ -8,55 +15,87 @@ import "react-quill/dist/quill.snow.css";
 import { getUserFromLocalStorage } from "../user.actions";
 import { getBase64, postNewBlog } from "../post.actions";
 
+const validateValues = (inputValues) => {
+  let errors = {};
+  if (inputValues.title.trim() === "") {
+    errors.title = "Title is required";
+  }
+  if (inputValues.content.trim() === "") {
+    errors.content = "Content is required";
+  }
+  if (!inputValues.backgroundImg) {
+    errors.backgroundImg = "Background image is required";
+  }
+  if (!inputValues.previewImg) {
+    errors.previewImg = "Preview image is required";
+  }
+  return errors;
+};
+
 function AddPost() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [inputFields, setInputFields] = useState({
+    title: "",
+    content: "",
+    backgroundImg: null,
+    previewImg: null,
+  });
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
 
-  const [selectedBackgroundImg, setSelectedBackgroundImg] = useState(null);
-  const [selectedPreviewImg, setSelectedPreviewImg] = useState(null);
+  const handleTitleChange = (event) => {
+    setInputFields({ ...inputFields, title: event.target.value });
+    if (errors.title) delete errors.title;
+  };
 
-  const [titleError, setTitleError] = useState(false);
-  const [contentError, setContentError] = useState(false);
-  const [previewImgError, setPreviewImgError] = useState(false);
-  const [backgroundImgError, setBackgroundImgError] = useState(false);
+  const handleBackgroundImgChange = (img) => {
+    setInputFields({ ...inputFields, backgroundImg: img });
+    if (errors.backgroundImg) delete errors.backgroundImg;
+  };
+
+  const handlePreviewImgChange = (img) => {
+    setInputFields({ ...inputFields, previewImg: img });
+    if (errors.previewImg) delete errors.previewImg;
+  };
+
+  const handleContentChange = (content) => {
+    setInputFields({ ...inputFields, content: content });
+    if (errors.content) delete errors.content;
+  };
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const localErrors = validateValues(inputFields);
+    setErrors(localErrors);
+    const isValid = Object.keys(localErrors).length === 0;
+    if (isValid) {
+      setSubmitted(true);
+      finishSubmit();
+    }
+  };
 
-    setTitleError(false);
-    setContentError(false);
-
-    if (title.trim() === "") {
-      setTitleError(true);
-    }
-    if (content.trim() === "") {
-      setContentError(true);
-    }
-    if (!selectedBackgroundImg) {
-      setBackgroundImgError(true);
-    }
-    if (!selectedPreviewImg) {
-      setPreviewImgError(true);
-    }
-
+  const finishSubmit = () => {
     const token = getUserFromLocalStorage().accessToken;
-
-    if (title && content && selectedBackgroundImg && selectedPreviewImg) {
-      Promise.all([
-        getBase64(selectedBackgroundImg),
-        getBase64(selectedPreviewImg),
-      ]).then((values) => {
-        console.log(values);
-        postNewBlog(title, content, values[0], values[1], token)
-          .then((postId) => {
-            console.log(postId);
+    Promise.all([
+      getBase64(inputFields.backgroundImg),
+      getBase64(inputFields.previewImg),
+    ]).then((imgValues) => {
+      postNewBlog(
+        inputFields.title,
+        inputFields.content,
+        imgValues[0],
+        imgValues[1],
+        token
+      )
+        .then((postId) => {
+          console.log(postId);
+          setTimeout(() => {
             navigate("/");
-          })
-          .catch((error) => console.error(error));
-      });
-    }
+          }, 2000);
+        })
+        .catch((error) => console.error(error));
+    });
   };
 
   return (
@@ -64,17 +103,20 @@ function AddPost() {
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Header title={"CREATE NEW POST"} />
+          {submitted && (
+            <Typography color={"green"} align="center">
+              Successfully submitted ✓
+            </Typography>
+          )}
           <TextField
             id="title"
             sx={{ pb: 3 }}
             label="Blog Title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              setTitleError(false);
-            }}
-            error={titleError}
-            helperText={titleError ? "This field is required" : ""}
+            name="title"
+            value={inputFields.title}
+            onChange={handleTitleChange}
+            error={errors.title && true}
+            helperText={errors.title}
           />
           <Stack
             direction="row"
@@ -85,35 +127,33 @@ function AddPost() {
           >
             <ImageInput
               title="Background Image"
-              onImageChange={(img) => {
-                setSelectedBackgroundImg(img);
-              }}
-              error={backgroundImgError}
+              setSelectedImage={handleBackgroundImgChange}
+              error={errors.backgroundImg}
+              selectedImage={inputFields.backgroundImg}
             />
             <ImageInput
               title="Preview Image"
-              onImageChange={(img) => {
-                setSelectedPreviewImg(img);
-              }}
-              error={previewImgError}
+              setSelectedImage={handlePreviewImgChange}
+              error={errors.previewImg}
+              selectedImage={inputFields.previewImg}
             />
           </Stack>
-          <TextField
-            id="content"
-            sx={{ pb: 3 }}
-            label="Content"
-            multiline
-            rows={10}
-            value={content}
-            onChange={(e) => {
-              setContent(e.target.value);
-              setContentError(false);
-            }}
-            error={contentError}
-            helperText={contentError ? "This field is required" : ""}
+          <ReactQuill
+            theme="snow"
+            value={inputFields.content}
+            onChange={handleContentChange}
           />
-          <ReactQuill theme="snow" value={content} onChange={setContent} />
-          <Button variant="outlined" sx={{ mt: 7 }} type="submit">
+          {errors.content && (
+            <Typography color="red" fontSize={12}>
+              {errors.content}
+            </Typography>
+          )}
+          <Button
+            variant="outlined"
+            sx={{ mt: 7 }}
+            type="submit"
+            disabled={submitted}
+          >
             SAVE
           </Button>
         </Stack>
