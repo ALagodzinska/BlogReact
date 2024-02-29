@@ -39,9 +39,9 @@ function PostHeader({ post }) {
               variant="h3"
               color="inherit"
               gutterBottom
-              sx={{ textShadow: "0 1px 0 black" }}
+              sx={{ textShadow: "0 1px 0 black", textTransform: "uppercase" }}
             >
-              {post.title.toUpperCase()}
+              {post.title}
             </Typography>
           </Box>
         </Grid>

@@ -3,10 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -14,29 +10,35 @@ import Container from "@mui/material/Container";
 import Header from "../components/header.component";
 import { useContext, useState } from "react";
 import UserContext from "../user.context";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getLoggedInUser } from "../user.actions";
-import HomePage from "./HomePage";
+
+const validateValues = (email, password) => {
+  let errors = {};
+  if (email.trim() === "") {
+    errors.email = "Email is required";
+  }
+  if (password.trim() === "") {
+    errors.password = "Password is required";
+  }
+  return errors;
+};
 
 function Login() {
   const [user, setUser] = useContext(UserContext);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
   const [userError, setUserError] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-
-    if (email.trim() === "") setEmailError(true);
-    if (password.trim() === "") setPasswordError(true);
-
-    if (email.trim() && password.trim()) {
+    const localErrors = validateValues(email, password);
+    setErrors(localErrors);
+    if (Object.keys(localErrors).length === 0) {
       try {
         const userObject = await getLoggedInUser(email, password);
         setUser(userObject);
@@ -89,11 +91,11 @@ function Login() {
               name="email"
               autoComplete="email"
               autoFocus
-              error={emailError}
-              helperText={emailError ? "This field is required" : ""}
-              onChange={() => {
-                setEmailError(false);
-                setUserError(false);
+              error={errors.email && true}
+              helperText={errors.email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errors.email) delete errors.email;
               }}
             />
             <TextField
@@ -105,16 +107,12 @@ function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
-              error={passwordError}
-              helperText={passwordError ? "This field is required" : ""}
-              onChange={() => {
-                setPasswordError(false);
-                setUserError(false);
+              error={errors.password && true}
+              helperText={errors.password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password) delete errors.password;
               }}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="submit"
@@ -124,18 +122,6 @@ function Login() {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
