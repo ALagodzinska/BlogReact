@@ -32,6 +32,13 @@ const validateValues = (inputValues) => {
   return errors;
 };
 
+const loadingStates = {
+  none: 0,
+  loading: 1,
+  success: 2,
+  failure: 3,
+};
+
 function AddPost() {
   const [inputFields, setInputFields] = useState({
     title: "",
@@ -40,7 +47,7 @@ function AddPost() {
     previewImg: null,
   });
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(loadingStates.none);
 
   const handleTitleChange = (event) => {
     setInputFields({ ...inputFields, title: event.target.value });
@@ -66,36 +73,39 @@ function AddPost() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(loadingStates.loading);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);
     const isValid = Object.keys(localErrors).length === 0;
     if (isValid) {
-      setSubmitted(true);
       finishSubmit();
     }
   };
 
-  const finishSubmit = () => {
+  const finishSubmit = async () => {
     const token = getUserFromLocalStorage().accessToken;
-    Promise.all([
-      getBase64(inputFields.backgroundImg),
-      getBase64(inputFields.previewImg),
-    ]).then((imgValues) => {
-      postNewBlog(
-        inputFields.title,
-        inputFields.content,
-        imgValues[0],
-        imgValues[1],
-        token
-      )
-        .then((postId) => {
-          console.log(postId);
-          setTimeout(() => {
-            navigate("/");
-          }, 2000);
-        })
-        .catch((error) => console.error(error));
-    });
+
+    const backgroundImgString = await getBase64(inputFields.backgroundImg);
+    const previewImgString = await getBase64(inputFields.previewImg);
+
+    postNewBlog(
+      inputFields.title,
+      inputFields.content,
+      backgroundImgString,
+      previewImgString,
+      token
+    )
+      .then((postId) => {
+        console.log(postId);
+        setLoading(loadingStates.success);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      })
+      .catch((error) => {
+        setLoading(loadingStates.failure);
+        console.error(error);
+      });
   };
 
   return (
@@ -103,9 +113,14 @@ function AddPost() {
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Header title={"CREATE NEW POST"} />
-          {submitted && (
+          {loading === loadingStates.success && (
             <Typography color={"green"} align="center">
               Successfully submitted ✓
+            </Typography>
+          )}
+          {loading === loadingStates.failure && (
+            <Typography color={"red"} align="center">
+              Failed to save the post X
             </Typography>
           )}
           <TextField
@@ -152,7 +167,7 @@ function AddPost() {
             variant="outlined"
             sx={{ mt: 7 }}
             type="submit"
-            disabled={submitted}
+            disabled={loading === loadingStates.success}
           >
             SAVE
           </Button>
