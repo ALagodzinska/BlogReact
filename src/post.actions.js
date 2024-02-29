@@ -32,3 +32,15 @@ export async function getBase64(file) {
     reader.onerror = reject;
   });
 }
+
+export async function fetchPosts(pageNum) {
+  const response = await fetch(`/api/blogpost/getpostsforpage?page=${pageNum}`);
+  const json = await response.json();
+  return json;
+}
+
+export async function fetchPageCount() {
+  const response = await fetch("/api/blogpost/getpagecount");
+  const json = await response.json();
+  return json;
+}
