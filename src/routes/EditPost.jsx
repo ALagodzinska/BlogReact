@@ -1,7 +1,95 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { fetchPost, getBase64, updatePost } from "../post.actions";
+import {
+  BACKGROUND_IMG_ERROR_MESSAGE,
+  CONTENT_ERROR_MESSAGE,
+  LOADING_STATES,
+  PREVIEW_IMG_ERROR_MESSAGE,
+  TITLE_ERROR_MESSAGE,
+} from "../constants";
+import { Box, Container } from "@mui/material";
+import PostForm from "../components/postForm.component";
+import { getUserFromLocalStorage } from "../user.actions";
 
 function EditPost() {
-  return <p>Edit post!</p>;
+  const { id } = useParams();
+  const [inputFields, setInputFields] = useState({
+    title: "",
+    content: "",
+    backgroundImg: null,
+    previewImg: null,
+  });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(LOADING_STATES.none);
+
+  const navigate = useNavigate();
+
+  const validateValues = (inputValues) => {
+    let errors = {};
+    if (inputValues.title.trim() === "") {
+      errors.title = TITLE_ERROR_MESSAGE;
+    }
+    if (inputValues.content.trim() === "") {
+      errors.content = CONTENT_ERROR_MESSAGE;
+    }
+    return errors;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(LOADING_STATES.loading);
+    const localErrors = validateValues(inputFields);
+    setErrors(localErrors);
+    const isValid = Object.keys(localErrors).length === 0;
+    if (isValid) {
+      finishSubmit();
+    }
+  };
+
+  const finishSubmit = async () => {
+    const token = getUserFromLocalStorage().accessToken;
+    // const backgroundImg = "";
+
+    // if(inputFields.backgroundImg){
+    //   const backgroundImgString = await getBase64(inputFields.backgroundImg);
+    // }
+
+    // const previewImgString = await getBase64(inputFields.previewImg);
+
+    updatePost(id, inputFields.title, inputFields.content, null, null, token)
+      .then(() => {
+        setLoading(LOADING_STATES.success);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      })
+      .catch((error) => {
+        setLoading(LOADING_STATES.failure);
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchPost(id).then((post) => {
+      setInputFields({
+        title: post.title,
+        content: post.content,
+        backgroundImg: null,
+        previewImg: null,
+      });
+    });
+  }, [id]);
+
+  return (
+    <PostForm
+      handleSubmit={handleSubmit}
+      inputFields={inputFields}
+      setInputFields={setInputFields}
+      errors={errors}
+      loading={loading}
+    />
+  );
 }
 
 export default EditPost;

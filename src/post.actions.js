@@ -1,4 +1,4 @@
-export async function postNewBlog(
+export async function createPost(
   title,
   content,
   backgroundImage,
@@ -43,4 +43,35 @@ export async function fetchPageCount() {
   const response = await fetch("/api/blogpost/getpagecount");
   const json = await response.json();
   return json;
+}
+
+export async function fetchPost(postId) {
+  const response = await fetch(`/api/blogpost/getpost?postId=${postId}`);
+  const json = await response.json();
+  return json;
+}
+
+export async function updatePost(
+  id,
+  title,
+  content,
+  backgroundImage,
+  previewImage,
+  token
+) {
+  const response = await fetch(`/api/blogpost/updatepost?postId=${id}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      title,
+      content,
+      backgroundImage,
+      previewImage,
+    }),
+  });
+  return await response.json();
 }

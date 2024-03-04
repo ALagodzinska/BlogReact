@@ -3,12 +3,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/header.component";
 import { Link, useParams } from "react-router-dom";
 import PostHeader from "../components/postHeader.component";
-
-async function fetchPost(postId) {
-  const response = await fetch(`/api/blogpost/getpost?postId=${postId}`);
-  const json = await response.json();
-  return json;
-}
+import { fetchPost } from "../post.actions";
 
 function ShowPost() {
   const { id } = useParams();

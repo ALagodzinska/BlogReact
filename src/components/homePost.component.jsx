@@ -1,11 +1,15 @@
-import { Box, Grid, Link, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Link, Stack, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
+import { useContext } from "react";
+import UserContext from "../user.context";
 
 function truncate(str, n) {
   return str.length > n ? str.slice(0, n - 1) + "..." : str;
 }
 
 function HomePost({ post }) {
+  const [user] = useContext(UserContext);
+
   return (
     <Box>
       <Grid item xs={12} md={8} pb={3}>
@@ -21,6 +25,9 @@ function HomePost({ post }) {
               dangerouslySetInnerHTML={{ __html: truncate(post.content, 450) }}
             ></div>
             <Link href={post.blogPostId}>Read More...</Link>
+            <Box>
+              {user && <Link href={`/edit/${post.blogPostId}`}>Edit</Link>}
+            </Box>
           </Box>
           <Box>
             <Box

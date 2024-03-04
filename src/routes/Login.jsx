@@ -12,14 +12,15 @@ import { useContext, useState } from "react";
 import UserContext from "../user.context";
 import { useNavigate } from "react-router-dom";
 import { getLoggedInUser } from "../user.actions";
+import { EMAIL_ERROR_MESSAGE, PASSWORD_ERROR_MESSAGE } from "../constants";
 
 const validateValues = (email, password) => {
   let errors = {};
   if (email.trim() === "") {
-    errors.email = "Email is required";
+    errors.email = EMAIL_ERROR_MESSAGE;
   }
   if (password.trim() === "") {
-    errors.password = "Password is required";
+    errors.password = PASSWORD_ERROR_MESSAGE;
   }
   return errors;
 };
