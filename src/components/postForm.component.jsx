@@ -20,6 +20,7 @@ function PostForm({
   loading,
   formType,
 }) {
+  // FOR FUTURE - can make one method HANDLE FIELD CHANGE and pass Key and value( for objects can use ....["key"])
   const handleTitleChange = (event) => {
     setInputFields((inputFields) => {
       return { ...inputFields, title: event.target.value };
@@ -90,74 +91,50 @@ function PostForm({
             error={!!errors.title}
             helperText={errors.title}
           />
-          {formType === FORM_TYPE.CREATE && (
-            <Stack
-              direction="row"
-              justifyContent="space-around"
-              alignItems="center"
-              spacing={2}
-              pb={2}
-            >
-              <ImageInput
-                title="Background Image"
-                setSelectedImage={handleBackgroundImgChange}
-                error={errors.backgroundImg}
-                selectedImage={inputFields.backgroundImg}
-              />
-              <ImageInput
-                title="Preview Image"
-                setSelectedImage={handlePreviewImgChange}
-                error={errors.previewImg}
-                selectedImage={inputFields.previewImg}
-              />
-            </Stack>
-          )}
-          {formType === FORM_TYPE.UPDATE && (
-            <Stack
-              direction="row"
-              justifyContent="space-around"
-              alignItems="center"
-              spacing={2}
-              pb={2}
-            >
-              <Box>
-                {inputFields.backgroundImgLink ? (
-                  <Box>
-                    <Typography>Background Image</Typography>
-                    <FormImageDisplay
-                      imgSrc={inputFields.backgroundImgLink}
-                      clearImageHandler={clearBackgroundImageHandler}
-                    />
-                  </Box>
-                ) : (
-                  <ImageInput
-                    title="Background Image"
-                    setSelectedImage={handleBackgroundImgChange}
-                    error={errors.backgroundImg}
-                    selectedImage={inputFields.backgroundImg}
+          <Stack
+            direction="row"
+            justifyContent="space-around"
+            alignItems="center"
+            spacing={2}
+            pb={2}
+          >
+            <Box>
+              {inputFields.backgroundImgLink ? (
+                <Box>
+                  <Typography>Background Image</Typography>
+                  <FormImageDisplay
+                    imgSrc={inputFields.backgroundImgLink}
+                    clearImageHandler={clearBackgroundImageHandler}
                   />
-                )}
-              </Box>
-              <Box>
-                {inputFields.previewImgLink ? (
-                  <Box>
-                    <Typography>Preview Image</Typography>
-                    <FormImageDisplay
-                      imgSrc={inputFields.previewImgLink}
-                      clearImageHandler={clearPreviewImageHandler}
-                    />
-                  </Box>
-                ) : (
-                  <ImageInput
-                    title="Preview Image"
-                    setSelectedImage={handlePreviewImgChange}
-                    error={errors.previewImg}
-                    selectedImage={inputFields.previewImg}
+                </Box>
+              ) : (
+                <ImageInput
+                  title="Background Image"
+                  setSelectedImage={handleBackgroundImgChange}
+                  error={errors.backgroundImg}
+                  selectedImage={inputFields.backgroundImg}
+                />
+              )}
+            </Box>
+            <Box>
+              {inputFields.previewImgLink ? (
+                <Box>
+                  <Typography>Preview Image</Typography>
+                  <FormImageDisplay
+                    imgSrc={inputFields.previewImgLink}
+                    clearImageHandler={clearPreviewImageHandler}
                   />
-                )}
-              </Box>
-            </Stack>
-          )}
+                </Box>
+              ) : (
+                <ImageInput
+                  title="Preview Image"
+                  setSelectedImage={handlePreviewImgChange}
+                  error={errors.previewImg}
+                  selectedImage={inputFields.previewImg}
+                />
+              )}
+            </Box>
+          </Stack>
 
           <ReactQuill
             theme="snow"
