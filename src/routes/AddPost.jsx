@@ -7,6 +7,7 @@ import PostForm from "../components/postForm.component";
 import {
   BACKGROUND_IMG_ERROR_MESSAGE,
   CONTENT_ERROR_MESSAGE,
+  FORM_TYPE,
   LOADING_STATES,
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
@@ -85,6 +86,7 @@ function AddPost() {
       setInputFields={setInputFields}
       errors={errors}
       loading={loading}
+      formType={FORM_TYPE.CREATE}
     />
   );
 }

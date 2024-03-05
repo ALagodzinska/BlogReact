@@ -4,6 +4,7 @@ import { fetchPost, getBase64, updatePost } from "../post.actions";
 import {
   BACKGROUND_IMG_ERROR_MESSAGE,
   CONTENT_ERROR_MESSAGE,
+  FORM_TYPE,
   LOADING_STATES,
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
@@ -19,6 +20,8 @@ function EditPost() {
     content: "",
     backgroundImg: null,
     previewImg: null,
+    backgroundImgLink: null,
+    previewImgLink: null,
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(LOADING_STATES.none);
@@ -32,6 +35,12 @@ function EditPost() {
     }
     if (inputValues.content.trim() === "") {
       errors.content = CONTENT_ERROR_MESSAGE;
+    }
+    if (!inputValues.backgroundImgLink && !inputValues.backgroundImg) {
+      errors.backgroundImg = BACKGROUND_IMG_ERROR_MESSAGE;
+    }
+    if (!inputValues.previewImgLink && !inputValues.previewImg) {
+      errors.previewImg = PREVIEW_IMG_ERROR_MESSAGE;
     }
     return errors;
   };
@@ -49,15 +58,24 @@ function EditPost() {
 
   const finishSubmit = async () => {
     const token = getUserFromLocalStorage().accessToken;
-    // const backgroundImg = "";
 
-    // if(inputFields.backgroundImg){
-    //   const backgroundImgString = await getBase64(inputFields.backgroundImg);
-    // }
+    let backgroundImgString = null;
+    if (inputFields.backgroundImg) {
+      backgroundImgString = await getBase64(inputFields.backgroundImg);
+    }
+    let previewImgString = null;
+    if (inputFields.previewImg) {
+      previewImgString = await getBase64(inputFields.previewImg);
+    }
 
-    // const previewImgString = await getBase64(inputFields.previewImg);
-
-    updatePost(id, inputFields.title, inputFields.content, null, null, token)
+    updatePost(
+      id,
+      inputFields.title,
+      inputFields.content,
+      backgroundImgString,
+      previewImgString,
+      token
+    )
       .then(() => {
         setLoading(LOADING_STATES.success);
         setTimeout(() => {
@@ -77,6 +95,8 @@ function EditPost() {
         content: post.content,
         backgroundImg: null,
         previewImg: null,
+        backgroundImgLink: `/api/Image/BackgroundImage?postId=${id}`,
+        previewImgLink: `/api/Image/PreviewImage?postId=${id}`,
       });
     });
   }, [id]);
@@ -88,6 +108,7 @@ function EditPost() {
       setInputFields={setInputFields}
       errors={errors}
       loading={loading}
+      formType={FORM_TYPE.UPDATE}
     />
   );
 }

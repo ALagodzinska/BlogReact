@@ -12,3 +12,8 @@ export const TITLE_ERROR_MESSAGE = "Title is required";
 export const CONTENT_ERROR_MESSAGE = "Content is required";
 export const PREVIEW_IMG_ERROR_MESSAGE = "Preview image is required";
 export const BACKGROUND_IMG_ERROR_MESSAGE = "Background image is required";
+// FORM TYPES
+export const FORM_TYPE = {
+  CREATE: "create",
+  UPDATE: "update",
+};

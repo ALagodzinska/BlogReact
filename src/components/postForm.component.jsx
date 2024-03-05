@@ -1,8 +1,16 @@
-import { Button, Container, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Header from "./header.component";
-import ImageInput from "./test_imageInput.component";
+import ImageInput from "./imageInput.component";
 import ReactQuill from "react-quill";
-import { LOADING_STATES } from "../constants";
+import { FORM_TYPE, LOADING_STATES } from "../constants";
+import FormImageDisplay from "./formImageDisplay.component";
 
 function PostForm({
   handleSubmit,
@@ -10,6 +18,7 @@ function PostForm({
   setInputFields,
   errors,
   loading,
+  formType,
 }) {
   const handleTitleChange = (event) => {
     setInputFields((inputFields) => {
@@ -39,11 +48,28 @@ function PostForm({
     if (errors.content) delete errors.content;
   };
 
+  const clearPreviewImageHandler = (event) => {
+    event.preventDefault();
+    setInputFields((inputFields) => {
+      return { ...inputFields, previewImgLink: null };
+    });
+  };
+  const clearBackgroundImageHandler = (event) => {
+    event.preventDefault();
+    setInputFields((inputFields) => {
+      return { ...inputFields, backgroundImgLink: null };
+    });
+  };
+
   return (
     <Container>
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          <Header title={"CREATE NEW POST"} />
+          <Header
+            title={
+              formType === FORM_TYPE.CREATE ? "CREATE NEW POST" : "EDIT POST"
+            }
+          />
           {loading === LOADING_STATES.success && (
             <Typography color={"green"} align="center">
               Successfully submitted ✓
@@ -64,26 +90,74 @@ function PostForm({
             error={!!errors.title}
             helperText={errors.title}
           />
-          <Stack
-            direction="row"
-            justifyContent="space-around"
-            alignItems="center"
-            spacing={2}
-            pb={2}
-          >
-            <ImageInput
-              title="Background Image"
-              setSelectedImage={handleBackgroundImgChange}
-              error={errors.backgroundImg}
-              selectedImage={inputFields.backgroundImg}
-            />
-            <ImageInput
-              title="Preview Image"
-              setSelectedImage={handlePreviewImgChange}
-              error={errors.previewImg}
-              selectedImage={inputFields.previewImg}
-            />
-          </Stack>
+          {formType === FORM_TYPE.CREATE && (
+            <Stack
+              direction="row"
+              justifyContent="space-around"
+              alignItems="center"
+              spacing={2}
+              pb={2}
+            >
+              <ImageInput
+                title="Background Image"
+                setSelectedImage={handleBackgroundImgChange}
+                error={errors.backgroundImg}
+                selectedImage={inputFields.backgroundImg}
+              />
+              <ImageInput
+                title="Preview Image"
+                setSelectedImage={handlePreviewImgChange}
+                error={errors.previewImg}
+                selectedImage={inputFields.previewImg}
+              />
+            </Stack>
+          )}
+          {formType === FORM_TYPE.UPDATE && (
+            <Stack
+              direction="row"
+              justifyContent="space-around"
+              alignItems="center"
+              spacing={2}
+              pb={2}
+            >
+              <Box>
+                {inputFields.backgroundImgLink ? (
+                  <Box>
+                    <Typography>Background Image</Typography>
+                    <FormImageDisplay
+                      imgSrc={inputFields.backgroundImgLink}
+                      clearImageHandler={clearBackgroundImageHandler}
+                    />
+                  </Box>
+                ) : (
+                  <ImageInput
+                    title="Background Image"
+                    setSelectedImage={handleBackgroundImgChange}
+                    error={errors.backgroundImg}
+                    selectedImage={inputFields.backgroundImg}
+                  />
+                )}
+              </Box>
+              <Box>
+                {inputFields.previewImgLink ? (
+                  <Box>
+                    <Typography>Preview Image</Typography>
+                    <FormImageDisplay
+                      imgSrc={inputFields.previewImgLink}
+                      clearImageHandler={clearPreviewImageHandler}
+                    />
+                  </Box>
+                ) : (
+                  <ImageInput
+                    title="Preview Image"
+                    setSelectedImage={handlePreviewImgChange}
+                    error={errors.previewImg}
+                    selectedImage={inputFields.previewImg}
+                  />
+                )}
+              </Box>
+            </Stack>
+          )}
 
           <ReactQuill
             theme="snow"

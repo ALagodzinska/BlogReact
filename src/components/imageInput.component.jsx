@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useRef } from "react";
+import FormImageDisplay from "./formImageDisplay.component";
 
 function ImageInput({ title, setSelectedImage, selectedImage, error }) {
   const inputRef = useRef(null);
@@ -30,16 +31,10 @@ function ImageInput({ title, setSelectedImage, selectedImage, error }) {
         </Typography>
       )}
       {selectedImage && (
-        <Box>
-          <Box sx={{ pt: 3 }}>
-            <img
-              alt="not found"
-              height={"250px"}
-              src={URL.createObjectURL(selectedImage)}
-            />
-          </Box>
-          <button onClick={clearImageHandler}>Remove</button>
-        </Box>
+        <FormImageDisplay
+          imgSrc={URL.createObjectURL(selectedImage)}
+          clearImageHandler={clearImageHandler}
+        />
       )}
     </Box>
   );
