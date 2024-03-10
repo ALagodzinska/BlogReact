@@ -21,6 +21,10 @@ function HomePost({ post }) {
             <Typography variant="caption" sx={{ fontStyle: "italic" }}>
               {new Date(post.creationDate).toLocaleDateString()}
             </Typography>
+            <br />
+            <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+              {post.user}
+            </Typography>
             <div
               dangerouslySetInnerHTML={{ __html: truncate(post.content, 450) }}
             ></div>

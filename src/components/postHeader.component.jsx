@@ -50,6 +50,12 @@ function PostHeader({ post }) {
             variant="caption"
             sx={{ fontStyle: "italic", paddingLeft: 2 }}
           >
+            {post.user}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{ fontStyle: "italic", paddingLeft: 2 }}
+          >
             {new Date(post.creationDate).toLocaleDateString()}
           </Typography>
         </Grid>
