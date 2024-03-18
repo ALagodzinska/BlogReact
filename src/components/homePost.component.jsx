@@ -1,17 +1,30 @@
 import { Box, Button, Grid, Link, Stack, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserContext from "../user.context";
+import DeletePopup from "./deletePopup.component";
 
 function truncate(str, n) {
   return str.length > n ? str.slice(0, n - 1) + "..." : str;
 }
 
-function HomePost({ post }) {
+function HomePost({ post, deleteMethod }) {
   const [user] = useContext(UserContext);
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const openDeleteWindow = (event) => {
+    event.preventDefault();
+    setOpenDelete(true);
+  };
 
   return (
     <Box>
+      <DeletePopup
+        open={openDelete}
+        setOpen={setOpenDelete}
+        postId={post.blogPostId}
+        deletePost={deleteMethod}
+      />
       <Grid item xs={12} md={8} pb={3}>
         <Stack direction="row">
           <Box sx={{ flexGrow: 1 }}>
@@ -31,6 +44,13 @@ function HomePost({ post }) {
             <Link href={post.blogPostId}>Read More...</Link>
             <Box>
               {user && <Link href={`/edit/${post.blogPostId}`}>Edit</Link>}
+            </Box>
+            <Box>
+              {user && (
+                <Link href={"#"} onClick={openDeleteWindow}>
+                  Delete
+                </Link>
+              )}
             </Box>
           </Box>
           <Box>

@@ -4,7 +4,8 @@ import { Button, Container, Pagination, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import HomePost from "../components/homePost.component";
 import UserContext from "../user.context";
-import { fetchPageCount, fetchPosts } from "../post.actions";
+import { deletePost, fetchPageCount, fetchPosts } from "../post.actions";
+import { getUserFromLocalStorage } from "../user.actions";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -15,13 +16,17 @@ function HomePage() {
     setPage(value);
   };
 
-  useEffect(() => {
+  const refreshPosts = () => {
     Promise.all([fetchPageCount(), fetchPosts(1)]).then(
       ([pageCount, posts]) => {
         setPosts(posts);
         setPageCount(pageCount);
       }
     );
+  };
+
+  useEffect(() => {
+    refreshPosts();
   }, []);
 
   useEffect(() => {
@@ -29,6 +34,19 @@ function HomePage() {
       setPosts(posts);
     });
   }, [page]);
+
+  const deletePostAction = (postId) => {
+    const token = getUserFromLocalStorage().accessToken;
+
+    deletePost(postId, token)
+      .then((postId) => {
+        refreshPosts();
+        console.log(postId);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <Container maxWidth="lg">
@@ -42,7 +60,11 @@ function HomePage() {
       </Stack>
       <Stack spacing={2}>
         {posts.map((post) => (
-          <HomePost key={post.blogPostId} post={post} />
+          <HomePost
+            key={post.blogPostId}
+            post={post}
+            deleteMethod={deletePostAction}
+          />
         ))}
       </Stack>
       {pageCount && (

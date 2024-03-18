@@ -75,3 +75,15 @@ export async function updatePost(
   });
   return await response.json();
 }
+
+export async function deletePost(id, token) {
+  const response = await fetch(`/api/blogpost/deletePost?postId=${id}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return await response.json();
+}
