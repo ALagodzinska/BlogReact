@@ -11,7 +11,7 @@ function PostHeader({ post }) {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0)), url(/api/Image/PreviewImage?postId=${post.blogPostId})`,
+        backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0)), url(/api/Image/BackgroundImage?postId=${post.blogPostId})`,
         height: 250,
       }}
     >

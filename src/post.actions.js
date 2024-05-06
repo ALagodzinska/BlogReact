@@ -3,6 +3,8 @@ export async function createPost(
   content,
   backgroundImage,
   previewImage,
+  backgroundImageType,
+  previewImageType,
   token
 ) {
   const response = await fetch("/api/blogpost/postblog", {
@@ -17,6 +19,8 @@ export async function createPost(
       content,
       backgroundImage,
       previewImage,
+      backgroundImageType,
+      previewImageType,
     }),
   });
   return await response.json();
