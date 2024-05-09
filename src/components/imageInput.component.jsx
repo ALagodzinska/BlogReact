@@ -50,6 +50,7 @@ function ImageInput({
         <FormImageDisplay
           imgSrc={previewImg}
           clearImageHandler={clearImageHandler}
+          imgType={imageType}
         />
       )}
     </Box>
