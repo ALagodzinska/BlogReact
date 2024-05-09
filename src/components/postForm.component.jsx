@@ -9,7 +9,7 @@ import {
 import Header from "./header.component";
 import ImageInput from "./imageInput.component";
 import ReactQuill from "react-quill";
-import { FORM_TYPE, LOADING_STATES } from "../constants";
+import { FORM_TYPE, IMAGE_TYPE, LOADING_STATES } from "../constants";
 import FormImageDisplay from "./formImageDisplay.component";
 
 function PostForm({
@@ -28,16 +28,20 @@ function PostForm({
     if (errors.title) delete errors.title;
   };
 
-  const handleBackgroundImgChange = (img) => {
+  const handleBackgroundImgChange = (img, imgPreview) => {
     setInputFields((inputFields) => {
-      return { ...inputFields, backgroundImg: img };
+      return {
+        ...inputFields,
+        backgroundImg: img,
+        backgroundImgPreview: imgPreview,
+      };
     });
     if (errors.backgroundImg) delete errors.backgroundImg;
   };
 
-  const handlePreviewImgChange = (img) => {
+  const handlePreviewImgChange = (img, imgPreview) => {
     setInputFields((inputFields) => {
-      return { ...inputFields, previewImg: img };
+      return { ...inputFields, previewImg: img, previewImgPreview: imgPreview };
     });
     if (errors.previewImg) delete errors.previewImg;
   };
@@ -113,6 +117,8 @@ function PostForm({
                   setSelectedImage={handleBackgroundImgChange}
                   error={errors.backgroundImg}
                   selectedImage={inputFields.backgroundImg}
+                  previewImg={inputFields.backgroundImgPreview}
+                  imageType={IMAGE_TYPE.BACKGROUND}
                 />
               )}
             </Box>
@@ -131,6 +137,8 @@ function PostForm({
                   setSelectedImage={handlePreviewImgChange}
                   error={errors.previewImg}
                   selectedImage={inputFields.previewImg}
+                  previewImg={inputFields.previewImgPreview}
+                  imageType={IMAGE_TYPE.PREVIEW}
                 />
               )}
             </Box>

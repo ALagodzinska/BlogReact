@@ -1,12 +1,28 @@
 import { Box, Typography } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import FormImageDisplay from "./formImageDisplay.component";
+import { fetchBackgroundImage } from "../image.actions";
+import { getBase64 } from "../post.actions";
 
-function ImageInput({ title, setSelectedImage, selectedImage, error }) {
+function ImageInput({
+  title,
+  setSelectedImage,
+  selectedImage,
+  error,
+  previewImg,
+  imageType,
+}) {
   const inputRef = useRef(null);
 
-  const imageSelectedHandler = (event) => {
-    setSelectedImage(event.target.files[0]);
+  const imageSelectedHandler = async (event) => {
+    const uploadedImage = event.target.files[0];
+    const imageString = await getBase64(uploadedImage);
+    const resizedImage = await fetchBackgroundImage(
+      imageString,
+      uploadedImage.type,
+      imageType
+    );
+    setSelectedImage(uploadedImage, resizedImage);
   };
 
   const clearImageHandler = (event) => {
@@ -32,7 +48,7 @@ function ImageInput({ title, setSelectedImage, selectedImage, error }) {
       )}
       {selectedImage && (
         <FormImageDisplay
-          imgSrc={URL.createObjectURL(selectedImage)}
+          imgSrc={previewImg}
           clearImageHandler={clearImageHandler}
         />
       )}

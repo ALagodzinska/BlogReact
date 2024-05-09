@@ -36,6 +36,8 @@ function AddPost() {
     content: "",
     backgroundImg: null,
     previewImg: null,
+    backgroundImgPreview: null,
+    previewImgPreview: null,
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(LOADING_STATES.none);

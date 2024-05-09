@@ -17,3 +17,8 @@ export const FORM_TYPE = {
   CREATE: "create",
   UPDATE: "update",
 };
+
+export const IMAGE_TYPE = {
+  PREVIEW: "preview",
+  BACKGROUND: "background",
+};
