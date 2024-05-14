@@ -61,8 +61,13 @@ export async function updatePost(
   content,
   backgroundImage,
   previewImage,
+  backgroundImageFormat,
+  previewImageFormat,
   token
 ) {
+  console.log(
+    `ALL DATA - ${id}, ${title}, ${backgroundImage}, ${backgroundImageFormat}}`
+  );
   const response = await fetch(`/api/blogpost/updatepost?postId=${id}`, {
     method: "PUT",
     headers: {
@@ -75,6 +80,8 @@ export async function updatePost(
       content,
       backgroundImage,
       previewImage,
+      backgroundImageFormat,
+      previewImageFormat,
     }),
   });
   return await response.json();

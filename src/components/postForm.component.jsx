@@ -8,9 +8,29 @@ import {
 } from "@mui/material";
 import Header from "./header.component";
 import ImageInput from "./imageInput.component";
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import { FORM_TYPE, IMAGE_TYPE, LOADING_STATES } from "../constants";
 import FormImageDisplay from "./formImageDisplay.component";
+import ImageResize from "quill-image-resize-module-react";
+
+Quill.register("modules/imageResize", ImageResize);
+
+const toolbarOptions = {
+  container: [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }], // toggled button
+    ["bold", "italic", "underline"],
+    [{ align: [] }],
+    ["image"],
+
+    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+
+    ["clean"], // remove formatting button
+  ],
+};
 
 function PostForm({
   handleSubmit,
@@ -109,6 +129,7 @@ function PostForm({
                   <FormImageDisplay
                     imgSrc={inputFields.backgroundImgLink}
                     clearImageHandler={clearBackgroundImageHandler}
+                    imgType={IMAGE_TYPE.BACKGROUND}
                   />
                 </Box>
               ) : (
@@ -129,6 +150,7 @@ function PostForm({
                   <FormImageDisplay
                     imgSrc={inputFields.previewImgLink}
                     clearImageHandler={clearPreviewImageHandler}
+                    imgType={IMAGE_TYPE.PREVIEW}
                   />
                 </Box>
               ) : (
@@ -148,6 +170,13 @@ function PostForm({
             theme="snow"
             value={inputFields.content}
             onChange={handleContentChange}
+            modules={{
+              toolbar: toolbarOptions,
+              imageResize: {
+                parchment: Quill.import("parchment"),
+                modules: ["Resize", "DisplaySize"],
+              },
+            }}
           />
           {errors.content && (
             <Typography color="red" fontSize={12}>

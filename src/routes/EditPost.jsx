@@ -20,6 +20,8 @@ function EditPost() {
     content: "",
     backgroundImg: null,
     previewImg: null,
+    backgroundImgFormat: null,
+    previewImgFormat: null,
     backgroundImgLink: null,
     previewImgLink: null,
   });
@@ -60,12 +62,16 @@ function EditPost() {
     const token = getUserFromLocalStorage().accessToken;
 
     let backgroundImgString = null;
+    let backgroundImgFormat = null;
     if (inputFields.backgroundImg) {
       backgroundImgString = await getBase64(inputFields.backgroundImg);
+      backgroundImgFormat = inputFields.backgroundImg.type;
     }
     let previewImgString = null;
+    let previewImgFormat = null;
     if (inputFields.previewImg) {
       previewImgString = await getBase64(inputFields.previewImg);
+      previewImgFormat = inputFields.previewImg.type;
     }
 
     updatePost(
@@ -74,6 +80,8 @@ function EditPost() {
       inputFields.content,
       backgroundImgString,
       previewImgString,
+      backgroundImgFormat,
+      previewImgFormat,
       token
     )
       .then(() => {
@@ -95,6 +103,8 @@ function EditPost() {
         content: post.content,
         backgroundImg: null,
         previewImg: null,
+        previewImgFormat: post.previewImgFormat,
+        backgroundImgFormat: post.backgroundImgFormat,
         backgroundImgLink: `/api/Image/BackgroundImage?postId=${id}`,
         previewImgLink: `/api/Image/PreviewImage?postId=${id}`,
       });
