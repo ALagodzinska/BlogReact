@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { getUserFromLocalStorage } from "../user.actions";
+import { getUserFromLocalStorage, validateUser } from "../user.actions";
 import { deletePost, fetchPageCount, fetchPosts } from "../post.actions";
 
 export default function DeletePopup({ open, setOpen, postId, deletePost }) {
@@ -14,6 +14,7 @@ export default function DeletePopup({ open, setOpen, postId, deletePost }) {
   };
 
   const deletePostAction = () => {
+    validateUser();
     deletePost(postId);
     setOpen(false);
   };

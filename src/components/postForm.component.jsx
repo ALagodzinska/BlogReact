@@ -12,6 +12,7 @@ import ReactQuill, { Quill } from "react-quill";
 import { FORM_TYPE, IMAGE_TYPE, LOADING_STATES } from "../constants";
 import FormImageDisplay from "./formImageDisplay.component";
 import ImageResize from "quill-image-resize-module-react";
+import { Link } from "react-router-dom";
 
 Quill.register("modules/imageResize", ImageResize);
 
@@ -193,6 +194,16 @@ function PostForm({
           </Button>
         </Stack>
       </form>
+      <Button
+        component={Link}
+        to="/"
+        color="secondary"
+        size="medium"
+        variant="outlined"
+        sx={{ px: 5, ml: 5, my: 3 }}
+      >
+        Go Back
+      </Button>
     </Container>
   );
 }

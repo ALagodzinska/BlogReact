@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import HomePost from "../components/homePost.component";
 import UserContext from "../user.context";
 import { deletePost, fetchPageCount, fetchPosts } from "../post.actions";
-import { getUserFromLocalStorage } from "../user.actions";
+import { getUserFromLocalStorage, validateUser } from "../user.actions";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -26,6 +26,7 @@ function HomePage() {
   };
 
   useEffect(() => {
+    validateUser();
     refreshPosts();
   }, []);
 

@@ -1,11 +1,12 @@
 import { Box, Button, Toolbar, Typography } from "@mui/material";
 import { Fragment, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../user.context";
 import { logoutUser } from "../user.actions";
 
 function Header({ title }) {
   const [user, setUser] = useContext(UserContext);
+  const navigate = useNavigate();
 
   return (
     <Fragment>
@@ -35,6 +36,7 @@ function Header({ title }) {
               onClick={() => {
                 logoutUser();
                 setUser(null);
+                navigate("/");
               }}
               variant="outlined"
               size="small"

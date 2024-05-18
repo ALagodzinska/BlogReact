@@ -48,12 +48,16 @@ export async function getLoggedInUser(email, password) {
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,
     };
-    window.localStorage.setItem("user", JSON.stringify(userObject));
+    setUserInLocalStorage(userObject);
 
     return userObject;
   } catch (error) {
     throw new Error(error);
   }
+}
+
+function setUserInLocalStorage(user) {
+  window.localStorage.setItem("user", JSON.stringify(user));
 }
 
 export function getUserFromLocalStorage() {
@@ -73,5 +77,42 @@ export async function getValidUser() {
     return null;
   } catch (error) {
     throw new Error(error);
+  }
+}
+
+export async function validateUser() {
+  const localStorageUser = getUserFromLocalStorage();
+  if (localStorageUser) {
+    try {
+      await getUsername(localStorageUser.accessToken);
+    } catch (error) {
+      console.log("REFRESH TOKEN");
+      const response = await refreshToken(localStorageUser.refreshToken);
+      const userObject = {
+        username: localStorageUser.username,
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+      };
+      setUserInLocalStorage(userObject);
+    }
+  }
+}
+
+async function refreshToken(refreshToken) {
+  const response = await fetch("/refresh", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ refreshToken }),
+  });
+  if (response.status === 200) return await response.json();
+  else {
+    if (response.status === 401) {
+      throw new Error(
+        `User does not exist. Request failed with status ${response.status}`
+      );
+    }
   }
 }

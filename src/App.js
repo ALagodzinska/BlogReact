@@ -10,6 +10,7 @@ import {
   PrivateRouteLoggedIn,
   PrivateRouteLoggedOut,
 } from "./components/privateRoutes.component";
+import RestorePost from "./routes/RestorePost";
 
 function App() {
   const router = createBrowserRouter([
@@ -31,6 +32,10 @@ function App() {
         {
           path: "/edit/:id",
           element: <EditPost />,
+        },
+        {
+          path: "/restore",
+          element: <RestorePost />,
         },
       ],
     },

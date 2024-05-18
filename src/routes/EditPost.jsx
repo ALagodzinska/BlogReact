@@ -11,9 +11,13 @@ import {
 } from "../constants";
 import { Box, Container } from "@mui/material";
 import PostForm from "../components/postForm.component";
-import { getUserFromLocalStorage } from "../user.actions";
+import { getUserFromLocalStorage, validateUser } from "../user.actions";
 
 function EditPost() {
+  useEffect(() => {
+    validateUser();
+  }, []);
+
   const { id } = useParams();
   const [inputFields, setInputFields] = useState({
     title: "",
@@ -49,6 +53,7 @@ function EditPost() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    await validateUser();
     setLoading(LOADING_STATES.loading);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);

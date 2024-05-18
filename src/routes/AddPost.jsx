@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
-import { getUserFromLocalStorage } from "../user.actions";
+import { getUserFromLocalStorage, validateUser } from "../user.actions";
 import { getBase64, createPost } from "../post.actions";
 import PostForm from "../components/postForm.component";
 import {
@@ -31,6 +31,10 @@ const validateValues = (inputValues) => {
 };
 
 function AddPost() {
+  useEffect(() => {
+    validateUser();
+  }, []);
+
   const [inputFields, setInputFields] = useState({
     title: "",
     content: "",
@@ -47,6 +51,7 @@ function AddPost() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(LOADING_STATES.loading);
+    await validateUser();
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);
     const isValid = Object.keys(localErrors).length === 0;
