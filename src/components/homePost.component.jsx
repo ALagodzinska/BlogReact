@@ -58,7 +58,7 @@ function HomePost({ post, deleteMethod }) {
               sx={{
                 width: "250px",
                 height: "300px",
-                border: "5px solid black",
+                outline: "5px solid black",
                 textAlign: "center",
               }}
             >

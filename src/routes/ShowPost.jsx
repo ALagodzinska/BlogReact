@@ -22,7 +22,11 @@ function ShowPost() {
       <Header title="BLOG" />
       <Container>
         <PostHeader post={post} />
-        <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+        <div
+          className="ql-editor"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        ></div>
+        {/*<ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> - alternative*/}
       </Container>
       <Button
         component={Link}
