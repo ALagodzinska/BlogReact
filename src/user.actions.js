@@ -1,3 +1,5 @@
+import { jwtDecode } from "jwt-decode";
+
 async function loginUser(email, password) {
   const response = await fetch("/login", {
     method: "POST",
@@ -47,6 +49,7 @@ export async function getLoggedInUser(email, password) {
       username: username,
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,
+      expiryDate: response.expiresIn + Math.floor(Date.now() / 1000),
     };
     setUserInLocalStorage(userObject);
 
@@ -83,18 +86,22 @@ export async function getValidUser() {
 export async function validateUser(setUserContext) {
   const localStorageUser = getUserFromLocalStorage();
   if (localStorageUser) {
-    try {
-      console.log("User found in local storage");
-      await getUsername(localStorageUser.accessToken);
-    } catch (error) {
-      console.log("No user with valid token", error);
+    console.log("USER FOUND IN LOCAL STORAGE");
+    if (localStorageUser.expiryDate <= Math.floor(Date.now() / 1000)) {
       try {
+        console.log(
+          "TOKEN IS EXPIRED",
+          localStorageUser.expiryDate,
+          "NOW",
+          Math.floor(Date.now() / 1000)
+        );
         const response = await refreshToken(localStorageUser.refreshToken);
         console.log("Received refresh token response", response);
         const userObject = {
           username: localStorageUser.username,
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
+          expiryDate: response.expiresIn + Math.floor(Date.now() / 1000),
         };
         setUserInLocalStorage(userObject);
         setUserContext(userObject);

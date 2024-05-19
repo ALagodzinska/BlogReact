@@ -34,10 +34,6 @@ const validateValues = (inputValues) => {
 function AddPost() {
   const [, setUser] = useContext(UserContext);
 
-  useEffect(() => {
-    validateUser(setUser);
-  }, []);
-
   const [inputFields, setInputFields] = useState({
     title: "",
     content: "",

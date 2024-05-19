@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { fetchPost, getBase64, updatePost } from "../post.actions";
 import {
@@ -12,11 +12,10 @@ import {
 import { Box, Container } from "@mui/material";
 import PostForm from "../components/postForm.component";
 import { getUserFromLocalStorage, validateUser } from "../user.actions";
+import UserContext from "../user.context";
 
 function EditPost() {
-  useEffect(() => {
-    validateUser();
-  }, []);
+  const [, setUser] = useContext(UserContext);
 
   const { id } = useParams();
   const [inputFields, setInputFields] = useState({
@@ -53,7 +52,7 @@ function EditPost() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await validateUser();
+    await validateUser(setUser);
     setLoading(LOADING_STATES.loading);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);

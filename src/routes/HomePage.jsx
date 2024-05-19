@@ -26,7 +26,6 @@ function HomePage() {
   };
 
   useEffect(() => {
-    validateUser(setUser);
     refreshPosts();
   }, []);
 
