@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import { getUserFromLocalStorage, validateUser } from "../user.actions";
@@ -12,6 +12,7 @@ import {
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
 } from "../constants";
+import UserContext from "../user.context";
 
 const validateValues = (inputValues) => {
   let errors = {};
@@ -31,8 +32,10 @@ const validateValues = (inputValues) => {
 };
 
 function AddPost() {
+  const [, setUser] = useContext(UserContext);
+
   useEffect(() => {
-    validateUser();
+    validateUser(setUser);
   }, []);
 
   const [inputFields, setInputFields] = useState({
@@ -51,7 +54,7 @@ function AddPost() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(LOADING_STATES.loading);
-    await validateUser();
+    await validateUser(setUser);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);
     const isValid = Object.keys(localErrors).length === 0;

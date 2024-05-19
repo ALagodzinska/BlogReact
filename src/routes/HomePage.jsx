@@ -11,7 +11,7 @@ function HomePage() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = React.useState(1);
   const [pageCount, setPageCount] = React.useState(null);
-  const [user] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   const handlePageChange = (_, value) => {
     setPage(value);
   };
@@ -26,7 +26,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    validateUser();
+    validateUser(setUser);
     refreshPosts();
   }, []);
 

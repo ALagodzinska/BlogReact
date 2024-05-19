@@ -5,16 +5,17 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
-import { deletePost, fetchPageCount, fetchPosts } from "../post.actions";
+import { validateUser } from "../user.actions";
+import UserContext from "../user.context";
 
 export default function DeletePopup({ open, setOpen, postId, deletePost }) {
+  const [, setUser] = React.useContext(UserContext);
   const handleClose = () => {
     setOpen(false);
   };
 
   const deletePostAction = () => {
-    validateUser();
+    validateUser(setUser);
     deletePost(postId);
     setOpen(false);
   };

@@ -80,20 +80,27 @@ export async function getValidUser() {
   }
 }
 
-export async function validateUser() {
+export async function validateUser(setUserContext) {
   const localStorageUser = getUserFromLocalStorage();
   if (localStorageUser) {
     try {
+      console.log("User found in local storage");
       await getUsername(localStorageUser.accessToken);
     } catch (error) {
-      console.log("REFRESH TOKEN");
-      const response = await refreshToken(localStorageUser.refreshToken);
-      const userObject = {
-        username: localStorageUser.username,
-        accessToken: response.accessToken,
-        refreshToken: response.refreshToken,
-      };
-      setUserInLocalStorage(userObject);
+      console.log("No user with valid token", error);
+      try {
+        const response = await refreshToken(localStorageUser.refreshToken);
+        console.log("Received refresh token response", response);
+        const userObject = {
+          username: localStorageUser.username,
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
+        };
+        setUserInLocalStorage(userObject);
+        setUserContext(userObject);
+      } catch (error) {
+        console.log("User session expired", error);
+      }
     }
   }
 }
