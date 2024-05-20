@@ -13,10 +13,15 @@ import {
 } from "@mui/material";
 import Header from "../components/header.component";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { fetchDeletedPosts, fetchDeletedPostsPageCount } from "../post.actions";
+import { Fragment, useEffect, useState } from "react";
+import {
+  fetchDeletedPosts,
+  fetchDeletedPostsPageCount,
+  restorePost,
+} from "../post.actions";
 import { getUserFromLocalStorage } from "../user.actions";
 import RestoreIcon from "@mui/icons-material/Restore";
+import RestorePopup from "../components/restorePopup.component";
 
 function RestorePost() {
   const [posts, setPosts] = useState([]);
@@ -50,9 +55,37 @@ function RestorePost() {
     });
   }, [page]);
 
+  const [openRestore, setOpenRestore] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const openRestoreWindow = (event, postId) => {
+    event.preventDefault();
+    setSelectedPost(postId);
+    setOpenRestore(true);
+  };
+
+  const restoreMethod = (postId) => {
+    restorePost(postId, token)
+      .then((postId) => {
+        refreshPosts();
+        console.log(postId);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <Container maxWidth="lg">
       <Header title="RESTORE POST" />
+      {selectedPost && (
+        <RestorePopup
+          open={openRestore}
+          setOpen={setOpenRestore}
+          postId={selectedPost}
+          restorePost={restoreMethod}
+        ></RestorePopup>
+      )}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
@@ -81,7 +114,11 @@ function RestorePost() {
                   {new Date(post.deletedAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  <IconButton>
+                  <IconButton
+                    onClick={(e) => {
+                      openRestoreWindow(e, post.blogPostId);
+                    }}
+                  >
                     <RestoreIcon />
                   </IconButton>
                 </TableCell>

@@ -127,3 +127,15 @@ export async function fetchDeletedPostsPageCount(token) {
   const json = await response.json();
   return json;
 }
+
+export async function restorePost(id, token) {
+  const response = await fetch(`/api/blogpost/restorePost?postId=${id}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return await response.json();
+}

@@ -8,15 +8,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { validateUser } from "../user.actions";
 import UserContext from "../user.context";
 
-export default function DeletePopup({ open, setOpen, postId, deletePost }) {
+export default function RestorePopup({ open, setOpen, postId, restorePost }) {
   const [, setUser] = React.useContext(UserContext);
   const handleClose = () => {
     setOpen(false);
   };
 
-  const deletePostAction = () => {
+  const restorePostAction = () => {
     validateUser(setUser);
-    deletePost(postId);
+    restorePost(postId);
     setOpen(false);
   };
 
@@ -29,12 +29,13 @@ export default function DeletePopup({ open, setOpen, postId, deletePost }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" color={"red"} align="center">
-          DELETE POST
+          RESTORE POST
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" align="center">
-            {"This will DELETE this post permanently."}
-            <br /> {`Are you sure you want to DELETE post with id - ${postId}?`}
+            {"This action will RESTORE this post."}
+            <br />{" "}
+            {`Are you sure you want to RESTORE post with id - ${postId}?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -43,7 +44,7 @@ export default function DeletePopup({ open, setOpen, postId, deletePost }) {
           </Button>
           <Button
             onClick={() => {
-              deletePostAction();
+              restorePostAction();
             }}
           >
             YES
