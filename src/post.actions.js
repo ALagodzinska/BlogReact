@@ -98,3 +98,32 @@ export async function deletePost(id, token) {
   });
   return await response.json();
 }
+
+export async function fetchDeletedPosts(pageNum, token) {
+  const response = await fetch(
+    `/api/blogpost/getdeletedpostsperpage?page=${pageNum}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const json = await response.json();
+  return json;
+}
+
+export async function fetchDeletedPostsPageCount(token) {
+  const response = await fetch("/api/blogpost/getdeletedpostspagecount", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await response.json();
+  return json;
+}

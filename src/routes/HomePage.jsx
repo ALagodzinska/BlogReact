@@ -17,7 +17,7 @@ function HomePage() {
   };
 
   const refreshPosts = () => {
-    Promise.all([fetchPageCount(), fetchPosts(1)]).then(
+    Promise.all([fetchPageCount(), fetchPosts(page)]).then(
       ([pageCount, posts]) => {
         setPosts(posts);
         setPageCount(pageCount);
