@@ -1,11 +1,20 @@
-import { Box, Button, Stack, Toolbar, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Fragment, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../user.context";
 import { logoutUser } from "../user.actions";
 
-function Header({ title }) {
-  const [user, setUser] = useContext(UserContext);
+/// CHANGE IFS HERE LOOK BAD
+
+function Header({ title = "BLOG" }) {
+  const [user, setUser, loading] = useContext(UserContext);
   const navigate = useNavigate();
 
   return (
@@ -48,6 +57,8 @@ function Header({ title }) {
               </Button>
             </Stack>
           </Box>
+        ) : loading ? (
+          <CircularProgress />
         ) : (
           <Button component={Link} to="/login" variant="outlined" size="small">
             Sign in

@@ -1,18 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchPost, getBase64, updatePost } from "../post.actions";
 import {
+  ALERT_MESSAGE_TYPE,
   BACKGROUND_IMG_ERROR_MESSAGE,
   CONTENT_ERROR_MESSAGE,
+  EDIT_SUCCESSFUL_MESSAGE,
+  FILE_UPLOAD_ERROR,
+  FORM_SUBMISSION_ERROR,
   FORM_TYPE,
-  LOADING_STATES,
+  POST_LOADING_ERROR,
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
 } from "../constants";
-import { Box, Container } from "@mui/material";
 import PostForm from "../components/postForm.component";
 import { getUserFromLocalStorage, validateUser } from "../user.actions";
 import UserContext from "../user.context";
+import { LinearProgress } from "@mui/material";
+import AlertMessage from "../components/alertMessage.component";
 
 function EditPost() {
   const [, setUser] = useContext(UserContext);
@@ -29,7 +34,12 @@ function EditPost() {
     previewImgLink: null,
   });
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(LOADING_STATES.none);
+  const [loading, setLoading] = useState(false);
+  const [alertMessageOpen, setAlertMessageOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState({
+    message: null,
+    type: null,
+  });
 
   const navigate = useNavigate();
 
@@ -52,8 +62,8 @@ function EditPost() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     await validateUser(setUser);
-    setLoading(LOADING_STATES.loading);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);
     const isValid = Object.keys(localErrors).length === 0;
@@ -67,63 +77,104 @@ function EditPost() {
 
     let backgroundImgString = null;
     let backgroundImgFormat = null;
-    if (inputFields.backgroundImg) {
-      backgroundImgString = await getBase64(inputFields.backgroundImg);
-      backgroundImgFormat = inputFields.backgroundImg.type;
-    }
+
     let previewImgString = null;
     let previewImgFormat = null;
-    if (inputFields.previewImg) {
-      previewImgString = await getBase64(inputFields.previewImg);
-      previewImgFormat = inputFields.previewImg.type;
+
+    try {
+      if (inputFields.backgroundImg) {
+        backgroundImgString = await getBase64(inputFields.backgroundImg);
+        backgroundImgFormat = inputFields.backgroundImg.type;
+      }
+      if (inputFields.previewImg) {
+        previewImgString = await getBase64(inputFields.previewImg);
+        previewImgFormat = inputFields.previewImg.type;
+      }
+    } catch (error) {
+      setLoading(false);
+      setAlertMessage({
+        message: FILE_UPLOAD_ERROR,
+        type: ALERT_MESSAGE_TYPE.ERROR,
+      });
+      setAlertMessageOpen(true);
+      console.error(error);
+      return;
     }
 
-    updatePost(
-      id,
-      inputFields.title,
-      inputFields.content,
-      backgroundImgString,
-      previewImgString,
-      backgroundImgFormat,
-      previewImgFormat,
-      token
-    )
-      .then(() => {
-        setLoading(LOADING_STATES.success);
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
-      })
-      .catch((error) => {
-        setLoading(LOADING_STATES.failure);
-        console.error(error);
+    try {
+      await updatePost(
+        id,
+        inputFields.title,
+        inputFields.content,
+        backgroundImgString,
+        previewImgString,
+        backgroundImgFormat,
+        previewImgFormat,
+        token
+      );
+      setAlertMessage({
+        message: EDIT_SUCCESSFUL_MESSAGE,
+        type: ALERT_MESSAGE_TYPE.SUCCESS,
       });
+      setAlertMessageOpen(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 2500);
+    } catch (error) {
+      setLoading(false);
+      setAlertMessage({
+        message: FORM_SUBMISSION_ERROR,
+        type: ALERT_MESSAGE_TYPE.ERROR,
+      });
+      setAlertMessageOpen(true);
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    fetchPost(id).then((post) => {
-      setInputFields({
-        title: post.title,
-        content: post.content,
-        backgroundImg: null,
-        previewImg: null,
-        previewImgFormat: post.previewImgFormat,
-        backgroundImgFormat: post.backgroundImgFormat,
-        backgroundImgLink: `/api/Image/BackgroundImage?postId=${id}`,
-        previewImgLink: `/api/Image/PreviewImage?postId=${id}`,
+    setLoading(true);
+    fetchPost(id)
+      .then((post) => {
+        setInputFields({
+          title: post.title,
+          content: post.content,
+          backgroundImg: null,
+          previewImg: null,
+          previewImgFormat: post.previewImgFormat,
+          backgroundImgFormat: post.backgroundImgFormat,
+          backgroundImgLink: `/api/Image/BackgroundImage?postId=${id}`,
+          previewImgLink: `/api/Image/PreviewImage?postId=${id}`,
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        setAlertMessage({
+          message: POST_LOADING_ERROR,
+          type: ALERT_MESSAGE_TYPE.ERROR,
+        });
+        setAlertMessageOpen(true);
+        console.error(error);
       });
-    });
   }, [id]);
 
   return (
-    <PostForm
-      handleSubmit={handleSubmit}
-      inputFields={inputFields}
-      setInputFields={setInputFields}
-      errors={errors}
-      loading={loading}
-      formType={FORM_TYPE.UPDATE}
-    />
+    <Fragment>
+      {loading && <LinearProgress />}
+      <AlertMessage
+        open={alertMessageOpen}
+        setOpen={setAlertMessageOpen}
+        message={alertMessage.message}
+        type={alertMessage.type}
+      />
+      <PostForm
+        handleSubmit={handleSubmit}
+        inputFields={inputFields}
+        setInputFields={setInputFields}
+        errors={errors}
+        loading={loading}
+        formType={FORM_TYPE.UPDATE}
+      />
+    </Fragment>
   );
 }
 

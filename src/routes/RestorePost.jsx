@@ -2,6 +2,7 @@ import {
   Button,
   Container,
   IconButton,
+  LinearProgress,
   Pagination,
   Paper,
   Table,
@@ -22,11 +23,13 @@ import {
 import { getUserFromLocalStorage } from "../user.actions";
 import RestoreIcon from "@mui/icons-material/Restore";
 import RestorePopup from "../components/restorePopup.component";
+import Layout from "../Layout";
 
 function RestorePost() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(null);
+  const [loading, setLoading] = useState(false);
   const token = getUserFromLocalStorage().accessToken;
 
   const handlePageChange = (_, value) => {
@@ -37,22 +40,36 @@ function RestorePost() {
     Promise.all([
       fetchDeletedPostsPageCount(token),
       fetchDeletedPosts(page, token),
-    ]).then(([pageCount, posts]) => {
-      setPosts(posts);
-      console.log(pageCount);
-      setPageCount(pageCount);
-    });
+    ])
+      .then(([pageCount, posts]) => {
+        setPosts(posts);
+        console.log(pageCount);
+        setPageCount(pageCount);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
+    setLoading(true);
     refreshPosts();
   }, []);
 
   useEffect(() => {
-    fetchDeletedPosts(page, token).then((posts) => {
-      setPosts(posts);
-      console.log(posts);
-    });
+    setLoading(true);
+    fetchDeletedPosts(page, token)
+      .then((posts) => {
+        setPosts(posts);
+        setLoading(false);
+        console.log(posts);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   }, [page]);
 
   const [openRestore, setOpenRestore] = useState(false);
@@ -76,8 +93,8 @@ function RestorePost() {
   };
 
   return (
-    <Container maxWidth="lg">
-      <Header title="RESTORE POST" />
+    <Container maxWidth="lg" sx={{ mt: 3 }}>
+      {loading && <LinearProgress />}
       {selectedPost && (
         <RestorePopup
           open={openRestore}

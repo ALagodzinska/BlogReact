@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import Header from "../components/header.component";
 import { useContext, useState } from "react";
 import UserContext from "../user.context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getLoggedInUser } from "../user.actions";
 import { EMAIL_ERROR_MESSAGE, PASSWORD_ERROR_MESSAGE } from "../constants";
 
@@ -30,6 +30,7 @@ function Login() {
   const [userError, setUserError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({});
 
@@ -37,6 +38,7 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const localErrors = validateValues(email, password);
     setErrors(localErrors);
     if (Object.keys(localErrors).length === 0) {
@@ -45,6 +47,7 @@ function Login() {
         setUser(userObject);
         navigate("/");
       } catch (error) {
+        setLoading(false);
         console.error(error);
         setUserError(true);
       }
@@ -53,7 +56,6 @@ function Login() {
 
   return (
     <Box>
-      <Header />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -120,10 +122,21 @@ function Login() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading}
             >
               Sign In
             </Button>
           </Box>
+          <Button
+            component={Link}
+            to="/"
+            color="secondary"
+            size="medium"
+            variant="outlined"
+            sx={{ px: 5, ml: 5, my: 3 }}
+          >
+            Go Back
+          </Button>
         </Box>
       </Container>
     </Box>

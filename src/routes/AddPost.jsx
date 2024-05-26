@@ -1,18 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import { getUserFromLocalStorage, validateUser } from "../user.actions";
 import { getBase64, createPost } from "../post.actions";
 import PostForm from "../components/postForm.component";
 import {
+  ALERT_MESSAGE_TYPE,
   BACKGROUND_IMG_ERROR_MESSAGE,
   CONTENT_ERROR_MESSAGE,
+  CREATE_SUCCESSFUL_MESSAGE,
+  FILE_UPLOAD_ERROR,
+  FORM_SUBMISSION_ERROR,
   FORM_TYPE,
-  LOADING_STATES,
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
 } from "../constants";
 import UserContext from "../user.context";
+import { LinearProgress } from "@mui/material";
+import AlertMessage from "../components/alertMessage.component";
 
 const validateValues = (inputValues) => {
   let errors = {};
@@ -43,13 +48,19 @@ function AddPost() {
     previewImgPreview: null,
   });
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(LOADING_STATES.none);
+  const [loading, setLoading] = useState(false);
+
+  const [alertMessageOpen, setAlertMessageOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState({
+    message: null,
+    type: null,
+  });
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(LOADING_STATES.loading);
+    setLoading(true);
     await validateUser(setUser);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);
@@ -63,8 +74,21 @@ function AddPost() {
     const token = getUserFromLocalStorage().accessToken;
     const backgroundImgType = inputFields.backgroundImg.type;
     const previewImgType = inputFields.previewImg.type;
-    const backgroundImgString = await getBase64(inputFields.backgroundImg);
-    const previewImgString = await getBase64(inputFields.previewImg);
+    let backgroundImgString;
+    let previewImgString;
+    try {
+      backgroundImgString = await getBase64(inputFields.backgroundImg);
+      previewImgString = await getBase64(inputFields.previewImg);
+    } catch (error) {
+      setLoading(false);
+      setAlertMessage({
+        message: FILE_UPLOAD_ERROR,
+        type: ALERT_MESSAGE_TYPE.ERROR,
+      });
+      setAlertMessageOpen(true);
+      console.error(error);
+      return;
+    }
 
     createPost(
       inputFields.title,
@@ -77,26 +101,44 @@ function AddPost() {
     )
       .then((postId) => {
         console.log(postId);
-        setLoading(LOADING_STATES.success);
+        setAlertMessage({
+          message: CREATE_SUCCESSFUL_MESSAGE,
+          type: ALERT_MESSAGE_TYPE.SUCCESS,
+        });
+        setAlertMessageOpen(true);
         setTimeout(() => {
           navigate("/");
-        }, 1000);
+        }, 2500);
       })
       .catch((error) => {
-        setLoading(LOADING_STATES.failure);
+        setLoading(false);
+        setAlertMessage({
+          message: FORM_SUBMISSION_ERROR,
+          type: ALERT_MESSAGE_TYPE.ERROR,
+        });
+        setAlertMessageOpen(true);
         console.error(error);
       });
   };
 
   return (
-    <PostForm
-      handleSubmit={handleSubmit}
-      inputFields={inputFields}
-      setInputFields={setInputFields}
-      errors={errors}
-      loading={loading}
-      formType={FORM_TYPE.CREATE}
-    />
+    <Fragment>
+      {loading && <LinearProgress />}
+      <AlertMessage
+        open={alertMessageOpen}
+        setOpen={setAlertMessageOpen}
+        message={alertMessage.message}
+        type={alertMessage.type}
+      />
+      <PostForm
+        handleSubmit={handleSubmit}
+        inputFields={inputFields}
+        setInputFields={setInputFields}
+        errors={errors}
+        loading={loading}
+        formType={FORM_TYPE.CREATE}
+      />
+    </Fragment>
   );
 }
 

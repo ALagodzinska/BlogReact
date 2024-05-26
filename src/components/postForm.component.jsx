@@ -9,7 +9,7 @@ import {
 import Header from "./header.component";
 import ImageInput from "./imageInput.component";
 import ReactQuill, { Quill } from "react-quill";
-import { FORM_TYPE, IMAGE_TYPE, LOADING_STATES } from "../constants";
+import { FORM_TYPE, IMAGE_TYPE } from "../constants";
 import FormImageDisplay from "./formImageDisplay.component";
 import ImageResize from "quill-image-resize-module-react";
 import { Link } from "react-router-dom";
@@ -88,15 +88,14 @@ function PostForm({
   };
 
   return (
-    <Container>
+    <Container
+      sx={{
+        mt: 3,
+      }}
+    >
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          <Header
-            title={
-              formType === FORM_TYPE.CREATE ? "CREATE NEW POST" : "EDIT POST"
-            }
-          />
-          {loading === LOADING_STATES.success && (
+          {/*loading === LOADING_STATES.success && (
             <Typography color={"green"} align="center">
               Successfully submitted ✓
             </Typography>
@@ -105,7 +104,7 @@ function PostForm({
             <Typography color={"red"} align="center">
               Failed to save the post X
             </Typography>
-          )}
+          )*/}
           <TextField
             id="title"
             sx={{ pb: 3 }}
@@ -184,11 +183,12 @@ function PostForm({
               {errors.content}
             </Typography>
           )}
+
           <Button
             variant="outlined"
             sx={{ mt: 7 }}
             type="submit"
-            disabled={loading === LOADING_STATES.success}
+            disabled={loading}
           >
             SAVE
           </Button>
