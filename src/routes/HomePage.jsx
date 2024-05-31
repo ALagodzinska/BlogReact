@@ -18,7 +18,7 @@ function HomePage() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = React.useState(1);
   const [pageCount, setPageCount] = React.useState(null);
-  const [user, setUser] = useContext(UserContext);
+  const [user] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
 
@@ -59,6 +59,18 @@ function HomePage() {
       });
   }, [page]);
 
+  const renderPostContent = (post) => {
+    if (post)
+      return (
+        <HomePost
+          key={post.blogPostId}
+          post={post}
+          refreshPostsAction={refreshPosts}
+        />
+      );
+    else return <SkeletonHomePost />;
+  };
+
   return (
     <Container maxWidth="lg">
       <Stack justifyContent="flex-end" direction="row" py={3}>
@@ -75,17 +87,7 @@ function HomePage() {
       )}
       <Stack spacing={2}>
         {(loading ? Array.from(new Array(5)) : posts).map((post, index) => (
-          <Box key={index}>
-            {post ? (
-              <HomePost
-                key={post.blogPostId}
-                post={post}
-                refreshPostsAction={refreshPosts}
-              />
-            ) : (
-              <SkeletonHomePost />
-            )}
-          </Box>
+          <Box key={index}>{renderPostContent(post)}</Box>
         ))}
       </Stack>
       {pageCount && (

@@ -51,11 +51,6 @@ function AddPost() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // const [alertMessageOpen, setAlertMessageOpen] = React.useState(false);
-  // const [alertMessage, setAlertMessage] = useState({
-  //   message: null,
-  //   type: null,
-  // });
   const alertMsg = useAlertMessage();
 
   const navigate = useNavigate();
