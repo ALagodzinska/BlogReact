@@ -66,3 +66,8 @@ export const ALERT_MESSAGE_TYPE = {
   ERROR: "error",
   SUCCESS: "success",
 };
+// POPUP TYPES
+export const POPUP_TYPE = {
+  RESTORE: "RESTORE",
+  DELETE: "DELETE",
+};

@@ -95,16 +95,6 @@ function PostForm({
     >
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          {/*loading === LOADING_STATES.success && (
-            <Typography color={"green"} align="center">
-              Successfully submitted ✓
-            </Typography>
-          )}
-          {loading === LOADING_STATES.failure && (
-            <Typography color={"red"} align="center">
-              Failed to save the post X
-            </Typography>
-          )*/}
           <TextField
             id="title"
             sx={{ pb: 3 }}

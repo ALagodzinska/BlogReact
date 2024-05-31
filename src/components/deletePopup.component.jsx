@@ -1,20 +1,14 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { getUserFromLocalStorage, validateUser } from "../user.actions";
 import UserContext from "../user.context";
-import { Alert, Box, CircularProgress } from "@mui/material";
 import { deletePost } from "../post.actions";
 import {
   ALERT_MESSAGE_TYPE,
   DELETE_ERROR,
   DELETE_SUCCESSFUL_MESSAGE,
+  POPUP_TYPE,
 } from "../constants";
-import CheckIcon from "@mui/icons-material/Check";
+import PopupBase from "./popupBase.component";
 
 export default function DeletePopup({
   open,
@@ -29,10 +23,6 @@ export default function DeletePopup({
     message: null,
     type: null,
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const deleteRequest = (postId) => {
     setLoading(true);
@@ -65,68 +55,24 @@ export default function DeletePopup({
   const deletePostAction = () => {
     validateUser(setUser);
     deleteRequest(postId);
-    // too fast whyyy
     setTimeout(() => {
       setOpen(false);
       setAlertMessage({
         message: null,
         type: null,
       });
-    }, 3000);
-  };
-
-  const renderContent = () => {
-    if (loading) {
-      return (
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <CircularProgress />
-        </Box>
-      );
-    } else if (alertMessage.message) {
-      return (
-        <Alert
-          icon={<CheckIcon fontSize="inherit" />}
-          severity={alertMessage.type}
-          align="center"
-        >
-          {alertMessage.message}
-        </Alert>
-      );
-    } else
-      return (
-        <DialogContentText id="alert-dialog-description" align="center">
-          {"This will DELETE this post permanently."}
-          <br /> {`Are you sure you want to DELETE post with id - ${postId}?`}
-        </DialogContentText>
-      );
+    }, 2500);
   };
 
   return (
-    <React.Fragment>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title" color={"red"} align="center">
-          DELETE POST
-        </DialogTitle>
-        <DialogContent>{renderContent()}</DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} disabled={loading} autoFocus>
-            {alertMessage.message != null ? "CLOSE" : "NO"}
-          </Button>
-          <Button
-            onClick={() => {
-              deletePostAction();
-            }}
-            disabled={loading || alertMessage.message != null}
-          >
-            YES
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+    <PopupBase
+      loading={loading}
+      alertMessage={alertMessage}
+      title={POPUP_TYPE.DELETE}
+      postId={postId}
+      open={open}
+      setOpen={setOpen}
+      popupAction={deletePostAction}
+    />
   );
 }
