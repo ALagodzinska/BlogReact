@@ -10,15 +10,9 @@ import {
 import { Link } from "react-router-dom";
 import HomePost from "../components/homePost.component";
 import UserContext from "../user.context";
-import { deletePost, fetchPageCount, fetchPosts } from "../post.actions";
-import { getUserFromLocalStorage } from "../user.actions";
+import { fetchPageCount, fetchPosts } from "../post.actions";
 import SkeletonHomePost from "../loading_components/skeleton_HomePost.component";
-import {
-  ALERT_MESSAGE_TYPE,
-  DELETE_ERROR,
-  DELETE_SUCCESSFUL_MESSAGE,
-  POSTS_LIST_ERROR,
-} from "../constants";
+import { POSTS_LIST_ERROR } from "../constants";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);

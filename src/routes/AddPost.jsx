@@ -18,6 +18,7 @@ import {
 import UserContext from "../user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
+import { useAlertMessage } from "../useAlertMessage";
 
 const validateValues = (inputValues) => {
   let errors = {};
@@ -50,11 +51,12 @@ function AddPost() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const [alertMessageOpen, setAlertMessageOpen] = React.useState(false);
-  const [alertMessage, setAlertMessage] = useState({
-    message: null,
-    type: null,
-  });
+  // const [alertMessageOpen, setAlertMessageOpen] = React.useState(false);
+  // const [alertMessage, setAlertMessage] = useState({
+  //   message: null,
+  //   type: null,
+  // });
+  const alertMsg = useAlertMessage();
 
   const navigate = useNavigate();
 
@@ -81,11 +83,10 @@ function AddPost() {
       previewImgString = await getBase64(inputFields.previewImg);
     } catch (error) {
       setLoading(false);
-      setAlertMessage({
+      alertMsg.openMessage({
         message: FILE_UPLOAD_ERROR,
         type: ALERT_MESSAGE_TYPE.ERROR,
       });
-      setAlertMessageOpen(true);
       console.error(error);
       return;
     }
@@ -101,22 +102,20 @@ function AddPost() {
     )
       .then((postId) => {
         console.log(postId);
-        setAlertMessage({
+        alertMsg.openMessage({
           message: CREATE_SUCCESSFUL_MESSAGE,
           type: ALERT_MESSAGE_TYPE.SUCCESS,
         });
-        setAlertMessageOpen(true);
         setTimeout(() => {
           navigate("/");
         }, 2500);
       })
       .catch((error) => {
         setLoading(false);
-        setAlertMessage({
+        alertMsg.openMessage({
           message: FORM_SUBMISSION_ERROR,
           type: ALERT_MESSAGE_TYPE.ERROR,
         });
-        setAlertMessageOpen(true);
         console.error(error);
       });
   };
@@ -124,12 +123,7 @@ function AddPost() {
   return (
     <Fragment>
       {loading && <LinearProgress />}
-      <AlertMessage
-        open={alertMessageOpen}
-        setOpen={setAlertMessageOpen}
-        message={alertMessage.message}
-        type={alertMessage.type}
-      />
+      <AlertMessage alertMessage={alertMsg} />
       <PostForm
         handleSubmit={handleSubmit}
         inputFields={inputFields}

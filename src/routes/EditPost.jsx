@@ -18,7 +18,7 @@ import { getUserFromLocalStorage, validateUser } from "../user.actions";
 import UserContext from "../user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
-// https://react.dev/learn/reusing-logic-with-custom-hooks#
+import { useAlertMessage } from "../useAlertMessage";
 function EditPost() {
   const [, setUser] = useContext(UserContext);
 
@@ -35,11 +35,7 @@ function EditPost() {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [alertMessageOpen, setAlertMessageOpen] = React.useState(false);
-  const [alertMessage, setAlertMessage] = useState({
-    message: null,
-    type: null,
-  });
+  const alertMsg = useAlertMessage();
 
   const navigate = useNavigate();
 
@@ -92,11 +88,10 @@ function EditPost() {
       }
     } catch (error) {
       setLoading(false);
-      setAlertMessage({
+      alertMsg.openMessage({
         message: FILE_UPLOAD_ERROR,
         type: ALERT_MESSAGE_TYPE.ERROR,
       });
-      setAlertMessageOpen(true);
       console.error(error);
       return;
     }
@@ -112,21 +107,19 @@ function EditPost() {
         previewImgFormat,
         token
       );
-      setAlertMessage({
+      alertMsg.openMessage({
         message: EDIT_SUCCESSFUL_MESSAGE,
         type: ALERT_MESSAGE_TYPE.SUCCESS,
       });
-      setAlertMessageOpen(true);
       setTimeout(() => {
         navigate("/");
       }, 2500);
     } catch (error) {
       setLoading(false);
-      setAlertMessage({
+      alertMsg.openMessage({
         message: FORM_SUBMISSION_ERROR,
         type: ALERT_MESSAGE_TYPE.ERROR,
       });
-      setAlertMessageOpen(true);
       console.error(error);
     }
   };
@@ -148,11 +141,10 @@ function EditPost() {
         setLoading(false);
       })
       .catch((error) => {
-        setAlertMessage({
+        alertMsg.openMessage({
           message: POST_LOADING_ERROR,
           type: ALERT_MESSAGE_TYPE.ERROR,
         });
-        setAlertMessageOpen(true);
         console.error(error);
       });
   }, [id]);
@@ -160,12 +152,7 @@ function EditPost() {
   return (
     <Fragment>
       {loading && <LinearProgress />}
-      <AlertMessage
-        open={alertMessageOpen}
-        setOpen={setAlertMessageOpen}
-        message={alertMessage.message}
-        type={alertMessage.type}
-      />
+      <AlertMessage alertMessage={alertMsg} />
       <PostForm
         handleSubmit={handleSubmit}
         inputFields={inputFields}

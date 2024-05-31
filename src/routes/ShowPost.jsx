@@ -5,17 +5,14 @@ import PostHeader from "../components/postHeader.component";
 import { fetchPost } from "../post.actions";
 import { ALERT_MESSAGE_TYPE, POST_LOADING_ERROR } from "../constants";
 import AlertMessage from "../components/alertMessage.component";
+import { useAlertMessage } from "../useAlertMessage";
 
 function ShowPost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [alertMessageOpen, setAlertMessageOpen] = React.useState(false);
-  const [alertMessage, setAlertMessage] = useState({
-    message: null,
-    type: null,
-  });
+  const alertMsg = useAlertMessage();
 
   useEffect(() => {
     setLoading(true);
@@ -26,23 +23,17 @@ function ShowPost() {
       })
       .catch((error) => {
         setLoading(false);
-        setAlertMessage({
+        alertMsg.openMessage({
           message: POST_LOADING_ERROR,
           type: ALERT_MESSAGE_TYPE.ERROR,
         });
-        setAlertMessageOpen(true);
         console.error(error);
       });
   }, [id]);
 
   return (
     <Fragment>
-      <AlertMessage
-        open={alertMessageOpen}
-        setOpen={setAlertMessageOpen}
-        message={alertMessage.message}
-        type={alertMessage.type}
-      />
+      <AlertMessage alertMessage={alertMsg} />
       {!post || loading ? (
         <LinearProgress />
       ) : (
