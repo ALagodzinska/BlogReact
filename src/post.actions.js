@@ -65,9 +65,6 @@ export async function updatePost(
   previewImageFormat,
   token
 ) {
-  console.log(
-    `ALL DATA - ${id}, ${title}, ${backgroundImage}, ${backgroundImageFormat}}`
-  );
   const response = await fetch(`/api/blogpost/updatepost?postId=${id}`, {
     method: "PUT",
     headers: {

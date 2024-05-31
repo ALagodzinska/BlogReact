@@ -71,7 +71,7 @@ function AddPost() {
   };
 
   const finishSubmit = async () => {
-    const token = getUserFromLocalStorage().accessToken;
+    const token = getUserFromLocalStorage()?.accessToken;
     const backgroundImgType = inputFields.backgroundImg.type;
     const previewImgType = inputFields.previewImg.type;
     let backgroundImgString;

@@ -33,11 +33,23 @@ export const FILE_UPLOAD_ERROR =
   "There was an issue uploading your file. Please ensure it meets the required format and size.";
 export const POST_LOADING_ERROR =
   "Wasn't able to load a post. Please go back to the main page.";
+export const RESTORE_LIST_ERROR =
+  "Wasn't able to load a posts to restore. Please go back to the main page.";
+export const POSTS_LIST_ERROR =
+  "Wasn't able to load a posts. Please refresh the page.";
+export const DELETE_ERROR =
+  "Wasn't able to delete a post. Please go back to the main page and try again.";
+export const RESTORE_ERROR =
+  "Wasn't able to restore a post. Please refresh the page and try again.";
 // LOADING SUCCESS MESSAGES
 export const EDIT_SUCCESSFUL_MESSAGE =
   "Post was successfully updated! You will be redirected to the home page within 3 seconds.";
 export const CREATE_SUCCESSFUL_MESSAGE =
   "Post was successfully created! You will be redirected to the home page within 3 seconds.";
+export const DELETE_SUCCESSFUL_MESSAGE =
+  "Post was successfully deleted! You will be redirected to the home page within 3 seconds";
+export const RESTORE_SUCCESSFUL_MESSAGE =
+  "Post was successfully restored! You may find it in the list of all existing posts.";
 
 // FORM TYPES
 export const FORM_TYPE = {

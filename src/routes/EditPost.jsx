@@ -18,7 +18,7 @@ import { getUserFromLocalStorage, validateUser } from "../user.actions";
 import UserContext from "../user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
-
+// https://react.dev/learn/reusing-logic-with-custom-hooks#
 function EditPost() {
   const [, setUser] = useContext(UserContext);
 
@@ -73,7 +73,7 @@ function EditPost() {
   };
 
   const finishSubmit = async () => {
-    const token = getUserFromLocalStorage().accessToken;
+    const token = getUserFromLocalStorage()?.accessToken;
 
     let backgroundImgString = null;
     let backgroundImgFormat = null;

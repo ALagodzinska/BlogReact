@@ -1,26 +1,48 @@
 import { Button, Container, LinearProgress } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
-import Header from "../components/header.component";
 import { Link, useParams } from "react-router-dom";
 import PostHeader from "../components/postHeader.component";
 import { fetchPost } from "../post.actions";
-import Layout from "../Layout";
+import { ALERT_MESSAGE_TYPE, POST_LOADING_ERROR } from "../constants";
+import AlertMessage from "../components/alertMessage.component";
 
 function ShowPost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const [alertMessageOpen, setAlertMessageOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState({
+    message: null,
+    type: null,
+  });
+
   useEffect(() => {
     setLoading(true);
-    fetchPost(id).then((post) => {
-      setPost(post);
-      setLoading(false);
-    });
+    fetchPost(id)
+      .then((post) => {
+        setPost(post);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setAlertMessage({
+          message: POST_LOADING_ERROR,
+          type: ALERT_MESSAGE_TYPE.ERROR,
+        });
+        setAlertMessageOpen(true);
+        console.error(error);
+      });
   }, [id]);
 
   return (
     <Fragment>
+      <AlertMessage
+        open={alertMessageOpen}
+        setOpen={setAlertMessageOpen}
+        message={alertMessage.message}
+        type={alertMessage.type}
+      />
       {!post || loading ? (
         <LinearProgress />
       ) : (

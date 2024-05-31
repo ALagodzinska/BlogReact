@@ -8,7 +8,7 @@ function truncate(str, n) {
   return str.length > n ? str.slice(0, n - 1) + "..." : str;
 }
 
-function HomePost({ post, deleteMethod }) {
+function HomePost({ post, refreshPostsAction }) {
   const [user] = useContext(UserContext);
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -23,7 +23,7 @@ function HomePost({ post, deleteMethod }) {
         open={openDelete}
         setOpen={setOpenDelete}
         postId={post.blogPostId}
-        deletePost={deleteMethod}
+        refreshPostsAction={refreshPostsAction}
       />
       <Grid item xs={12} md={8} pb={3}>
         <Stack direction="row">

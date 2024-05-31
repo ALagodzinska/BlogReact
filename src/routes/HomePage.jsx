@@ -13,6 +13,12 @@ import UserContext from "../user.context";
 import { deletePost, fetchPageCount, fetchPosts } from "../post.actions";
 import { getUserFromLocalStorage } from "../user.actions";
 import SkeletonHomePost from "../loading_components/skeleton_HomePost.component";
+import {
+  ALERT_MESSAGE_TYPE,
+  DELETE_ERROR,
+  DELETE_SUCCESSFUL_MESSAGE,
+  POSTS_LIST_ERROR,
+} from "../constants";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -36,7 +42,8 @@ function HomePage() {
       })
       .catch((error) => {
         setLoading(false);
-        setLoadingError(error);
+        setLoadingError(POSTS_LIST_ERROR);
+        console.log(error);
       });
   };
 
@@ -58,19 +65,6 @@ function HomePage() {
       });
   }, [page]);
 
-  const deletePostAction = (postId) => {
-    const token = getUserFromLocalStorage().accessToken;
-
-    deletePost(postId, token)
-      .then((postId) => {
-        refreshPosts();
-        console.log(postId);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
     <Container maxWidth="lg">
       <Stack justifyContent="flex-end" direction="row" py={3}>
@@ -82,7 +76,7 @@ function HomePage() {
       </Stack>
       {loadingError && (
         <Alert variant="outlined" severity="error">
-          Something went wrong. Wasn't able to load posts.
+          {loadingError}
         </Alert>
       )}
       <Stack spacing={2}>
@@ -92,7 +86,7 @@ function HomePage() {
               <HomePost
                 key={post.blogPostId}
                 post={post}
-                deleteMethod={deletePostAction}
+                refreshPostsAction={refreshPosts}
               />
             ) : (
               <SkeletonHomePost />

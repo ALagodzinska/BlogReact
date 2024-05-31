@@ -12,7 +12,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import Header from "../components/header.component";
 import { Link } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import {
@@ -23,14 +22,13 @@ import {
 import { getUserFromLocalStorage } from "../user.actions";
 import RestoreIcon from "@mui/icons-material/Restore";
 import RestorePopup from "../components/restorePopup.component";
-import Layout from "../Layout";
 
 function RestorePost() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(null);
   const [loading, setLoading] = useState(false);
-  const token = getUserFromLocalStorage().accessToken;
+  const token = getUserFromLocalStorage()?.accessToken;
 
   const handlePageChange = (_, value) => {
     setPage(value);
@@ -81,17 +79,6 @@ function RestorePost() {
     setOpenRestore(true);
   };
 
-  const restoreMethod = (postId) => {
-    restorePost(postId, token)
-      .then((postId) => {
-        refreshPosts();
-        console.log(postId);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
     <Container maxWidth="lg" sx={{ mt: 3 }}>
       {loading && <LinearProgress />}
@@ -100,7 +87,7 @@ function RestorePost() {
           open={openRestore}
           setOpen={setOpenRestore}
           postId={selectedPost}
-          restorePost={restoreMethod}
+          refreshPostsMethod={refreshPosts}
         ></RestorePopup>
       )}
       <TableContainer component={Paper}>

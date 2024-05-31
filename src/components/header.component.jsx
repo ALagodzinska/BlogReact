@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../user.context";
 import { logoutUser } from "../user.actions";
 
-/// CHANGE IFS HERE LOOK BAD
+/// CHANGE IFS HERE LOOKs BAD - BEST CONDITION PRACTICES IN REACT
 
 function Header({ title = "BLOG" }) {
   const [user, setUser, loading] = useContext(UserContext);
