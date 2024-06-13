@@ -136,3 +136,32 @@ export async function restorePost(id, token) {
   });
   return await response.json();
 }
+
+// FEATURED POSTS
+export async function fetchFeaturedPost() {
+  const response = await fetch(`/api/blogpost/getFeaturedPost`);
+  const json = await response.json();
+  return json;
+}
+
+export async function fetchLatestPosts() {
+  const response = await fetch(`/api/blogpost/getLatestPosts`);
+  const json = await response.json();
+  return json;
+}
+
+export async function featurePost(id, token) {
+  const response = await fetch(`/api/blogpost/featurePost?postId=${id}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return await response.json();
+}
+
+export function truncate(str, n) {
+  return str.length > n ? str.slice(0, n - 1) + "..." : str;
+}

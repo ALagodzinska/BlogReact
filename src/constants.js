@@ -66,3 +66,4 @@ export const POPUP_TYPE = {
 };
 // NUMBER CONSTANTS
 export const POSTS_PER_PAGE = 5;
+export const RECENT_POSTS_PER_PAGE = 4;
