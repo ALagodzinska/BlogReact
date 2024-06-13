@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   CircularProgress,
+  Container,
+  IconButton,
   Stack,
   Toolbar,
   Typography,
@@ -11,61 +13,95 @@ import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../user.context";
 import { logoutUser } from "../user.actions";
 
-/// CHANGE IFS HERE LOOKs BAD - BEST CONDITION PRACTICES IN REACT
-
 function Header({ title = "BLOG" }) {
   const [user, setUser, loading] = useContext(UserContext);
   const navigate = useNavigate();
-
   return (
-    <Fragment>
-      <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Typography
-          component="h2"
-          variant="h5"
-          color="inherit"
-          align="center"
-          noWrap
-          sx={{ flex: 1 }}
-        >
-          {title}
-        </Typography>
-        {user ? (
+    <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Container maxWidth="md" disableGutters>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography
+            component={Link}
+            to="/"
+            sx={{
+              mr: 2,
+              mt: 1,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+              cursor: "pointer",
+            }}
+          >
+            {title}
+          </Typography>
           <Box>
-            <Stack direction="row" spacing={2}>
-              <Typography variant="caption" display="flex" alignItems="center">
-                Hello, {user.username}
-              </Typography>
-              <Button
+            <Typography
+              component={Link}
+              to="/"
+              sx={{
+                mt: 1,
+                mr: 3,
+                textDecoration: "none",
+                cursor: "pointer",
+                color: "inherit",
+              }}
+            >
+              POSTS
+            </Typography>
+            {user && (
+              <Typography
                 component={Link}
                 to="/restore"
-                color="primary"
-                variant="outlined"
+                sx={{
+                  mt: 1,
+                  mr: 3,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  color: "inherit",
+                }}
               >
-                Restore post
-              </Button>
-              <Button
+                RESTORE POST
+              </Typography>
+            )}
+          </Box>
+          <Box>
+            {user ? (
+              <Typography
+                sx={{
+                  mt: 1,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  color: "inherit",
+                }}
                 onClick={() => {
                   logoutUser();
                   setUser(null);
                   navigate("/");
                 }}
-                variant="outlined"
-                size="small"
               >
-                Sign out
-              </Button>
-            </Stack>
+                LOGOUT
+              </Typography>
+            ) : (
+              <Typography
+                component={Link}
+                to="/login"
+                sx={{
+                  mt: 1,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  color: "inherit",
+                }}
+              >
+                LOGIN
+              </Typography>
+            )}
           </Box>
-        ) : loading ? (
-          <CircularProgress />
-        ) : (
-          <Button component={Link} to="/login" variant="outlined" size="small">
-            Sign in
-          </Button>
-        )}
-      </Toolbar>
-    </Fragment>
+        </Stack>
+      </Container>
+    </Toolbar>
   );
 }
 

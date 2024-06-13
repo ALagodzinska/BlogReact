@@ -1,5 +1,4 @@
 import {
-  Button,
   Container,
   IconButton,
   LinearProgress,
@@ -12,13 +11,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { Fragment, useEffect, useState } from "react";
-import {
-  fetchDeletedPosts,
-  fetchDeletedPostsPageCount,
-  restorePost,
-} from "../post.actions";
+import { useEffect, useState } from "react";
+import { fetchDeletedPosts, fetchDeletedPostsPageCount } from "../post.actions";
 import { getUserFromLocalStorage } from "../user.actions";
 import RestoreIcon from "@mui/icons-material/Restore";
 import RestorePopup from "../components/restorePopup.component";
@@ -41,7 +35,6 @@ function RestorePost() {
     ])
       .then(([pageCount, posts]) => {
         setPosts(posts);
-        console.log(pageCount);
         setPageCount(pageCount);
         setLoading(false);
       })
@@ -62,7 +55,6 @@ function RestorePost() {
       .then((posts) => {
         setPosts(posts);
         setLoading(false);
-        console.log(posts);
       })
       .catch((error) => {
         console.log(error);
@@ -142,16 +134,6 @@ function RestorePost() {
           }}
         />
       )}
-      <Button
-        component={Link}
-        to="/"
-        color="secondary"
-        size="medium"
-        variant="outlined"
-        sx={{ px: 5, ml: 5, my: 3 }}
-      >
-        Go Back
-      </Button>
     </Container>
   );
 }

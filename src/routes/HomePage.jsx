@@ -12,7 +12,7 @@ import HomePost from "../components/homePost.component";
 import UserContext from "../user.context";
 import { fetchPageCount, fetchPosts } from "../post.actions";
 import SkeletonHomePost from "../loading_components/skeleton_HomePost.component";
-import { POSTS_LIST_ERROR } from "../constants";
+import { POSTS_LIST_ERROR, POSTS_PER_PAGE } from "../constants";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -32,12 +32,13 @@ function HomePage() {
       .then(([pageCount, posts]) => {
         setPosts(posts);
         setPageCount(pageCount);
-        setLoading(false);
       })
       .catch((error) => {
-        setLoading(false);
         setLoadingError(POSTS_LIST_ERROR);
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -50,12 +51,13 @@ function HomePage() {
     fetchPosts(page)
       .then((posts) => {
         setPosts(posts);
-        setLoading(false);
       })
       .catch((error) => {
-        setLoading(false);
         setLoadingError(error);
         console.error("ERROR STATUS CODE", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [page]);
 
@@ -86,9 +88,11 @@ function HomePage() {
         </Alert>
       )}
       <Stack spacing={2}>
-        {(loading ? Array.from(new Array(5)) : posts).map((post, index) => (
-          <Box key={index}>{renderPostContent(post)}</Box>
-        ))}
+        {(loading ? Array.from(new Array(POSTS_PER_PAGE)) : posts).map(
+          (post, index) => (
+            <Box key={index}>{renderPostContent(post)}</Box>
+          )
+        )}
       </Stack>
       {pageCount && (
         <Pagination

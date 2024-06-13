@@ -1,10 +1,3 @@
-// LOADING STATES
-// export const LOADING_STATES = {
-//   none: 0,
-//   loading: 1,
-//   success: 2,
-//   failure: 3,
-// };
 // ERROR MESSAGE CONSTANTS
 export const EMAIL_ERROR_MESSAGE = "Email is required";
 export const PASSWORD_ERROR_MESSAGE = "Password is required";
@@ -71,3 +64,5 @@ export const POPUP_TYPE = {
   RESTORE: "RESTORE",
   DELETE: "DELETE",
 };
+// NUMBER CONSTANTS
+export const POSTS_PER_PAGE = 5;

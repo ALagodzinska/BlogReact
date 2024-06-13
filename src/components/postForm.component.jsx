@@ -6,7 +6,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Header from "./header.component";
 import ImageInput from "./imageInput.component";
 import ReactQuill, { Quill } from "react-quill";
 import { FORM_TYPE, IMAGE_TYPE } from "../constants";
@@ -184,16 +183,6 @@ function PostForm({
           </Button>
         </Stack>
       </form>
-      <Button
-        component={Link}
-        to="/"
-        color="secondary"
-        size="medium"
-        variant="outlined"
-        sx={{ px: 5, ml: 5, my: 3 }}
-      >
-        Go Back
-      </Button>
     </Container>
   );
 }

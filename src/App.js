@@ -12,6 +12,7 @@ import {
 } from "./components/privateRoutes.component";
 import RestorePost from "./routes/RestorePost";
 import Layout from "./Layout";
+import MainPage from "./routes/MainPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,6 +26,10 @@ function App() {
         {
           path: "/:id",
           element: <ShowPost />,
+        },
+        {
+          path: "/main",
+          element: <MainPage />,
         },
         {
           element: <PrivateRouteLoggedOut />,

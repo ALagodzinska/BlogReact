@@ -1,4 +1,4 @@
-import { Button, Container, LinearProgress } from "@mui/material";
+import { Button, Container, IconButton, LinearProgress } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PostHeader from "../components/postHeader.component";
@@ -6,6 +6,7 @@ import { fetchPost } from "../post.actions";
 import { ALERT_MESSAGE_TYPE, POST_LOADING_ERROR } from "../constants";
 import AlertMessage from "../components/alertMessage.component";
 import { useAlertMessage } from "../useAlertMessage";
+import UndoIcon from "@mui/icons-material/Undo";
 
 function ShowPost() {
   const { id } = useParams();
@@ -39,6 +40,9 @@ function ShowPost() {
       ) : (
         <Container maxWidth="lg" sx={{ mt: 3 }}>
           <Container>
+            <IconButton component={Link} to="/">
+              <UndoIcon />
+            </IconButton>
             <PostHeader post={post} />
             <div
               className="ql-editor"
@@ -46,16 +50,6 @@ function ShowPost() {
             ></div>
             {/*<ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> - alternative*/}
           </Container>
-          <Button
-            component={Link}
-            to="/"
-            color="secondary"
-            size="medium"
-            variant="outlined"
-            sx={{ px: 5, ml: 5, my: 3 }}
-          >
-            Go Back
-          </Button>
         </Container>
       )}
     </Fragment>

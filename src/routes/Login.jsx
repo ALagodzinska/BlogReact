@@ -127,16 +127,6 @@ function Login() {
               Sign In
             </Button>
           </Box>
-          <Button
-            component={Link}
-            to="/"
-            color="secondary"
-            size="medium"
-            variant="outlined"
-            sx={{ px: 5, ml: 5, my: 3 }}
-          >
-            Go Back
-          </Button>
         </Box>
       </Container>
     </Box>
