@@ -11,7 +11,7 @@ function PostHeader({ post }) {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0)), url(/api/Image/PreviewImage?postId=${post.blogPostId})`,
+        backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0)), url(/api/Image/BackgroundImage?postId=${post.blogPostId})`,
         height: 250,
       }}
     >
@@ -39,13 +39,19 @@ function PostHeader({ post }) {
               variant="h3"
               color="inherit"
               gutterBottom
-              sx={{ textShadow: "0 1px 0 black" }}
+              sx={{ textShadow: "0 1px 0 black", textTransform: "uppercase" }}
             >
-              {post.title.toUpperCase()}
+              {post.title}
             </Typography>
           </Box>
         </Grid>
         <Grid item xs={12}>
+          <Typography
+            variant="caption"
+            sx={{ fontStyle: "italic", paddingLeft: 2 }}
+          >
+            {post.user}
+          </Typography>
           <Typography
             variant="caption"
             sx={{ fontStyle: "italic", paddingLeft: 2 }}

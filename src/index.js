@@ -8,6 +8,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import CssBaseline from "@mui/material/CssBaseline";
+import "react-quill/dist/quill.snow.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

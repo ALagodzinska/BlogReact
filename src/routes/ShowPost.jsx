@@ -1,45 +1,58 @@
-import { Button, Container, LinearProgress } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import Header from "../components/header.component";
+import { Button, Container, IconButton, LinearProgress } from "@mui/material";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PostHeader from "../components/postHeader.component";
-
-async function fetchPost(postId) {
-  const response = await fetch(`/api/blogpost/getpost?postId=${postId}`);
-  const json = await response.json();
-  return json;
-}
+import { fetchPost } from "../post.actions";
+import { ALERT_MESSAGE_TYPE, POST_LOADING_ERROR } from "../constants";
+import AlertMessage from "../components/alertMessage.component";
+import { useAlertMessage } from "../useAlertMessage";
+import UndoIcon from "@mui/icons-material/Undo";
 
 function ShowPost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const alertMsg = useAlertMessage();
 
   useEffect(() => {
-    fetchPost(id).then(setPost);
+    setLoading(true);
+    fetchPost(id)
+      .then((post) => {
+        setPost(post);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        alertMsg.openMessage({
+          message: POST_LOADING_ERROR,
+          type: ALERT_MESSAGE_TYPE.ERROR,
+        });
+        console.error(error);
+      });
   }, [id]);
 
-  if (!post) {
-    return <LinearProgress />;
-  }
-
   return (
-    <Container maxWidth="lg">
-      <Header title="BLOG" />
-      <Container>
-        <PostHeader post={post} />
-        <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-      </Container>
-      <Button
-        component={Link}
-        to="/"
-        color="secondary"
-        size="medium"
-        variant="outlined"
-        sx={{ px: 5, ml: 5, my: 3 }}
-      >
-        Go Back
-      </Button>
-    </Container>
+    <Fragment>
+      <AlertMessage alertMessage={alertMsg} />
+      {!post || loading ? (
+        <LinearProgress />
+      ) : (
+        <Container maxWidth="lg" sx={{ mt: 3 }}>
+          <Container>
+            <IconButton component={Link} to="/">
+              <UndoIcon />
+            </IconButton>
+            <PostHeader post={post} />
+            <div
+              className="ql-editor"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            ></div>
+            {/*<ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> - alternative*/}
+          </Container>
+        </Container>
+      )}
+    </Fragment>
   );
 }
 

@@ -10,36 +10,52 @@ import {
   PrivateRouteLoggedIn,
   PrivateRouteLoggedOut,
 } from "./components/privateRoutes.component";
+import RestorePost from "./routes/RestorePost";
+import Layout from "./Layout";
+import MainPage from "./routes/MainPage";
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <HomePage />,
-    },
-    {
-      path: "/:id",
-      element: <ShowPost />,
-    },
-    {
-      element: <PrivateRouteLoggedOut />,
+      element: <Layout />,
       children: [
         {
-          path: "/add",
-          element: <AddPost />,
+          path: "/",
+          element: <HomePage />,
         },
         {
-          path: "/edit/:id",
-          element: <EditPost />,
+          path: "/:id",
+          element: <ShowPost />,
         },
-      ],
-    },
-    {
-      element: <PrivateRouteLoggedIn />,
-      children: [
         {
-          path: "/login",
-          element: <Login />,
+          path: "/main",
+          element: <MainPage />,
+        },
+        {
+          element: <PrivateRouteLoggedOut />,
+          children: [
+            {
+              path: "/add",
+              element: <AddPost />,
+            },
+            {
+              path: "/edit/:id",
+              element: <EditPost />,
+            },
+            {
+              path: "/restore",
+              element: <RestorePost />,
+            },
+          ],
+        },
+        {
+          element: <PrivateRouteLoggedIn />,
+          children: [
+            {
+              path: "/login",
+              element: <Login />,
+            },
+          ],
         },
       ],
     },

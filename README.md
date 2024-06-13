@@ -8,17 +8,30 @@ Then in needed places use " navigate("/path") "
 
 Use async function outside component with fetch.
 
-" const response = await fetch("/api/blogpost", {
-method: "POST",
-headers: {
-Accept: "application/json",
-"Content-Type": "application/json",
-},
-body: JSON.stringify({
-param1,
-param2,
-}),
+```javascript
+const response = await fetch("/api/blogpost", {
+  method: "POST",
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    param1,
+    param2,
+  }),
 });
-return await response.json(); "
+return await response.json();
+```
 
 Use without await in react component
+
+## IF NEXT VALUE DEPENDS ON A PREVIOUS VALUE IN SET STATE
+
+INSTEAD SetValue(value);
+DO THIS:
+
+```javascript
+setInputFields((inputFields) => {
+  return { ...inputFields, content: content };
+});
+```

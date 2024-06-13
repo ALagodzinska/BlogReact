@@ -1,52 +1,107 @@
-import { Box, Button, Toolbar, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  IconButton,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Fragment, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../user.context";
+import { logoutUser } from "../user.actions";
 
-function Header({ title }) {
-  const [user, setUser] = useContext(UserContext);
-  function logoutUser() {
-    setUser(null);
-    let newObject = window.localStorage.getItem("myObject");
-    console.log(JSON.parse(newObject));
-    window.localStorage.clear();
-  }
-
+function Header({ title = "BLOG" }) {
+  const [user, setUser, loading] = useContext(UserContext);
+  const navigate = useNavigate();
   return (
-    <Fragment>
-      <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Typography
-          component="h2"
-          variant="h5"
-          color="inherit"
-          align="center"
-          noWrap
-          sx={{ flex: 1 }}
-        >
-          {title}
-        </Typography>
-        {user ? (
+    <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Container maxWidth="md" disableGutters>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography
+            component={Link}
+            to="/"
+            sx={{
+              mr: 2,
+              mt: 1,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+              cursor: "pointer",
+            }}
+          >
+            {title}
+          </Typography>
           <Box>
             <Typography
-              variant="caption"
-              position={"absolute"}
-              pr={2}
-              right={"15%"}
-              bottom={"35%"}
+              component={Link}
+              to="/"
+              sx={{
+                mt: 1,
+                mr: 3,
+                textDecoration: "none",
+                cursor: "pointer",
+                color: "inherit",
+              }}
             >
-              Hello, {user.username}
+              POSTS
             </Typography>
-            <Button onClick={logoutUser} variant="outlined" size="small">
-              Sign out
-            </Button>
+            {user && (
+              <Typography
+                component={Link}
+                to="/restore"
+                sx={{
+                  mt: 1,
+                  mr: 3,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  color: "inherit",
+                }}
+              >
+                RESTORE POST
+              </Typography>
+            )}
           </Box>
-        ) : (
-          <Button component={Link} to="/login" variant="outlined" size="small">
-            Sign in
-          </Button>
-        )}
-      </Toolbar>
-    </Fragment>
+          <Box>
+            {user ? (
+              <Typography
+                sx={{
+                  mt: 1,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  color: "inherit",
+                }}
+                onClick={() => {
+                  logoutUser();
+                  setUser(null);
+                  navigate("/");
+                }}
+              >
+                LOGOUT
+              </Typography>
+            ) : (
+              <Typography
+                component={Link}
+                to="/login"
+                sx={{
+                  mt: 1,
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  color: "inherit",
+                }}
+              >
+                LOGIN
+              </Typography>
+            )}
+          </Box>
+        </Stack>
+      </Container>
+    </Toolbar>
   );
 }
 
