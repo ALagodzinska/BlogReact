@@ -13,6 +13,7 @@ import RestorePost from "./routes/RestorePost";
 import Layout from "./Layout";
 import MainPage from "./routes/MainPage";
 import PostsPage from "./routes/PostsPage";
+import Test from "./routes/UI_postsFIX";
 
 function App() {
   const router = createBrowserRouter([
@@ -30,6 +31,10 @@ function App() {
         {
           path: "/posts",
           element: <PostsPage />,
+        },
+        {
+          path: "/test",
+          element: <Test />,
         },
         {
           element: <PrivateRouteLoggedOut />,
