@@ -34,6 +34,8 @@ export const DELETE_ERROR =
   "Wasn't able to delete a post. Please go back to the main page and try again.";
 export const RESTORE_ERROR =
   "Wasn't able to restore a post. Please refresh the page and try again.";
+export const FEATURE_ERROR =
+  "Wasn't able to restore a post. Please refresh the page and try again.";
 // LOADING SUCCESS MESSAGES
 export const EDIT_SUCCESSFUL_MESSAGE =
   "Post was successfully updated! You will be redirected to the home page within 3 seconds.";
@@ -43,6 +45,8 @@ export const DELETE_SUCCESSFUL_MESSAGE =
   "Post was successfully deleted! You will be redirected to the home page within 3 seconds";
 export const RESTORE_SUCCESSFUL_MESSAGE =
   "Post was successfully restored! You may find it in the list of all existing posts.";
+export const FEATURE_SUCCESSFUL_MESSAGE =
+  "Post was successfully featured! You may find it on the main page.";
 
 // FORM TYPES
 export const FORM_TYPE = {
@@ -63,6 +67,7 @@ export const ALERT_MESSAGE_TYPE = {
 export const POPUP_TYPE = {
   RESTORE: "RESTORE",
   DELETE: "DELETE",
+  FEATURE: "FEATURE",
 };
 // NUMBER CONSTANTS
 export const POSTS_PER_PAGE = 5;

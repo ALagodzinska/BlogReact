@@ -6,18 +6,31 @@ import DeletePopup from "./deletePopup.component";
 import { truncate } from "../post.actions";
 import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
 import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
+import FeaturePopup from "./featurePopup.component";
 
 function HomePost({ post, refreshPostsAction }) {
   const [user] = useContext(UserContext);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openFeaturePopup, setOpenFeaturePopup] = useState(false);
 
   const openDeleteWindow = (event) => {
     event.preventDefault();
     setOpenDelete(true);
   };
 
+  const openFeatureWindow = (event) => {
+    event.preventDefault();
+    setOpenFeaturePopup(true);
+  };
+
   return (
     <Box>
+      <FeaturePopup
+        open={openFeaturePopup}
+        setOpen={setOpenFeaturePopup}
+        postId={post.blogPostId}
+        refreshPostsAction={refreshPostsAction}
+      />
       <DeletePopup
         open={openDelete}
         setOpen={setOpenDelete}
@@ -89,7 +102,7 @@ function HomePost({ post, refreshPostsAction }) {
                     />
                   </Box>
                 ) : (
-                  <Box title="Make featured">
+                  <Box title="Make featured" onClick={openFeatureWindow}>
                     <StarOutlineRoundedIcon
                       sx={{
                         position: "absolute",
