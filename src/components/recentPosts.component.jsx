@@ -18,7 +18,7 @@ function RecentPosts({ posts }) {
           Latest Posts
         </Typography>
         <Box>
-          <Link to={"/"}>See all...</Link>
+          <Link to={"/posts"}>See all...</Link>
         </Box>
       </Stack>
       <Stack

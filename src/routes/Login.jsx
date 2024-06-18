@@ -45,7 +45,7 @@ function Login() {
       try {
         const userObject = await getLoggedInUser(email, password);
         setUser(userObject);
-        navigate("/");
+        navigate("/posts");
       } catch (error) {
         setLoading(false);
         console.error(error);

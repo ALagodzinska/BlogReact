@@ -1,6 +1,5 @@
 import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import HomePage from "./routes/HomePage";
 import ShowPost from "./routes/ShowPost";
 import AddPost from "./routes/AddPost";
 import EditPost from "./routes/EditPost";
@@ -13,6 +12,7 @@ import {
 import RestorePost from "./routes/RestorePost";
 import Layout from "./Layout";
 import MainPage from "./routes/MainPage";
+import PostsPage from "./routes/PostsPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,15 +21,15 @@ function App() {
       children: [
         {
           path: "/",
-          element: <HomePage />,
+          element: <MainPage />,
         },
         {
           path: "/:id",
           element: <ShowPost />,
         },
         {
-          path: "/main",
-          element: <MainPage />,
+          path: "/posts",
+          element: <PostsPage />,
         },
         {
           element: <PrivateRouteLoggedOut />,
