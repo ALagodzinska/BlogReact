@@ -39,20 +39,17 @@ export async function getBase64(file) {
 
 export async function fetchPosts(pageNum) {
   const response = await fetch(`/api/blogpost/getpostsforpage?page=${pageNum}`);
-  const json = await response.json();
-  return json;
+  return response.json();
 }
 
 export async function fetchPageCount() {
   const response = await fetch("/api/blogpost/getpagecount");
-  const json = await response.json();
-  return json;
+  return response.json();
 }
 
 export async function fetchPost(postId) {
   const response = await fetch(`/api/blogpost/getpost?postId=${postId}`);
-  const json = await response.json();
-  return json;
+  return response.json();
 }
 
 export async function updatePost(
@@ -81,7 +78,7 @@ export async function updatePost(
       previewImageFormat,
     }),
   });
-  return await response.json();
+  return response.json();
 }
 
 export async function deletePost(id, token) {
@@ -93,7 +90,7 @@ export async function deletePost(id, token) {
       Authorization: `Bearer ${token}`,
     },
   });
-  return await response.json();
+  return response.json();
 }
 
 export async function fetchDeletedPosts(pageNum, token) {
@@ -108,8 +105,7 @@ export async function fetchDeletedPosts(pageNum, token) {
       },
     }
   );
-  const json = await response.json();
-  return json;
+  return response.json();
 }
 
 export async function fetchDeletedPostsPageCount(token) {
@@ -121,8 +117,7 @@ export async function fetchDeletedPostsPageCount(token) {
       Authorization: `Bearer ${token}`,
     },
   });
-  const json = await response.json();
-  return json;
+  return response.json();
 }
 
 export async function restorePost(id, token) {
@@ -134,20 +129,18 @@ export async function restorePost(id, token) {
       Authorization: `Bearer ${token}`,
     },
   });
-  return await response.json();
+  return response.json();
 }
 
 // FEATURED POSTS
 export async function fetchFeaturedPost() {
   const response = await fetch(`/api/blogpost/getFeaturedPost`);
-  const json = await response.json();
-  return json;
+  return response.json();
 }
 
 export async function fetchLatestPosts() {
   const response = await fetch(`/api/blogpost/getLatestPosts`);
-  const json = await response.json();
-  return json;
+  return response.json();
 }
 
 export async function featurePost(id, token) {
@@ -159,7 +152,7 @@ export async function featurePost(id, token) {
       Authorization: `Bearer ${token}`,
     },
   });
-  return await response.json();
+  return response.json();
 }
 
 export function truncate(str, n) {

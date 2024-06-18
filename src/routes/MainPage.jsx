@@ -42,7 +42,7 @@ function MainPage() {
       <AlertMessage alertMessage={alertMsg} />
       <Container maxWidth="md" sx={{ border: 1, mt: 2 }}>
         {loading && <SkeletonFeaturedPost />}
-        {featuredPost && latestPosts && !loading && (
+        {!loading && featuredPost && latestPosts && (
           <Fragment>
             <FeaturedPost post={featuredPost} />
             <RecentPosts posts={latestPosts} />
