@@ -1,3 +1,48 @@
+# Blog Website
+## Overview
+This project is a full-stack blog platform built with a **.NET Web API backend** and a **React frontend**.  
+The application allows visitors to browse blog posts while an authenticated admin user can manage the blog content.
+
+The React frontend communicates with the backend through HTTP requests to retrieve and update blog data.  
+The backend handles data storage, authentication, and business logic, while the frontend focuses on presenting content and user interaction.
+
+Admin functionality includes:
+- Creating new blog posts
+- Editing existing posts (text and images)
+- Deleting posts
+- Restoring deleted posts
+- Marking posts as **featured**, which changes how they are displayed on the main blog page
+## Technologies
+**Backend**
+- ASP.NET Core Web API
+- C#
+- SQL Server
+**Frontend**
+- React
+- JavaScript
+**Other**
+- HTTP requests for API communication
+- Bitmap image processing for handling uploaded images
+
+## Key Features
+- Full CRUD operations for blog posts
+- Admin authentication
+- Featured post highlighting
+- Image upload support
+- Automatic image resizing and cropping for consistent display
+- Soft delete and restore functionality for posts
+
+## Image Handling
+Each blog post requires two different images:
+- A **preview image** used on the blog list page
+- A **background image** used on the full post page
+Since uploaded images can have different sizes and aspect ratios, the application processes images by:
+1. Resizing them proportionally
+2. Cropping them from the center to match the required dimensions
+3. Storing the processed images in the database
+This ensures images display consistently across the website regardless of the original image size.
+
+# Personal Notes
 ## Page navigation in React
 
 For navigation between pages use " import { useNavigate } from "react-router-dom"; "
