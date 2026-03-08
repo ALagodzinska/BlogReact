@@ -32,15 +32,16 @@ function FeaturedPost({ post }) {
               outline: "5px solid black",
               textAlign: "center",
               borderRadius: "10%",
+              overflow: "hidden",
             }}
           >
             <img
               src={`/api/Image/PreviewImage?postId=${post.blogPostId}`}
               alt="preview"
               style={{
-                maxHeight: "100%",
-                maxWidth: "100%",
-                borderRadius: "10%",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
               }}
             />
           </Box>
