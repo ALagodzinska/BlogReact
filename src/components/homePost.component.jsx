@@ -3,22 +3,34 @@ import Divider from "@mui/material/Divider";
 import { useContext, useState } from "react";
 import UserContext from "../user.context";
 import DeletePopup from "./deletePopup.component";
-
-function truncate(str, n) {
-  return str.length > n ? str.slice(0, n - 1) + "..." : str;
-}
+import { truncate } from "../post.actions";
+import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
+import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
+import FeaturePopup from "./featurePopup.component";
 
 function HomePost({ post, refreshPostsAction }) {
   const [user] = useContext(UserContext);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openFeaturePopup, setOpenFeaturePopup] = useState(false);
 
   const openDeleteWindow = (event) => {
     event.preventDefault();
     setOpenDelete(true);
   };
 
+  const openFeatureWindow = (event) => {
+    event.preventDefault();
+    setOpenFeaturePopup(true);
+  };
+
   return (
     <Box>
+      <FeaturePopup
+        open={openFeaturePopup}
+        setOpen={setOpenFeaturePopup}
+        postId={post.blogPostId}
+        refreshPostsAction={refreshPostsAction}
+      />
       <DeletePopup
         open={openDelete}
         setOpen={setOpenDelete}
@@ -60,13 +72,53 @@ function HomePost({ post, refreshPostsAction }) {
                 height: "300px",
                 outline: "5px solid black",
                 textAlign: "center",
+                position: "relative",
               }}
             >
               <img
                 src={`/api/Image/PreviewImage?postId=${post.blogPostId}`}
                 alt="preview"
-                style={{ maxHeight: "100%", maxWidth: "100%" }}
+                style={{
+                  maxHeight: "100%",
+                  maxWidth: "100%",
+                }}
               />
+
+              {user &&
+                (post.isFeatured ? (
+                  <Box title="Featured post">
+                    <GradeRoundedIcon
+                      sx={{
+                        position: "absolute",
+                        fontSize: 40,
+                        top: 0,
+                        right: 0,
+                        color: "orange",
+                        ":hover": {
+                          transform: "scale(1.3)",
+                        },
+                        WebkitTransition: "transform 0.3s ease-in-out",
+                      }}
+                    />
+                  </Box>
+                ) : (
+                  <Box title="Make featured" onClick={openFeatureWindow}>
+                    <StarOutlineRoundedIcon
+                      sx={{
+                        position: "absolute",
+                        fontSize: 40,
+                        top: 0,
+                        right: 0,
+                        cursor: "pointer",
+                        color: "orange",
+                        ":hover": {
+                          transform: "scale(1.4)",
+                        },
+                        WebkitTransition: "transform 0.3s ease-in-out",
+                      }}
+                    />
+                  </Box>
+                ))}
             </Box>
           </Box>
         </Stack>

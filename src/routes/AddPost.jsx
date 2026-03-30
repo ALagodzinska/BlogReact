@@ -102,7 +102,7 @@ function AddPost() {
           type: ALERT_MESSAGE_TYPE.SUCCESS,
         });
         setTimeout(() => {
-          navigate("/");
+          navigate("/posts");
         }, 2500);
       })
       .catch((error) => {

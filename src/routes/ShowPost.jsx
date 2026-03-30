@@ -40,7 +40,7 @@ function ShowPost() {
       ) : (
         <Container maxWidth="lg" sx={{ mt: 3 }}>
           <Container>
-            <IconButton component={Link} to="/">
+            <IconButton component={Link} to="/posts">
               <UndoIcon />
             </IconButton>
             <PostHeader post={post} />

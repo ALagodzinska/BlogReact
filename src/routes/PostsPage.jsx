@@ -14,7 +14,7 @@ import { fetchPageCount, fetchPosts } from "../post.actions";
 import SkeletonHomePost from "../loading_components/skeleton_HomePost.component";
 import { POSTS_LIST_ERROR, POSTS_PER_PAGE } from "../constants";
 
-function HomePage() {
+function PostsPage() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = React.useState(1);
   const [pageCount, setPageCount] = React.useState(null);
@@ -109,4 +109,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default PostsPage;

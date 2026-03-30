@@ -40,7 +40,7 @@ function Header({ title = "BLOG" }) {
           <Box>
             <Typography
               component={Link}
-              to="/"
+              to="/posts"
               sx={{
                 mt: 1,
                 mr: 3,
