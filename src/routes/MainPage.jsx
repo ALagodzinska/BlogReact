@@ -37,7 +37,18 @@ function MainPage() {
   return (
     <Fragment>
       <AlertMessage alertMessage={alertMsg} />
-      <Container maxWidth="md" sx={{ border: 1, mt: 2 }}>
+      <Container
+        maxWidth="md"
+        sx={{
+          mt: 2,
+          // subtle pastel gradient with theme-aware fallback
+          backgroundImage: 'linear-gradient(180deg, rgba(57, 99, 70, 0.3) 0%, rgba(104, 148, 120, 0.19) 100%)',
+          backgroundColor: 'background.paper',
+          borderRadius: 2,
+          boxShadow: '0 8px 24px rgba(18, 33, 61, 0.04)',
+          p: { xs: 2, md: 3 },
+        }}
+      >
         {loading && <SkeletonFeaturedPost />}
         {!loading && featuredPost && latestPosts && (
           <Fragment>
