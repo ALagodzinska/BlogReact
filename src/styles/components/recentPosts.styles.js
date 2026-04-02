@@ -1,0 +1,92 @@
+const styles = {
+  container: {
+    border: '1px solid rgba(0,0,0,0.06)',
+    boxShadow: '0 8px 24px rgba(13,38,59,0.04)',
+    p: 3,
+    mb: 2,
+    borderRadius: '10px',
+    backgroundColor: '#f5f5f5',
+  },
+  headerRow: {
+    mb: 2,
+  },
+  headerTitle: {
+    fontWeight: 700,
+    letterSpacing: '-0.2px',
+    fontSize: { xs: '1.05rem', sm: '1.25rem' },
+  },
+  headerButton: {
+    textTransform: 'none',
+    fontWeight: 700,
+    bgcolor: '#6c7a89d2',
+    color: '#fff',
+    px: 3,
+    py: 1.1,
+    borderRadius: 2,
+    boxShadow: 'none',
+    '&:hover': { bgcolor: '#556270', boxShadow: 'none' },
+  },
+  listRow: {
+    flexWrap: 'nowrap',
+  },
+  card: {
+    flex: '1 1 22%',
+    maxWidth: '22%',
+    minWidth: 160,
+    textDecoration: 'none',
+    cursor: 'pointer',
+    color: 'inherit',
+    backgroundColor: '#ffffff',
+    border: '1px solid rgba(0,0,0,0.06)',
+    borderRadius: '10px',
+    transition: 'transform 0.12s, box-shadow 0.12s',
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 300,
+    '&:hover': {
+      transform: 'translateY(-4px)',
+      boxShadow: '0 10px 24px rgba(0,0,0,0.08)',
+      textDecoration: 'none',
+    },
+  },
+  imageBox: {
+    width: '100%',
+    aspectRatio: '4 / 3',
+    minHeight: 160,
+    textAlign: 'center',
+    borderTopLeftRadius: '10px',
+    borderTopRightRadius: '10px',
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    objectPosition: 'center',
+    display: 'block',
+  },
+  titleBox: {
+    p: 2,
+    flexGrow: 1,
+  },
+  title: {
+    fontWeight: 500,
+    fontSize: { xs: '0.95rem', sm: '1rem' },
+    lineHeight: 1.2,
+    whiteSpace: 'normal',
+    overflowWrap: 'break-word',
+    color: 'text.primary',
+    minHeight: '3.6em',
+  },
+  dateBox: {
+    px: 2,
+    pb: 2,
+  },
+  dateText: {
+    fontStyle: 'italic',
+  },
+};
+
+export default styles;
