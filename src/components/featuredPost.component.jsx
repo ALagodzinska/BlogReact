@@ -1,63 +1,45 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography, Card, CardMedia, CardContent, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { truncate } from "../post.actions";
+import styles from "../styles/components/featuredPost.styles";
 
 function FeaturedPost({ post }) {
+  const formattedDate = new Date(post.creationDate).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <Grid item xs={12} md={8} pb={3} mt={5}>
-      <Stack direction="row">
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-            {new Date(post.creationDate).toLocaleDateString()}
+      <Card elevation={4} sx={styles.card}>
+        {/* Title row: centered across the card */}
+  <Box sx={styles.titleBox}>
+          <Typography variant="caption" sx={styles.dateText}>
+            {formattedDate}
           </Typography>
-          <Typography variant="h4" gutterBottom mb={3}>
+          <Typography variant="h4" component="h2" sx={styles.title}>
             {post.title}
           </Typography>
-          <Box mr={4}>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: truncate(post.content, 350),
-              }}
-            ></div>
-          </Box>
-          <Box mt={4}>
-            <Link to={`/${post.blogPostId}`}>Read More...</Link>
+        </Box>
+        <Box sx={styles.mainGridBox}>
+          <CardContent sx={styles.cardContent}>
+            <Box sx={styles.contentBox} dangerouslySetInnerHTML={{ __html: truncate(post.content, 340) }} />
+
+            <Stack direction="row" justifyContent="flex-start" alignItems="center" mt={3} spacing={2}>
+              <Button variant="contained" component={Link} to={`/${post.blogPostId}`} sx={styles.button}>
+                Read More
+              </Button>
+            </Stack>
+          </CardContent>
+
+          <Box sx={styles.imageBox}>
+            <CardMedia component="img" image={`/api/Image/PreviewImage?postId=${post.blogPostId}`} alt={post.title} sx={styles.image} />
+
+            <Box sx={styles.authorBadge}>{post.user}</Box>
           </Box>
         </Box>
-        <Box>
-          <Box
-            sx={{
-              width: "450px",
-              height: "350px",
-              outline: "5px solid black",
-              textAlign: "center",
-              borderRadius: "10%",
-              overflow: "hidden",
-            }}
-          >
-            <img
-              src={`/api/Image/PreviewImage?postId=${post.blogPostId}`}
-              alt="preview"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          </Box>
-          <Typography
-            variant="caption"
-            sx={{
-              fontStyle: "italic",
-              display: "flex",
-              float: "right",
-              mt: 1,
-            }}
-          >
-            {post.user}
-          </Typography>
-        </Box>
-      </Stack>
+      </Card>
     </Grid>
   );
 }

@@ -1,11 +1,8 @@
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import Image from "../images/flowers.jpeg";
 import SkeletonFeaturedPost from "../loading_components/skeleton_FeaturedPost.component";
 import { Fragment, useEffect, useState } from "react";
 import { useAlertMessage } from "../useAlertMessage";
 import { fetchFeaturedPost, fetchLatestPosts } from "../post.actions";
-import { getUserFromLocalStorage } from "../user.actions";
 import { ALERT_MESSAGE_TYPE, POSTS_LIST_ERROR } from "../constants";
 import FeaturedPost from "../components/featuredPost.component";
 import RecentPosts from "../components/recentPosts.component";
