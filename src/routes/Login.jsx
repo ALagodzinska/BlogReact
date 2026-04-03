@@ -7,12 +7,12 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Header from "../components/header.component";
 import { useContext, useState } from "react";
 import UserContext from "../user.context";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getLoggedInUser } from "../user.actions";
 import { EMAIL_ERROR_MESSAGE, PASSWORD_ERROR_MESSAGE } from "../constants";
+import styles from "../styles/pages/login.styles";
 
 const validateValues = (email, password) => {
   let errors = {};
@@ -26,7 +26,7 @@ const validateValues = (email, password) => {
 };
 
 function Login() {
-  const [user, setUser] = useContext(UserContext);
+  const [, setUser] = useContext(UserContext);
   const [userError, setUserError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,32 +55,23 @@ function Login() {
   };
 
   return (
-    <Box>
+    <Box sx={styles.page}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Box sx={styles.card}>
+          <Avatar sx={styles.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={styles.title}>
             Sign in
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <Box height={10} pb={2}>
+          <Typography sx={styles.subtitle}>
+            Access your dashboard and continue writing.
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={styles.form}>
+            <Box sx={styles.errorBox}>
               {userError && (
-                <Typography sx={{ textAlign: "center", color: "red" }}>
+                <Typography sx={styles.errorText}>
                   No user found.
                 </Typography>
               )}
@@ -96,6 +87,7 @@ function Login() {
               autoFocus
               error={errors.email && true}
               helperText={errors.email}
+              sx={styles.textField}
               onChange={(e) => {
                 setEmail(e.target.value);
                 if (errors.email) delete errors.email;
@@ -112,6 +104,7 @@ function Login() {
               autoComplete="current-password"
               error={errors.password && true}
               helperText={errors.password}
+              sx={styles.textField}
               onChange={(e) => {
                 setPassword(e.target.value);
                 if (errors.password) delete errors.password;
@@ -121,7 +114,7 @@ function Login() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={styles.submitButton}
               disabled={loading}
             >
               Sign In
