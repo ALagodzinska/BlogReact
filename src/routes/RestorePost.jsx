@@ -1,21 +1,25 @@
 import {
+  Box,
+  Button,
   Container,
-  IconButton,
   LinearProgress,
   Pagination,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { fetchDeletedPosts, fetchDeletedPostsPageCount } from "../post.actions";
 import { getUserFromLocalStorage } from "../user.actions";
 import RestoreIcon from "@mui/icons-material/Restore";
 import RestorePopup from "../components/restorePopup.component";
+import styles from "../styles/pages/restorePost.styles";
 
 function RestorePost() {
   const [posts, setPosts] = useState([]);
@@ -72,7 +76,7 @@ function RestorePost() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 3 }}>
+    <Container maxWidth="md" sx={styles.pageContainer}>
       {loading && <LinearProgress />}
       {selectedPost && (
         <RestorePopup
@@ -82,56 +86,74 @@ function RestorePost() {
           refreshPostsMethod={refreshPosts}
         ></RestorePopup>
       )}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell align="right">Created at</TableCell>
-              <TableCell align="right">Deleted at</TableCell>
-              <TableCell>Restore</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {posts.map((post) => (
-              <TableRow
-                key={post.blogPostId}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {post.blogPostId}
+      <Paper sx={styles.shell}>
+        <Stack sx={styles.headerRow}>
+          <Typography sx={styles.title}>Restore Deleted Posts</Typography>
+          <Typography sx={styles.subtitle}>
+            Review removed posts and restore anything back to your active list.
+          </Typography>
+        </Stack>
+
+        <TableContainer component={Box} sx={styles.tableContainer}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="deleted posts table">
+            <TableHead>
+              <TableRow>
+                <TableCell sx={styles.tableHeadCell}>ID</TableCell>
+                <TableCell sx={styles.tableHeadCell}>Title</TableCell>
+                <TableCell align="right" sx={styles.tableHeadCell}>
+                  Created
                 </TableCell>
-                <TableCell>{post.title}</TableCell>
-                <TableCell align="right">
-                  {new Date(post.creationDate).toLocaleDateString()}
+                <TableCell align="right" sx={styles.tableHeadCell}>
+                  Deleted
                 </TableCell>
-                <TableCell align="right">
-                  {new Date(post.deletedAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <IconButton
-                    onClick={(e) => {
-                      openRestoreWindow(e, post.blogPostId);
-                    }}
-                  >
-                    <RestoreIcon />
-                  </IconButton>
+                <TableCell align="center" sx={styles.tableHeadCell}>
+                  Action
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {pageCount && (
+            </TableHead>
+            <TableBody>
+              {posts.length === 0 && !loading && (
+                <TableRow>
+                  <TableCell colSpan={5} sx={styles.emptyState}>
+                    No deleted posts found.
+                  </TableCell>
+                </TableRow>
+              )}
+              {posts.map((post) => (
+                <TableRow key={post.blogPostId} sx={styles.tableRow}>
+                  <TableCell component="th" scope="row" sx={styles.idCell}>
+                    {post.blogPostId}
+                  </TableCell>
+                  <TableCell sx={styles.titleCell}>{post.title}</TableCell>
+                  <TableCell align="right">
+                    {new Date(post.creationDate).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell align="right">
+                    {new Date(post.deletedAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      variant="outlined"
+                      startIcon={<RestoreIcon />}
+                      sx={styles.restoreButton}
+                      onClick={(e) => {
+                        openRestoreWindow(e, post.blogPostId);
+                      }}
+                    >
+                      Restore
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+      {pageCount > 0 && (
         <Pagination
           count={pageCount}
           onChange={handlePageChange}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            pt: 3,
-          }}
+          sx={styles.pagination}
         />
       )}
     </Container>
