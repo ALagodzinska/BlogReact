@@ -74,10 +74,27 @@ function PostsPage() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <Stack justifyContent="flex-end" direction="row" py={3}>
         {user && (
-          <Button component={Link} to="/add" color="primary" variant="outlined">
+          <Button
+            component={Link}
+            to="/add"
+            variant="contained"
+            sx={{
+              textTransform: "none",
+              fontWeight: 700,
+              borderRadius: 99,
+              px: 2.2,
+              py: 1,
+              bgcolor: "#4f6f5d",
+              boxShadow: "0 8px 16px rgba(50, 84, 64, 0.22)",
+              "&:hover": {
+                bgcolor: "#3f5c4d",
+                boxShadow: "0 10px 18px rgba(50, 84, 64, 0.28)",
+              },
+            }}
+          >
             CREATE NEW POST
           </Button>
         )}

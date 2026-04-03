@@ -1,83 +1,42 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import { truncate } from "../post.actions";
+import styles from "../styles/components/recentPosts.styles";
 
 function RecentPosts({ posts }) {
   return (
-    <Box
-      sx={{
-        border: 1,
-        p: 3,
-        mb: 2,
-        borderRadius: "10px",
-        backgroundColor: "#f5f5f5",
-      }}
-    >
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6" mb={2}>
+    <Box sx={styles.container}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={styles.headerRow}>
+        <Typography variant="h6" sx={styles.headerTitle}>
           Latest Posts
         </Typography>
-        <Box>
-          <Link to={"/posts"}>See all...</Link>
-        </Box>
+        <Button component={Link} to="/posts" variant="contained" size="small" sx={styles.headerButton}>
+          See All
+        </Button>
       </Stack>
-      <Stack
-        direction="row"
-        justifyContent="space-around"
-        alignItems="flex-start"
-        spacing={2}
-      >
+
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2} sx={styles.listRow}>
         {posts.map((post) => (
-          <Stack
-            key={post.blogPostId}
-            border={1}
-            p={2}
-            component={Link}
-            to={`/${post.blogPostId}`}
-            sx={{
-              width: "25%",
-              textDecoration: "none",
-              cursor: "pointer",
-              color: "inherit",
-            }}
-          >
-            <Box
-              sx={{
-                width: "125px",
-                height: "150px",
-                outline: "1px solid",
-                textAlign: "center",
-                borderRadius: "10%",
-              }}
-            >
-              <img
-                src={`/api/Image/PreviewImage?postId=${post.blogPostId}`}
-                alt="preview"
-                style={{
-                  maxHeight: "100%",
-                  maxWidth: "100%",
-                  borderRadius: "10%",
-                }}
-              />
+          <Stack key={post.blogPostId} component={Link} to={`/${post.blogPostId}`} p={0} sx={{ ...styles.card, ...styles.imageHover }}>
+            <Box sx={styles.imageBox}>
+              <img src={`/api/Image/PreviewImage?postId=${post.blogPostId}`} alt="preview" style={styles.image} />
             </Box>
-            <Box
-              sx={{
-                mt: 2,
-              }}
-            >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: truncate(post.title, 15),
-                }}
-              ></div>
+
+            <Box sx={styles.titleBox}>
+              <Typography variant="subtitle1" sx={styles.title}>
+                {post.title}
+              </Typography>
             </Box>
-            <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-              {new Date(post.creationDate).toLocaleDateString()}
-            </Typography>
+
+            <Box sx={styles.dateBox}>
+              <Typography variant="caption" sx={styles.dateText}>
+                {new Date(post.creationDate).toLocaleDateString()}
+              </Typography>
+            </Box>
           </Stack>
         ))}
       </Stack>
     </Box>
   );
 }
+
 export default RecentPosts;

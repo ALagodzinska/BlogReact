@@ -11,7 +11,7 @@ import ReactQuill, { Quill } from "react-quill";
 import { FORM_TYPE, IMAGE_TYPE } from "../constants";
 import FormImageDisplay from "./formImageDisplay.component";
 import ImageResize from "quill-image-resize-module-react";
-import { Link } from "react-router-dom";
+import styles from "../styles/components/postForm.styles";
 
 Quill.register("modules/imageResize", ImageResize);
 
@@ -86,35 +86,39 @@ function PostForm({
     });
   };
 
+  const submitLabel = formType === FORM_TYPE.UPDATE ? "Save Changes" : "Publish Post";
+
   return (
-    <Container
-      sx={{
-        mt: 3,
-      }}
-    >
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <Stack spacing={2}>
+    <Container maxWidth="md" sx={styles.container}>
+      <Box sx={styles.shell}>
+        <Typography sx={styles.headerTitle}>
+          {formType === FORM_TYPE.UPDATE ? "Edit Post" : "Create New Post"}
+        </Typography>
+        <Typography sx={styles.headerSubtitle}>
+          {formType === FORM_TYPE.UPDATE
+            ? "Update your content and visuals before publishing changes."
+            : "Write your story, upload images, and publish when you're ready."}
+        </Typography>
+        <form autoComplete="off" onSubmit={handleSubmit}>
+          <Stack spacing={2} sx={styles.formStack}>
           <TextField
             id="title"
-            sx={{ pb: 3 }}
+            sx={styles.titleField}
             label="Blog Title"
             name="title"
             value={inputFields.title}
             onChange={handleTitleChange}
             error={!!errors.title}
             helperText={errors.title}
+            fullWidth
           />
           <Stack
-            direction="row"
-            justifyContent="space-around"
-            alignItems="center"
-            spacing={2}
-            pb={2}
+            sx={styles.imageRow}
           >
-            <Box>
+            <Box sx={styles.imageBox}>
               {inputFields.backgroundImgLink ? (
                 <Box>
-                  <Typography>Background Image</Typography>
+                  <Typography sx={styles.imageLabel}>Background Image</Typography>
                   <FormImageDisplay
                     imgSrc={inputFields.backgroundImgLink}
                     clearImageHandler={clearBackgroundImageHandler}
@@ -132,10 +136,10 @@ function PostForm({
                 />
               )}
             </Box>
-            <Box>
+            <Box sx={styles.imageBox}>
               {inputFields.previewImgLink ? (
                 <Box>
-                  <Typography>Preview Image</Typography>
+                  <Typography sx={styles.imageLabel}>Preview Image</Typography>
                   <FormImageDisplay
                     imgSrc={inputFields.previewImgLink}
                     clearImageHandler={clearPreviewImageHandler}
@@ -155,34 +159,37 @@ function PostForm({
             </Box>
           </Stack>
 
-          <ReactQuill
-            theme="snow"
-            value={inputFields.content}
-            onChange={handleContentChange}
-            modules={{
-              toolbar: toolbarOptions,
-              imageResize: {
-                parchment: Quill.import("parchment"),
-                modules: ["Resize", "DisplaySize"],
-              },
-            }}
-          />
+          <Box sx={styles.editorWrap}>
+            <ReactQuill
+              theme="snow"
+              value={inputFields.content}
+              onChange={handleContentChange}
+              modules={{
+                toolbar: toolbarOptions,
+                imageResize: {
+                  parchment: Quill.import("parchment"),
+                  modules: ["Resize", "DisplaySize"],
+                },
+              }}
+            />
+          </Box>
           {errors.content && (
-            <Typography color="red" fontSize={12}>
+            <Typography sx={styles.contentError}>
               {errors.content}
             </Typography>
           )}
 
           <Button
-            variant="outlined"
-            sx={{ mt: 7 }}
+            variant="contained"
+            sx={styles.submitButton}
             type="submit"
             disabled={loading}
           >
-            SAVE
+            {submitLabel}
           </Button>
-        </Stack>
-      </form>
+          </Stack>
+        </form>
+      </Box>
     </Container>
   );
 }

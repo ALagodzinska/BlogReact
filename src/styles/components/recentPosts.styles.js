@@ -1,0 +1,102 @@
+const styles = {
+  container: {
+    border: "1px solid rgba(18, 48, 33, 0.12)",
+    boxShadow: "0 12px 28px rgba(13, 38, 27, 0.08)",
+    p: 3,
+    mt: 1,
+    mb: 1,
+    borderRadius: 3,
+    backgroundColor: "rgba(255,255,255,0.7)",
+    backdropFilter: "blur(2px)",
+  },
+  headerRow: {
+    mb: 2,
+  },
+  headerTitle: {
+    fontWeight: 700,
+    letterSpacing: "-0.25px",
+    fontSize: { xs: "1.1rem", sm: "1.35rem" },
+    fontFamily: '"Merriweather", "Georgia", serif',
+  },
+  headerButton: {
+    textTransform: "none",
+    fontWeight: 700,
+    bgcolor: "#4f6f5d",
+    color: "#fff",
+    px: 3,
+    py: 1,
+    borderRadius: 99,
+    boxShadow: "0 8px 16px rgba(50, 84, 64, 0.22)",
+    "&:hover": { bgcolor: "#3f5c4d", boxShadow: "0 10px 18px rgba(50, 84, 64, 0.28)" },
+  },
+  listRow: {
+    flexWrap: { xs: "wrap", md: "nowrap" },
+    gap: 2,
+  },
+  card: {
+    flex: { xs: "1 1 calc(50% - 8px)", md: "1 1 22%" },
+    maxWidth: { xs: "calc(50% - 8px)", md: "22%" },
+    minWidth: 160,
+    textDecoration: "none",
+    cursor: "pointer",
+    color: "inherit",
+    backgroundColor: "#ffffff",
+    border: "1px solid rgba(0,0,0,0.08)",
+    borderRadius: 2.5,
+    transition: "transform 0.16s ease, box-shadow 0.16s ease",
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    height: 300,
+    overflow: "hidden",
+    "&:hover": {
+      transform: "translateY(-5px)",
+      boxShadow: "0 14px 28px rgba(0,0,0,0.12)",
+      textDecoration: "none",
+    },
+  },
+  imageBox: {
+    width: "100%",
+    aspectRatio: "4 / 3",
+    minHeight: 160,
+    textAlign: "center",
+    overflow: "hidden",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    objectPosition: "center",
+    display: "block",
+    transition: "transform 0.28s ease",
+  },
+  imageHover: {
+    "&:hover img": {
+      transform: "scale(1.05)",
+    },
+  },
+  titleBox: {
+    p: 2,
+    flexGrow: 1,
+  },
+  title: {
+    fontWeight: 500,
+    fontSize: { xs: "0.95rem", sm: "1rem" },
+    lineHeight: 1.2,
+    whiteSpace: "normal",
+    overflowWrap: "break-word",
+    color: "text.primary",
+    minHeight: "3.6em",
+  },
+  dateBox: {
+    px: 2,
+    pb: 2,
+  },
+  dateText: {
+    fontStyle: "italic",
+    color: "text.secondary",
+  },
+};
+
+export default styles;

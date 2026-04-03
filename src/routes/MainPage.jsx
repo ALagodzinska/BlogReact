@@ -1,15 +1,13 @@
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import Image from "../images/flowers.jpeg";
+import { Box, Container } from "@mui/material";
 import SkeletonFeaturedPost from "../loading_components/skeleton_FeaturedPost.component";
 import { Fragment, useEffect, useState } from "react";
 import { useAlertMessage } from "../useAlertMessage";
 import { fetchFeaturedPost, fetchLatestPosts } from "../post.actions";
-import { getUserFromLocalStorage } from "../user.actions";
 import { ALERT_MESSAGE_TYPE, POSTS_LIST_ERROR } from "../constants";
 import FeaturedPost from "../components/featuredPost.component";
 import RecentPosts from "../components/recentPosts.component";
 import AlertMessage from "../components/alertMessage.component";
+import styles from "../styles/pages/mainPage.styles";
 
 function MainPage() {
   const [featuredPost, setFeaturedPost] = useState(null);
@@ -40,15 +38,17 @@ function MainPage() {
   return (
     <Fragment>
       <AlertMessage alertMessage={alertMsg} />
-      <Container maxWidth="md" sx={{ border: 1, mt: 2 }}>
-        {loading && <SkeletonFeaturedPost />}
-        {!loading && featuredPost && latestPosts && (
-          <Fragment>
-            <FeaturedPost post={featuredPost} />
-            <RecentPosts posts={latestPosts} />
-          </Fragment>
-        )}
-      </Container>
+      <Box sx={styles.outer}>
+        <Container maxWidth="md" sx={styles.container}>
+          {loading && <SkeletonFeaturedPost />}
+          {!loading && featuredPost && latestPosts && (
+            <Fragment>
+              <FeaturedPost post={featuredPost} />
+              <RecentPosts posts={latestPosts} />
+            </Fragment>
+          )}
+        </Container>
+      </Box>
     </Fragment>
   );
 }

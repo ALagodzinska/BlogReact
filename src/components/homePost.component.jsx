@@ -1,12 +1,16 @@
-import { Box, Button, Grid, Link, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import UserContext from "../user.context";
 import DeletePopup from "./deletePopup.component";
 import { truncate } from "../post.actions";
 import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
 import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
 import FeaturePopup from "./featurePopup.component";
+import styles from "../styles/components/homePost.styles";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 
 function HomePost({ post, refreshPostsAction }) {
   const [user] = useContext(UserContext);
@@ -23,6 +27,12 @@ function HomePost({ post, refreshPostsAction }) {
     setOpenFeaturePopup(true);
   };
 
+  const formattedDate = new Date(post.creationDate).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <Box>
       <FeaturePopup
@@ -37,90 +47,85 @@ function HomePost({ post, refreshPostsAction }) {
         postId={post.blogPostId}
         refreshPostsAction={refreshPostsAction}
       />
-      <Grid item xs={12} md={8} pb={3}>
-        <Stack direction="row">
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h4" gutterBottom>
-              {post.title}
-            </Typography>
-            <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-              {new Date(post.creationDate).toLocaleDateString()}
-            </Typography>
-            <br />
-            <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-              {post.user}
-            </Typography>
-            <div
-              dangerouslySetInnerHTML={{ __html: truncate(post.content, 450) }}
-            ></div>
-            <Link href={post.blogPostId}>Read More...</Link>
-            <Box>
-              {user && <Link href={`/edit/${post.blogPostId}`}>Edit</Link>}
-            </Box>
-            <Box>
-              {user && (
-                <Link href={"#"} onClick={openDeleteWindow}>
-                  Delete
-                </Link>
-              )}
-            </Box>
-          </Box>
-          <Box>
-            <Box
-              sx={{
-                width: "250px",
-                height: "300px",
-                outline: "5px solid black",
-                textAlign: "center",
-                position: "relative",
-              }}
-            >
-              <img
-                src={`/api/Image/PreviewImage?postId=${post.blogPostId}`}
-                alt="preview"
-                style={{
-                  maxHeight: "100%",
-                  maxWidth: "100%",
-                }}
+      <Grid item xs={12} md={8} sx={styles.gridItem}>
+        <Stack sx={styles.cardStack}>
+          <Stack sx={styles.mainRow}>
+            <Box sx={styles.contentContainer}>
+              <Typography variant="h4" gutterBottom sx={styles.title}>
+                {post.title}
+              </Typography>
+              <Typography variant="caption" sx={styles.date}>
+                {formattedDate}
+              </Typography>
+              <Box
+                component="div"
+                sx={styles.postPreview}
+                dangerouslySetInnerHTML={{ __html: truncate(post.content, 400) }}
               />
-
-              {user &&
-                (post.isFeatured ? (
-                  <Box title="Featured post">
-                    <GradeRoundedIcon
-                      sx={{
-                        position: "absolute",
-                        fontSize: 40,
-                        top: 0,
-                        right: 0,
-                        color: "orange",
-                        ":hover": {
-                          transform: "scale(1.3)",
-                        },
-                        WebkitTransition: "transform 0.3s ease-in-out",
-                      }}
-                    />
-                  </Box>
-                ) : (
-                  <Box title="Make featured" onClick={openFeatureWindow}>
-                    <StarOutlineRoundedIcon
-                      sx={{
-                        position: "absolute",
-                        fontSize: 40,
-                        top: 0,
-                        right: 0,
-                        cursor: "pointer",
-                        color: "orange",
-                        ":hover": {
-                          transform: "scale(1.4)",
-                        },
-                        WebkitTransition: "transform 0.3s ease-in-out",
-                      }}
-                    />
-                  </Box>
-                ))}
             </Box>
-          </Box>
+            <Box sx={styles.imageColumn}>
+              <Box sx={styles.imageFrame}>
+                <Box
+                  component="img"
+                  src={`/api/Image/PreviewImage?postId=${post.blogPostId}`}
+                  alt={post.title}
+                  sx={styles.image}
+                />
+                <Box sx={styles.authorBadge}>
+                  {post.user}
+                </Box>
+
+                {user &&
+                  (post.isFeatured ? (
+                    <Box title="Featured post" sx={styles.featuredBadge}>
+                      <GradeRoundedIcon sx={styles.featuredBadgeIcon} />
+                      Featured
+                    </Box>
+                  ) : (
+                    <Button
+                      title="Make featured"
+                      onClick={openFeatureWindow}
+                      variant="contained"
+                      startIcon={<StarOutlineRoundedIcon sx={styles.featureButtonIcon} />}
+                      sx={styles.featureButton}
+                    >
+                      Feature
+                    </Button>
+                  ))}
+              </Box>
+            </Box>
+          </Stack>
+          <Stack direction="row" alignItems="center" sx={styles.actionRow}>
+            <Button
+              variant="contained"
+              component={Link}
+              to={`/${post.blogPostId}`}
+              sx={styles.readMoreButton}
+            >
+              Read More
+            </Button>
+            {user && (
+              <Stack direction="row" alignItems="center" sx={styles.adminActionGroup}>
+                <Button
+                  component={Link}
+                  to={`/edit/${post.blogPostId}`}
+                  variant="outlined"
+                  startIcon={<EditOutlinedIcon sx={styles.adminActionIcon} />}
+                  sx={styles.actionButton}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={openDeleteWindow}
+                  startIcon={<DeleteOutlineRoundedIcon sx={styles.adminActionIcon} />}
+                  sx={styles.deleteButton}
+                >
+                  Delete
+                </Button>
+              </Stack>
+            )}
+          </Stack>
         </Stack>
       </Grid>
       <Divider />
