@@ -1,4 +1,4 @@
-import { Button, Box, Container, IconButton, LinearProgress } from "@mui/material";
+import { Box, Button, Container, LinearProgress } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PostHeader from "../components/postHeader.component";
@@ -6,7 +6,8 @@ import { fetchPost } from "../post.actions";
 import { ALERT_MESSAGE_TYPE, POST_LOADING_ERROR } from "../constants";
 import AlertMessage from "../components/alertMessage.component";
 import { useAlertMessage } from "../useAlertMessage";
-import UndoIcon from "@mui/icons-material/Undo";
+import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
+import styles from "../styles/pages/showPost.styles";
 
 function ShowPost() {
   const { id } = useParams();
@@ -38,27 +39,32 @@ function ShowPost() {
       {!post || loading ? (
         <LinearProgress />
       ) : (
-        <Container maxWidth="md" sx={{ mt: 3 }}>
-          <Box>
-            <IconButton component={Link} to="/posts">
-              <UndoIcon />
-            </IconButton>
+        <Box sx={styles.pageWrap}>
+          <Container maxWidth="md" sx={styles.container}>
             <PostHeader post={post} />
             <Box
               component="div"
               className="ql-editor"
-              sx={{
-                color: 'text.secondary',
-                lineHeight: 1.6,
-                '& p': { margin: 0, padding: 0 },
-                '& br': { display: 'inline', lineHeight: '1', margin: 0, padding: 0 },
-                '& h1,& h2,& h3,& h4,& h5,& h6': { margin: 0, padding: 0 },
-              }}
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
-            {/*<ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> - alternative*/}
-          </Box>
-        </Container>
+              sx={styles.article}
+            >
+              <Box
+                component="div"
+                sx={styles.articleContent}
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+              {/*<ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> - alternative*/}
+            </Box>
+            <Button
+              component={Link}
+              to="/posts"
+              variant="outlined"
+              startIcon={<KeyboardBackspaceRoundedIcon />}
+              sx={styles.backButton}
+            >
+              Back to posts
+            </Button>
+          </Container>
+        </Box>
       )}
     </Fragment>
   );
