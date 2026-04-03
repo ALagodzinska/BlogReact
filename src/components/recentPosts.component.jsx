@@ -16,7 +16,7 @@ function RecentPosts({ posts }) {
 
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2} sx={styles.listRow}>
         {posts.map((post) => (
-          <Stack key={post.blogPostId} component={Link} to={`/${post.blogPostId}`} p={0} sx={styles.card}>
+          <Stack key={post.blogPostId} component={Link} to={`/${post.blogPostId}`} p={0} sx={{ ...styles.card, ...styles.imageHover }}>
             <Box sx={styles.imageBox}>
               <img src={`/api/Image/PreviewImage?postId=${post.blogPostId}`} alt="preview" style={styles.image} />
             </Box>

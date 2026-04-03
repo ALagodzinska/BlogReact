@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import SkeletonFeaturedPost from "../loading_components/skeleton_FeaturedPost.component";
 import { Fragment, useEffect, useState } from "react";
 import { useAlertMessage } from "../useAlertMessage";
@@ -7,6 +7,7 @@ import { ALERT_MESSAGE_TYPE, POSTS_LIST_ERROR } from "../constants";
 import FeaturedPost from "../components/featuredPost.component";
 import RecentPosts from "../components/recentPosts.component";
 import AlertMessage from "../components/alertMessage.component";
+import styles from "../styles/pages/mainPage.styles";
 
 function MainPage() {
   const [featuredPost, setFeaturedPost] = useState(null);
@@ -37,26 +38,17 @@ function MainPage() {
   return (
     <Fragment>
       <AlertMessage alertMessage={alertMsg} />
-      <Container
-        maxWidth="md"
-        sx={{
-          mt: 2,
-          // subtle pastel gradient with theme-aware fallback
-          backgroundImage: 'linear-gradient(180deg, rgba(57, 99, 70, 0.3) 0%, rgba(104, 148, 120, 0.19) 100%)',
-          backgroundColor: 'background.paper',
-          borderRadius: 2,
-          boxShadow: '0 8px 24px rgba(18, 33, 61, 0.04)',
-          p: { xs: 2, md: 3 },
-        }}
-      >
-        {loading && <SkeletonFeaturedPost />}
-        {!loading && featuredPost && latestPosts && (
-          <Fragment>
-            <FeaturedPost post={featuredPost} />
-            <RecentPosts posts={latestPosts} />
-          </Fragment>
-        )}
-      </Container>
+      <Box sx={styles.outer}>
+        <Container maxWidth="md" sx={styles.container}>
+          {loading && <SkeletonFeaturedPost />}
+          {!loading && featuredPost && latestPosts && (
+            <Fragment>
+              <FeaturedPost post={featuredPost} />
+              <RecentPosts posts={latestPosts} />
+            </Fragment>
+          )}
+        </Container>
+      </Box>
     </Fragment>
   );
 }

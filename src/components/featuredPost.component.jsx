@@ -11,10 +11,9 @@ function FeaturedPost({ post }) {
   });
 
   return (
-    <Grid item xs={12} md={8} pb={3} mt={5}>
+    <Grid item xs={12} md={8} pb={3} mt={3}>
       <Card elevation={4} sx={styles.card}>
-        {/* Title row: centered across the card */}
-  <Box sx={styles.titleBox}>
+        <Box sx={styles.titleBox}>
           <Typography variant="caption" sx={styles.dateText}>
             {formattedDate}
           </Typography>
