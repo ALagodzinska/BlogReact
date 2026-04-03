@@ -44,10 +44,18 @@ function ShowPost() {
               <UndoIcon />
             </IconButton>
             <PostHeader post={post} />
-            <div
+            <Box
+              component="div"
               className="ql-editor"
+              sx={{
+                color: 'text.secondary',
+                lineHeight: 1.6,
+                '& p': { margin: 0, padding: 0 },
+                '& br': { display: 'inline', lineHeight: '1', margin: 0, padding: 0 },
+                '& h1,& h2,& h3,& h4,& h5,& h6': { margin: 0, padding: 0 },
+              }}
               dangerouslySetInnerHTML={{ __html: post.content }}
-            ></div>
+            />
             {/*<ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> - alternative*/}
           </Box>
         </Container>
