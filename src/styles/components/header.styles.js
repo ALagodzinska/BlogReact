@@ -21,6 +21,10 @@ export const titleSx = {
   fontSize: { xs: "0.95rem", md: "1.1rem" },
 };
 
+export const containerSx = {
+  px: { xs: 2, md: 3 },
+};
+
 export const centerBoxSx = {
   flex: 1,
   display: "flex",

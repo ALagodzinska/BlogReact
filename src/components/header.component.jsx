@@ -20,6 +20,7 @@ import {
   rightBoxSx,
   buttonSx,
   linkSx,
+  containerSx
 } from "../styles/components/header.styles";
 
 function Header({ title = "BLOG" }) {
@@ -27,7 +28,7 @@ function Header({ title = "BLOG" }) {
   const navigate = useNavigate();
   return (
   <Toolbar sx={toolbarSx}>
-      <Container maxWidth="md" disableGutters>
+  <Container maxWidth="md" sx={containerSx}>
     <Stack direction="row" alignItems="center" sx={stackSx}>
           <Typography
             component={Link}

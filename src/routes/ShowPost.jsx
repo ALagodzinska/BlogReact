@@ -1,4 +1,4 @@
-import { Button, Container, IconButton, LinearProgress } from "@mui/material";
+import { Button, Box, Container, IconButton, LinearProgress } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PostHeader from "../components/postHeader.component";
@@ -38,8 +38,8 @@ function ShowPost() {
       {!post || loading ? (
         <LinearProgress />
       ) : (
-        <Container maxWidth="lg" sx={{ mt: 3 }}>
-          <Container>
+        <Container maxWidth="md" sx={{ mt: 3 }}>
+          <Box>
             <IconButton component={Link} to="/posts">
               <UndoIcon />
             </IconButton>
@@ -49,7 +49,7 @@ function ShowPost() {
               dangerouslySetInnerHTML={{ __html: post.content }}
             ></div>
             {/*<ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> - alternative*/}
-          </Container>
+          </Box>
         </Container>
       )}
     </Fragment>

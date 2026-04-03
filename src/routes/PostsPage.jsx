@@ -74,7 +74,7 @@ function PostsPage() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <Stack justifyContent="flex-end" direction="row" py={3}>
         {user && (
           <Button component={Link} to="/add" color="primary" variant="outlined">
