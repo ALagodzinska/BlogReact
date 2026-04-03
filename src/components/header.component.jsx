@@ -12,91 +12,64 @@ import { Fragment, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../user.context";
 import { logoutUser } from "../user.actions";
+import {
+  toolbarSx,
+  stackSx,
+  titleSx,
+  centerBoxSx,
+  rightBoxSx,
+  buttonSx,
+  linkSx,
+} from "../styles/components/header.styles";
 
 function Header({ title = "BLOG" }) {
   const [user, setUser, loading] = useContext(UserContext);
   const navigate = useNavigate();
   return (
-    <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
+  <Toolbar sx={toolbarSx}>
       <Container maxWidth="md" disableGutters>
-        <Stack direction="row" justifyContent="space-between">
+    <Stack direction="row" alignItems="center" sx={stackSx}>
           <Typography
             component={Link}
             to="/"
-            sx={{
-              mr: 2,
-              mt: 1,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-              cursor: "pointer",
-            }}
+      sx={titleSx}
           >
             {title}
           </Typography>
-          <Box>
-            <Typography
-              component={Link}
-              to="/posts"
-              sx={{
-                mt: 1,
-                mr: 3,
-                textDecoration: "none",
-                cursor: "pointer",
-                color: "inherit",
-              }}
-            >
-              POSTS
-            </Typography>
-            {user && (
-              <Typography
-                component={Link}
-                to="/restore"
-                sx={{
-                  mt: 1,
-                  mr: 3,
-                  textDecoration: "none",
-                  cursor: "pointer",
-                  color: "inherit",
-                }}
-              >
-                RESTORE POST
-              </Typography>
-            )}
+
+          <Box sx={centerBoxSx}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Button component={Link} to="/posts" color="inherit" size="small" sx={buttonSx} disableElevation disableRipple>
+                <span className="navLabel">POSTS</span>
+              </Button>
+              {user && (
+                <Button component={Link} to="/restore" color="inherit" size="small" sx={buttonSx} disableElevation disableRipple>
+                  <span className="navLabel">RESTORE POST</span>
+                </Button>
+              )}
+            </Stack>
           </Box>
-          <Box>
+
+          <Box sx={rightBoxSx}>
             {user ? (
-              <Typography
-                sx={{
-                  mt: 1,
-                  textDecoration: "none",
-                  cursor: "pointer",
-                  color: "inherit",
-                }}
+              <Button
+                color="inherit"
+                size="small"
+                sx={buttonSx}
+                disableElevation
+                disableRipple
                 onClick={() => {
                   logoutUser();
                   setUser(null);
                   navigate("/");
                 }}
               >
-                LOGOUT
-              </Typography>
+                <span className="navLabel">LOGOUT</span>
+              </Button>
             ) : (
-              <Typography
-                component={Link}
-                to="/login"
-                sx={{
-                  mt: 1,
-                  textDecoration: "none",
-                  cursor: "pointer",
-                  color: "inherit",
-                }}
-              >
-                LOGIN
-              </Typography>
+              <Button component={Link} to="/login" color="inherit" size="small" sx={buttonSx} disableElevation disableRipple>
+                <span className="navLabel">LOGIN</span>
+              </Button>
             )}
           </Box>
         </Stack>
