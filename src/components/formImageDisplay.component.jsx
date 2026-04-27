@@ -2,13 +2,20 @@ import { Box } from "@mui/material";
 import { IMAGE_TYPE } from "../constants";
 
 function FormImageDisplay({ imgSrc, clearImageHandler, imgType }) {
+  const isBackgroundImage = imgType === IMAGE_TYPE.BACKGROUND;
+
   return (
     <Box>
       <Box sx={{ pt: 3 }}>
         <img
           alt="not found"
-          width={imgType === IMAGE_TYPE.BACKGROUND ? "350px" : null}
-          height={imgType === IMAGE_TYPE.PREVIEW ? "80px" : null}
+          style={{
+            display: "block",
+            width: isBackgroundImage ? "100%" : "auto",
+            maxWidth: "100%",
+            maxHeight: isBackgroundImage ? "90px" : "80px",
+            objectFit: "contain",
+          }}
           src={imgSrc}
         />
       </Box>

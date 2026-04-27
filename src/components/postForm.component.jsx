@@ -87,15 +87,17 @@ function PostForm({
   };
 
   const submitLabel = formType === FORM_TYPE.UPDATE ? "Save Changes" : "Publish Post";
+  const isUpdateForm = formType === FORM_TYPE.UPDATE;
 
   return (
-    <Container maxWidth="md" sx={styles.container}>
+    <Container maxWidth={isUpdateForm ? false : "md"} sx={styles.container}>
+      <Box sx={isUpdateForm ? styles.editLayout : undefined}>
       <Box sx={styles.shell}>
         <Typography sx={styles.headerTitle}>
-          {formType === FORM_TYPE.UPDATE ? "Edit Post" : "Create New Post"}
+          {isUpdateForm ? "Edit Post" : "Create New Post"}
         </Typography>
         <Typography sx={styles.headerSubtitle}>
-          {formType === FORM_TYPE.UPDATE
+          {isUpdateForm
             ? "Update your content and visuals before publishing changes."
             : "Write your story, upload images, and publish when you're ready."}
         </Typography>
@@ -189,6 +191,30 @@ function PostForm({
           </Button>
           </Stack>
         </form>
+      </Box>
+        {isUpdateForm && (
+          <Box sx={styles.feedbackPanel}>
+            <Button
+              variant="outlined"
+              sx={styles.feedbackButton}
+              type="button"
+              disabled={loading}
+            >
+              Get Feedback
+            </Button>
+            <TextField
+              label="Feedback"
+              placeholder="Feedback will appear here after you request it."
+              multiline
+              minRows={10}
+              fullWidth
+              sx={styles.feedbackField}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          </Box>
+        )}
       </Box>
     </Container>
   );
