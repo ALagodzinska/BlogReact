@@ -194,7 +194,17 @@ function PostForm({
         </form>
       </Box>
         {isUpdateForm && (
-          <PostFeedback content={inputFields.content} loading={loading} />
+          <PostFeedback
+            title={inputFields.title}
+            content={inputFields.content}
+            loading={loading}
+            onSelectTitle={(title) => {
+              setInputFields((inputFields) => {
+                return { ...inputFields, title };
+              });
+              if (errors.title) delete errors.title;
+            }}
+          />
         )}
       </Box>
     </Container>

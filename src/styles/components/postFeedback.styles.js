@@ -29,6 +29,11 @@ const styles = {
       backgroundColor: "rgba(79, 111, 93, 0.08)",
     },
   },
+  buttonRow: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 1.25,
+  },
   buttonSpinner: {
     mr: 1,
     color: "inherit",
@@ -58,6 +63,11 @@ const styles = {
   emptyFeedback: {
     color: "text.secondary",
     fontStyle: "italic",
+    fontSize: "0.95rem",
+  },
+  errorText: {
+    color: "error.main",
+    fontWeight: 600,
     fontSize: "0.95rem",
   },
   loadingFeedback: {
@@ -95,6 +105,29 @@ const styles = {
     textTransform: "uppercase",
     letterSpacing: "0.04em",
     mb: 1.5,
+  },
+  titleSuggestions: {
+    pb: 2.25,
+    mb: 2.25,
+    borderBottom: "1px solid rgba(44, 77, 59, 0.14)",
+  },
+  titleSuggestionButton: {
+    display: "block",
+    width: "100%",
+    justifyContent: "flex-start",
+    textAlign: "left",
+    textTransform: "none",
+    color: "#17261f",
+    borderRadius: 2,
+    py: 1,
+    px: 1.25,
+    fontFamily: '"Inter", "Segoe UI", sans-serif',
+    fontSize: "0.95rem",
+    fontWeight: 700,
+    lineHeight: 1.35,
+    "&:hover": {
+      backgroundColor: "rgba(79, 111, 93, 0.09)",
+    },
   },
   suggestionItem: {
     mb: 2.5,
