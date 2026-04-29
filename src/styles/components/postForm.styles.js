@@ -97,60 +97,6 @@ const styles = {
     fontSize: 12,
     mt: 0.2,
   },
-  feedbackPanel: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 2,
-    borderRadius: 3,
-    border: "1px solid rgba(18, 48, 33, 0.12)",
-    backgroundColor: "rgba(255,255,255,0.9)",
-    boxShadow: "0 12px 28px rgba(13, 38, 27, 0.08)",
-    p: { xs: 2, md: 3 },
-    position: { lg: "sticky" },
-    top: { lg: 88 },
-    minWidth: 0,
-    height: "100%",
-  },
-  feedbackButton: {
-    textTransform: "none",
-    fontWeight: 700,
-    borderRadius: 99,
-    px: 2.5,
-    py: 0.85,
-    color: "#355746",
-    borderColor: "rgba(53, 87, 70, 0.45)",
-    "&:hover": {
-      borderColor: "#355746",
-      backgroundColor: "rgba(79, 111, 93, 0.08)",
-    },
-  },
-  feedbackField: {
-    flex: 1,
-    display: "flex",
-    "& .MuiOutlinedInput-root": {
-      borderRadius: 2.5,
-      bgcolor: "#fcfdfc",
-      alignItems: "flex-start",
-      flex: 1,
-      width: "100%",
-      "& fieldset": {
-        borderColor: "rgba(44, 77, 59, 0.24)",
-      },
-      "&:hover fieldset": {
-        borderColor: "rgba(44, 77, 59, 0.42)",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#4f6f5d",
-      },
-    },
-    "& .MuiInputLabel-root.Mui-focused": {
-      color: "#355746",
-    },
-    "& .MuiInputBase-input.MuiInputBase-inputMultiline": {
-      minHeight: 0,
-    },
-  },
   submitButton: {
     mt: 1.3,
     textTransform: "none",

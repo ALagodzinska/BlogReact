@@ -1,0 +1,122 @@
+const styles = {
+  feedbackPanel: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: 2,
+    borderRadius: 3,
+    border: "1px solid rgba(18, 48, 33, 0.12)",
+    backgroundColor: "rgba(255,255,255,0.9)",
+    boxShadow: "0 12px 28px rgba(13, 38, 27, 0.08)",
+    p: { xs: 2, md: 3 },
+    position: { lg: "sticky" },
+    top: { lg: 88 },
+    minWidth: 0,
+    height: "100%",
+  },
+  feedbackButton: {
+    display: "inline-flex",
+    alignItems: "center",
+    textTransform: "none",
+    fontWeight: 700,
+    borderRadius: 99,
+    px: 2.5,
+    py: 0.85,
+    color: "#355746",
+    borderColor: "rgba(53, 87, 70, 0.45)",
+    "&:hover": {
+      borderColor: "#355746",
+      backgroundColor: "rgba(79, 111, 93, 0.08)",
+    },
+  },
+  buttonSpinner: {
+    mr: 1,
+    color: "inherit",
+  },
+  feedbackField: {
+    width: "100%",
+    flex: 1,
+    minHeight: 0,
+    overflow: "auto",
+    borderRadius: 2.5,
+    bgcolor: "#fcfdfc",
+    border: "1px solid rgba(44, 77, 59, 0.24)",
+    p: 2.25,
+    fontFamily: '"Inter", "Segoe UI", sans-serif',
+    lineHeight: 1.55,
+    "&:focus": {
+      outline: "2px solid rgba(79, 111, 93, 0.28)",
+      outlineOffset: 2,
+    },
+  },
+  feedbackLabel: {
+    color: "text.secondary",
+    fontSize: "0.78rem",
+    fontWeight: 600,
+    mb: 1.5,
+  },
+  emptyFeedback: {
+    color: "text.secondary",
+    fontStyle: "italic",
+    fontSize: "0.95rem",
+  },
+  loadingFeedback: {
+    width: "100%",
+  },
+  feedbackProgress: {
+    height: 6,
+    borderRadius: 99,
+    backgroundColor: "rgba(79, 111, 93, 0.12)",
+    "& .MuiLinearProgress-bar": {
+      backgroundColor: "#4f6f5d",
+    },
+  },
+  loadingText: {
+    mt: 1.5,
+    color: "text.secondary",
+    fontStyle: "italic",
+    fontSize: "0.95rem",
+  },
+  summary: {
+    fontFamily: '"Inter", "Segoe UI", sans-serif',
+    fontSize: "1rem",
+    lineHeight: 1.65,
+    fontStyle: "italic",
+    color: "#20342a",
+  },
+  suggestions: {
+    mt: 3,
+  },
+  suggestionsTitle: {
+    fontFamily: '"Inter", "Segoe UI", sans-serif',
+    fontSize: "0.9rem",
+    fontWeight: 800,
+    color: "#355746",
+    textTransform: "uppercase",
+    letterSpacing: "0.04em",
+    mb: 1.5,
+  },
+  suggestionItem: {
+    mb: 2.5,
+  },
+  issue: {
+    fontFamily: '"Inter", "Segoe UI", sans-serif',
+    fontSize: "1rem",
+    fontWeight: 800,
+    lineHeight: 1.45,
+    color: "#17261f",
+    mb: 0.5,
+  },
+  suggestionText: {
+    fontFamily: '"Inter", "Segoe UI", sans-serif',
+    fontSize: "0.98rem",
+    lineHeight: 1.6,
+    color: "#263c31",
+  },
+  suggestionLabel: {
+    fontWeight: 800,
+    color: "#355746",
+  },
+};
+
+export default styles;
