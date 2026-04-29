@@ -12,6 +12,7 @@ import { FORM_TYPE, IMAGE_TYPE } from "../constants";
 import FormImageDisplay from "./formImageDisplay.component";
 import ImageResize from "quill-image-resize-module-react";
 import styles from "../styles/components/postForm.styles";
+import PostFeedback from "./postFeedback.component";
 
 Quill.register("modules/imageResize", ImageResize);
 
@@ -193,27 +194,17 @@ function PostForm({
         </form>
       </Box>
         {isUpdateForm && (
-          <Box sx={styles.feedbackPanel}>
-            <Button
-              variant="outlined"
-              sx={styles.feedbackButton}
-              type="button"
-              disabled={loading}
-            >
-              Get Feedback
-            </Button>
-            <TextField
-              label="Feedback"
-              placeholder="Feedback will appear here after you request it."
-              multiline
-              minRows={10}
-              fullWidth
-              sx={styles.feedbackField}
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-          </Box>
+          <PostFeedback
+            title={inputFields.title}
+            content={inputFields.content}
+            loading={loading}
+            onSelectTitle={(title) => {
+              setInputFields((inputFields) => {
+                return { ...inputFields, title };
+              });
+              if (errors.title) delete errors.title;
+            }}
+          />
         )}
       </Box>
     </Container>
