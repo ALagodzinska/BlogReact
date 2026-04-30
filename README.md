@@ -2,6 +2,8 @@
 
 <img width="419" height="448" alt="blog" src="https://github.com/user-attachments/assets/04e09c90-f429-480b-9ee4-f59c78ec7895" />
 
+<img width="1280" height="720" alt="demoO_compressed (1)" src="https://github.com/user-attachments/assets/f5f00799-ae0d-49cd-a41a-28b70a784f8d" />
+
 ## Overview
 This project is a full-stack blog platform built with a **.NET Web API backend** and a **React frontend**.  
 The application allows visitors to browse blog posts while an authenticated admin user can manage the blog content.
