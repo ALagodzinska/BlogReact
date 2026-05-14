@@ -58,14 +58,16 @@ function EditPost() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    await validateUser(setUser);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);
     const isValid = Object.keys(localErrors).length === 0;
-    if (isValid) {
-      finishSubmit();
+    if (!isValid) {
+      return;
     }
+
+    setLoading(true);
+    await validateUser(setUser);
+    await finishSubmit();
   };
 
   const finishSubmit = async () => {
@@ -141,6 +143,7 @@ function EditPost() {
         setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         alertMsg.openMessage({
           message: POST_LOADING_ERROR,
           type: ALERT_MESSAGE_TYPE.ERROR,
