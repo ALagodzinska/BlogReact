@@ -90,10 +90,15 @@ function PostForm({
   const submitLabel =
     formType === FORM_TYPE.UPDATE ? "Save Changes" : "Publish Post";
   const isUpdateForm = formType === FORM_TYPE.UPDATE;
+  const showWritingAssistant =
+    formType === FORM_TYPE.CREATE || formType === FORM_TYPE.UPDATE;
 
   return (
-    <Container maxWidth={isUpdateForm ? false : "md"} sx={styles.container}>
-      <Box sx={isUpdateForm ? styles.editLayout : undefined}>
+    <Container
+      maxWidth={showWritingAssistant ? false : "md"}
+      sx={styles.container}
+    >
+      <Box sx={showWritingAssistant ? styles.editLayout : undefined}>
         <Box sx={styles.shell}>
           <Typography sx={styles.headerTitle}>
             {isUpdateForm ? "Edit Post" : "Create New Post"}
@@ -196,7 +201,7 @@ function PostForm({
             </Stack>
           </form>
         </Box>
-        {isUpdateForm && (
+        {showWritingAssistant && (
           <PostFeedback
             title={inputFields.title}
             content={inputFields.content}
