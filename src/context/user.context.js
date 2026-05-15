@@ -17,9 +17,8 @@ export const UserProvider = ({ children }) => {
         if (!localStorageUser) window.localStorage.clear();
         setLoading(false);
       } catch (error) {
-        setLoading(false);
-        console.log("YOU ARE LOGGED OUT JUST BECAUSE!");
         console.error(error);
+        setLoading(false);
         setUser(null);
         window.localStorage.clear();
       }
