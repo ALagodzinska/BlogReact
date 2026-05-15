@@ -3,9 +3,9 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PostHeader from "../components/postHeader.component";
 import { fetchPost } from "../services/postService";
-import { ALERT_MESSAGE_TYPE, POST_LOADING_ERROR } from "../constants";
+import { ALERT_MESSAGE_TYPE, POST_LOADING_ERROR } from "../utils/constants";
 import AlertMessage from "../components/alertMessage.component";
-import { useAlertMessage } from "../useAlertMessage";
+import { useAlertMessage } from "../hooks/useAlertMessage";
 import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import styles from "../styles/pages/showPost.styles";
 

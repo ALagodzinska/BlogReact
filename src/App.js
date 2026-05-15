@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ShowPost from "./routes/ShowPost";
 import AddPost from "./routes/AddPost";
@@ -10,7 +10,7 @@ import {
   PrivateRouteLoggedOut,
 } from "./components/privateRoutes.component";
 import RestorePost from "./routes/RestorePost";
-import Layout from "./Layout";
+import Layout from "./components/layout/Layout";
 import MainPage from "./routes/MainPage";
 import PostsPage from "./routes/PostsPage";
 

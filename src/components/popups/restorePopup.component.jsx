@@ -1,20 +1,24 @@
 import * as React from "react";
-import { getUserFromLocalStorage, validateUser } from "../services/userService";
-import UserContext from "../context/user.context";
-import { deletePost } from "../services/postService";
+
+import {
+  getUserFromLocalStorage,
+  validateUser,
+} from "../../services/userService";
+import UserContext from "../../context/user.context";
+import { restorePost } from "../../services/postService";
 import {
   ALERT_MESSAGE_TYPE,
-  DELETE_ERROR,
-  DELETE_SUCCESSFUL_MESSAGE,
   POPUP_TYPE,
-} from "../constants";
+  RESTORE_ERROR,
+  RESTORE_SUCCESSFUL_MESSAGE,
+} from "../../utils/constants";
 import PopupBase from "./popupBase.component";
 
-export default function DeletePopup({
+export default function RestorePopup({
   open,
   setOpen,
   postId,
-  refreshPostsAction,
+  refreshPostsMethod,
 }) {
   const [, setUser] = React.useContext(UserContext);
 
@@ -24,37 +28,37 @@ export default function DeletePopup({
     type: null,
   });
 
-  const deleteRequest = (postId) => {
+  const restoreSelectedPost = (postId) => {
     setLoading(true);
     const token = getUserFromLocalStorage()?.accessToken;
 
-    deletePost(postId, token)
+    restorePost(postId, token)
       .then((postId) => {
-        console.log(postId);
         setLoading(false);
         setAlertMessage({
-          message: DELETE_SUCCESSFUL_MESSAGE,
+          message: RESTORE_SUCCESSFUL_MESSAGE,
           type: ALERT_MESSAGE_TYPE.SUCCESS,
         });
+        console.log(postId);
       })
       .then(
         setTimeout(() => {
-          refreshPostsAction();
+          refreshPostsMethod();
         }, 2500),
       )
       .catch((error) => {
         console.error(error);
         setLoading(false);
         setAlertMessage({
-          message: DELETE_ERROR,
+          message: RESTORE_ERROR,
           type: ALERT_MESSAGE_TYPE.ERROR,
         });
       });
   };
 
-  const deletePostAction = () => {
+  const restorePostAction = () => {
     validateUser(setUser);
-    deleteRequest(postId);
+    restoreSelectedPost(postId);
     setTimeout(() => {
       setOpen(false);
       setAlertMessage({
@@ -68,11 +72,11 @@ export default function DeletePopup({
     <PopupBase
       loading={loading}
       alertMessage={alertMessage}
-      title={POPUP_TYPE.DELETE}
+      title={POPUP_TYPE.RESTORE}
       postId={postId}
       open={open}
       setOpen={setOpen}
-      popupAction={deletePostAction}
+      popupAction={restorePostAction}
     />
   );
 }

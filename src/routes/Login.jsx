@@ -11,7 +11,10 @@ import { useContext, useState } from "react";
 import UserContext from "../context/user.context";
 import { useNavigate } from "react-router-dom";
 import { getLoggedInUser } from "../services/userService";
-import { EMAIL_ERROR_MESSAGE, PASSWORD_ERROR_MESSAGE } from "../constants";
+import {
+  EMAIL_ERROR_MESSAGE,
+  PASSWORD_ERROR_MESSAGE,
+} from "../utils/constants";
 import styles from "../styles/pages/login.styles";
 
 const validateValues = (email, password) => {

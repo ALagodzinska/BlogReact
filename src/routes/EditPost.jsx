@@ -12,13 +12,13 @@ import {
   POST_LOADING_ERROR,
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
-} from "../constants";
+} from "../utils/constants";
 import PostForm from "../components/postForm.component";
 import { getUserFromLocalStorage, validateUser } from "../services/userService";
 import UserContext from "../context/user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
-import { useAlertMessage } from "../useAlertMessage";
+import { useAlertMessage } from "../hooks/useAlertMessage";
 function EditPost() {
   const [, setUser] = useContext(UserContext);
 

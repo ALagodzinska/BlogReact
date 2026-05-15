@@ -21,7 +21,7 @@ import {
 } from "../services/postService";
 import { getUserFromLocalStorage } from "../services/userService";
 import RestoreIcon from "@mui/icons-material/Restore";
-import RestorePopup from "../components/restorePopup.component";
+import RestorePopup from "../components/popups/restorePopup.component";
 import styles from "../styles/pages/restorePost.styles";
 
 function RestorePost() {

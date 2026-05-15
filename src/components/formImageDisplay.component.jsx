@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { IMAGE_TYPE } from "../constants";
+import { IMAGE_TYPE } from "../utils/constants";
 
 function FormImageDisplay({ imgSrc, clearImageHandler, imgType }) {
   const isBackgroundImage = imgType === IMAGE_TYPE.BACKGROUND;

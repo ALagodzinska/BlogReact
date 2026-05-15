@@ -12,7 +12,7 @@ import HomePost from "../components/homePost.component";
 import UserContext from "../context/user.context";
 import { fetchPageCount, fetchPosts } from "../services/postService";
 import SkeletonHomePost from "../loading_components/skeleton_HomePost.component";
-import { POSTS_LIST_ERROR, POSTS_PER_PAGE } from "../constants";
+import { POSTS_LIST_ERROR, POSTS_PER_PAGE } from "../utils/constants";
 
 function PostsPage() {
   const [posts, setPosts] = useState([]);

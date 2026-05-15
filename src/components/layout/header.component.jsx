@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import UserContext from "../context/user.context";
-import { logoutUser } from "../services/userService";
+import UserContext from "../../context/user.context";
+import { logoutUser } from "../../services/userService";
 import {
   toolbarSx,
   stackSx,
@@ -18,7 +18,7 @@ import {
   rightBoxSx,
   buttonSx,
   containerSx,
-} from "../styles/components/header.styles";
+} from "../../styles/components/header.styles";
 
 function Header({ title = "BLOG" }) {
   const [user, setUser, loading] = useContext(UserContext);

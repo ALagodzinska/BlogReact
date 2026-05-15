@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import ImageInput from "./imageInput.component";
 import ReactQuill, { Quill } from "react-quill";
-import { FORM_TYPE, IMAGE_TYPE } from "../constants";
+import { FORM_TYPE, IMAGE_TYPE } from "../utils/constants";
 import FormImageDisplay from "./formImageDisplay.component";
 import ImageResize from "quill-image-resize-module-react";
 import styles from "../styles/components/postForm.styles";
@@ -87,112 +87,115 @@ function PostForm({
     });
   };
 
-  const submitLabel = formType === FORM_TYPE.UPDATE ? "Save Changes" : "Publish Post";
+  const submitLabel =
+    formType === FORM_TYPE.UPDATE ? "Save Changes" : "Publish Post";
   const isUpdateForm = formType === FORM_TYPE.UPDATE;
 
   return (
     <Container maxWidth={isUpdateForm ? false : "md"} sx={styles.container}>
       <Box sx={isUpdateForm ? styles.editLayout : undefined}>
-      <Box sx={styles.shell}>
-        <Typography sx={styles.headerTitle}>
-          {isUpdateForm ? "Edit Post" : "Create New Post"}
-        </Typography>
-        <Typography sx={styles.headerSubtitle}>
-          {isUpdateForm
-            ? "Update your content and visuals before publishing changes."
-            : "Write your story, upload images, and publish when you're ready."}
-        </Typography>
-        <form autoComplete="off" onSubmit={handleSubmit}>
-          <Stack spacing={2} sx={styles.formStack}>
-          <TextField
-            id="title"
-            sx={styles.titleField}
-            label="Blog Title"
-            name="title"
-            value={inputFields.title}
-            onChange={handleTitleChange}
-            error={!!errors.title}
-            helperText={errors.title}
-            fullWidth
-          />
-          <Stack
-            sx={styles.imageRow}
-          >
-            <Box sx={styles.imageBox}>
-              {inputFields.backgroundImgLink ? (
-                <Box>
-                  <Typography sx={styles.imageLabel}>Background Image</Typography>
-                  <FormImageDisplay
-                    imgSrc={inputFields.backgroundImgLink}
-                    clearImageHandler={clearBackgroundImageHandler}
-                    imgType={IMAGE_TYPE.BACKGROUND}
-                  />
+        <Box sx={styles.shell}>
+          <Typography sx={styles.headerTitle}>
+            {isUpdateForm ? "Edit Post" : "Create New Post"}
+          </Typography>
+          <Typography sx={styles.headerSubtitle}>
+            {isUpdateForm
+              ? "Update your content and visuals before publishing changes."
+              : "Write your story, upload images, and publish when you're ready."}
+          </Typography>
+          <form autoComplete="off" onSubmit={handleSubmit}>
+            <Stack spacing={2} sx={styles.formStack}>
+              <TextField
+                id="title"
+                sx={styles.titleField}
+                label="Blog Title"
+                name="title"
+                value={inputFields.title}
+                onChange={handleTitleChange}
+                error={!!errors.title}
+                helperText={errors.title}
+                fullWidth
+              />
+              <Stack sx={styles.imageRow}>
+                <Box sx={styles.imageBox}>
+                  {inputFields.backgroundImgLink ? (
+                    <Box>
+                      <Typography sx={styles.imageLabel}>
+                        Background Image
+                      </Typography>
+                      <FormImageDisplay
+                        imgSrc={inputFields.backgroundImgLink}
+                        clearImageHandler={clearBackgroundImageHandler}
+                        imgType={IMAGE_TYPE.BACKGROUND}
+                      />
+                    </Box>
+                  ) : (
+                    <ImageInput
+                      title="Background Image"
+                      setSelectedImage={handleBackgroundImgChange}
+                      error={errors.backgroundImg}
+                      selectedImage={inputFields.backgroundImg}
+                      previewImg={inputFields.backgroundImgPreview}
+                      imageType={IMAGE_TYPE.BACKGROUND}
+                    />
+                  )}
                 </Box>
-              ) : (
-                <ImageInput
-                  title="Background Image"
-                  setSelectedImage={handleBackgroundImgChange}
-                  error={errors.backgroundImg}
-                  selectedImage={inputFields.backgroundImg}
-                  previewImg={inputFields.backgroundImgPreview}
-                  imageType={IMAGE_TYPE.BACKGROUND}
-                />
-              )}
-            </Box>
-            <Box sx={styles.imageBox}>
-              {inputFields.previewImgLink ? (
-                <Box>
-                  <Typography sx={styles.imageLabel}>Preview Image</Typography>
-                  <FormImageDisplay
-                    imgSrc={inputFields.previewImgLink}
-                    clearImageHandler={clearPreviewImageHandler}
-                    imgType={IMAGE_TYPE.PREVIEW}
-                  />
+                <Box sx={styles.imageBox}>
+                  {inputFields.previewImgLink ? (
+                    <Box>
+                      <Typography sx={styles.imageLabel}>
+                        Preview Image
+                      </Typography>
+                      <FormImageDisplay
+                        imgSrc={inputFields.previewImgLink}
+                        clearImageHandler={clearPreviewImageHandler}
+                        imgType={IMAGE_TYPE.PREVIEW}
+                      />
+                    </Box>
+                  ) : (
+                    <ImageInput
+                      title="Preview Image"
+                      setSelectedImage={handlePreviewImgChange}
+                      error={errors.previewImg}
+                      selectedImage={inputFields.previewImg}
+                      previewImg={inputFields.previewImgPreview}
+                      imageType={IMAGE_TYPE.PREVIEW}
+                    />
+                  )}
                 </Box>
-              ) : (
-                <ImageInput
-                  title="Preview Image"
-                  setSelectedImage={handlePreviewImgChange}
-                  error={errors.previewImg}
-                  selectedImage={inputFields.previewImg}
-                  previewImg={inputFields.previewImgPreview}
-                  imageType={IMAGE_TYPE.PREVIEW}
+              </Stack>
+
+              <Box sx={styles.editorWrap}>
+                <ReactQuill
+                  theme="snow"
+                  value={inputFields.content}
+                  onChange={handleContentChange}
+                  modules={{
+                    toolbar: toolbarOptions,
+                    imageResize: {
+                      parchment: Quill.import("parchment"),
+                      modules: ["Resize", "DisplaySize"],
+                    },
+                  }}
                 />
+              </Box>
+              {errors.content && (
+                <Typography sx={styles.contentError}>
+                  {errors.content}
+                </Typography>
               )}
-            </Box>
-          </Stack>
 
-          <Box sx={styles.editorWrap}>
-            <ReactQuill
-              theme="snow"
-              value={inputFields.content}
-              onChange={handleContentChange}
-              modules={{
-                toolbar: toolbarOptions,
-                imageResize: {
-                  parchment: Quill.import("parchment"),
-                  modules: ["Resize", "DisplaySize"],
-                },
-              }}
-            />
-          </Box>
-          {errors.content && (
-            <Typography sx={styles.contentError}>
-              {errors.content}
-            </Typography>
-          )}
-
-          <Button
-            variant="contained"
-            sx={styles.submitButton}
-            type="submit"
-            disabled={loading}
-          >
-            {submitLabel}
-          </Button>
-          </Stack>
-        </form>
-      </Box>
+              <Button
+                variant="contained"
+                sx={styles.submitButton}
+                type="submit"
+                disabled={loading}
+              >
+                {submitLabel}
+              </Button>
+            </Stack>
+          </form>
+        </Box>
         {isUpdateForm && (
           <PostFeedback
             title={inputFields.title}
