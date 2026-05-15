@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import HomePost from "../components/homePost.component";
-import UserContext from "../user.context";
+import UserContext from "../context/user.context";
 import { fetchPageCount, fetchPosts } from "../services/postService";
 import SkeletonHomePost from "../loading_components/skeleton_HomePost.component";
 import { POSTS_LIST_ERROR, POSTS_PER_PAGE } from "../constants";

@@ -15,7 +15,7 @@ import {
 } from "../constants";
 import PostForm from "../components/postForm.component";
 import { getUserFromLocalStorage, validateUser } from "../services/userService";
-import UserContext from "../user.context";
+import UserContext from "../context/user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
 import { useAlertMessage } from "../useAlertMessage";

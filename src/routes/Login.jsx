@@ -8,7 +8,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useContext, useState } from "react";
-import UserContext from "../user.context";
+import UserContext from "../context/user.context";
 import { useNavigate } from "react-router-dom";
 import { getLoggedInUser } from "../services/userService";
 import { EMAIL_ERROR_MESSAGE, PASSWORD_ERROR_MESSAGE } from "../constants";

@@ -2,7 +2,7 @@ import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import UserContext from "../user.context";
+import UserContext from "../context/user.context";
 import DeletePopup from "./deletePopup.component";
 import { truncate } from "../services/postService";
 import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";

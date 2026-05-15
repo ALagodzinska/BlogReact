@@ -4,7 +4,7 @@ import ShowPost from "./routes/ShowPost";
 import AddPost from "./routes/AddPost";
 import EditPost from "./routes/EditPost";
 import Login from "./routes/Login";
-import { UserProvider } from "./user.context";
+import { UserProvider } from "./context/user.context";
 import {
   PrivateRouteLoggedIn,
   PrivateRouteLoggedOut,

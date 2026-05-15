@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { getUserFromLocalStorage, validateUser } from "../services/userService";
-import UserContext from "../user.context";
+import UserContext from "../context/user.context";
 import { restorePost } from "../services/postService";
 import {
   ALERT_MESSAGE_TYPE,

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import UserContext from "../user.context";
+import UserContext from "../context/user.context";
 import PopupBase from "./popupBase.component";
 import {
   ALERT_MESSAGE_TYPE,

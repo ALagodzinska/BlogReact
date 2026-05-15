@@ -15,7 +15,7 @@ import {
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
 } from "../constants";
-import UserContext from "../user.context";
+import UserContext from "../context/user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
 import { useAlertMessage } from "../useAlertMessage";
