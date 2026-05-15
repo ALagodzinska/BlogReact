@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import { useContext, useState } from "react";
 import UserContext from "../user.context";
 import { useNavigate } from "react-router-dom";
-import { getLoggedInUser } from "../user.actions";
+import { getLoggedInUser } from "../services/userService";
 import { EMAIL_ERROR_MESSAGE, PASSWORD_ERROR_MESSAGE } from "../constants";
 import styles from "../styles/pages/login.styles";
 
@@ -68,12 +68,15 @@ function Login() {
           <Typography sx={styles.subtitle}>
             Access your dashboard and continue writing.
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={styles.form}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={styles.form}
+          >
             <Box sx={styles.errorBox}>
               {userError && (
-                <Typography sx={styles.errorText}>
-                  No user found.
-                </Typography>
+                <Typography sx={styles.errorText}>No user found.</Typography>
               )}
             </Box>
             <TextField

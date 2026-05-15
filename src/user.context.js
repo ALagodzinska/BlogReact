@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { getValidUser, validateUser } from "./user.actions";
+import { getValidUser, validateUser } from "./services/userService";
 
 const UserContext = createContext(null);
 

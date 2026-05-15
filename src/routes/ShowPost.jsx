@@ -2,7 +2,7 @@ import { Box, Button, Container, LinearProgress } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PostHeader from "../components/postHeader.component";
-import { fetchPost } from "../post.actions";
+import { fetchPost } from "../services/postService";
 import { ALERT_MESSAGE_TYPE, POST_LOADING_ERROR } from "../constants";
 import AlertMessage from "../components/alertMessage.component";
 import { useAlertMessage } from "../useAlertMessage";
@@ -42,11 +42,7 @@ function ShowPost() {
         <Box sx={styles.pageWrap}>
           <Container maxWidth="md" sx={styles.container}>
             <PostHeader post={post} />
-            <Box
-              component="div"
-              className="ql-editor"
-              sx={styles.article}
-            >
+            <Box component="div" className="ql-editor" sx={styles.article}>
               <Box
                 component="div"
                 sx={styles.articleContent}

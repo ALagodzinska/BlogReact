@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchPost, getBase64, updatePost } from "../post.actions";
+import { fetchPost, getBase64, updatePost } from "../services/postService";
 import {
   ALERT_MESSAGE_TYPE,
   BACKGROUND_IMG_ERROR_MESSAGE,
@@ -14,7 +14,7 @@ import {
   TITLE_ERROR_MESSAGE,
 } from "../constants";
 import PostForm from "../components/postForm.component";
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
+import { getUserFromLocalStorage, validateUser } from "../services/userService";
 import UserContext from "../user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
@@ -107,7 +107,7 @@ function EditPost() {
         previewImgString,
         backgroundImgFormat,
         previewImgFormat,
-        token
+        token,
       );
       alertMsg.openMessage({
         message: EDIT_SUCCESSFUL_MESSAGE,

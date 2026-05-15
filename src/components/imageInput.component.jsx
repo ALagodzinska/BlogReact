@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import FormImageDisplay from "./formImageDisplay.component";
-import { fetchBackgroundImage } from "../image.actions";
-import { getBase64 } from "../post.actions";
+import { fetchBackgroundImage } from "../services/imageService";
+import { getBase64 } from "../services/postService";
 
 function ImageInput({
   title,
@@ -20,7 +20,7 @@ function ImageInput({
     const resizedImage = await fetchBackgroundImage(
       imageString,
       uploadedImage.type,
-      imageType
+      imageType,
     );
     setSelectedImage(uploadedImage, resizedImage);
   };

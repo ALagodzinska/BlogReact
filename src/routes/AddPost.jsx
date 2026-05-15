@@ -1,8 +1,8 @@
 import React, { Fragment, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
-import { getBase64, createPost } from "../post.actions";
+import { getUserFromLocalStorage, validateUser } from "../services/userService";
+import { getBase64, createPost } from "../services/postService";
 import PostForm from "../components/postForm.component";
 import {
   ALERT_MESSAGE_TYPE,
@@ -95,7 +95,7 @@ function AddPost() {
       previewImgString,
       backgroundImgType,
       previewImgType,
-      token
+      token,
     )
       .then((postId) => {
         console.log(postId);

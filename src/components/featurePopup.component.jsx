@@ -7,8 +7,8 @@ import {
   FEATURE_SUCCESSFUL_MESSAGE,
   POPUP_TYPE,
 } from "../constants";
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
-import { featurePost } from "../post.actions";
+import { getUserFromLocalStorage, validateUser } from "../services/userService";
+import { featurePost } from "../services/postService";
 
 export default function FeaturePopup({
   open,
@@ -40,7 +40,7 @@ export default function FeaturePopup({
       .then(
         setTimeout(() => {
           refreshPostsAction();
-        }, 2500)
+        }, 2500),
       )
       .catch((error) => {
         console.error(error);

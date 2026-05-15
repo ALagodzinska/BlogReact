@@ -7,7 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import styles from "../styles/components/postFeedback.styles";
-import { generateTitles, getFeedback } from "../writingAssistant.actions";
+import {
+  generateTitles,
+  getFeedback,
+} from "../services/writingAssistantService";
 
 function PostFeedback({ title, content, loading, onSelectTitle }) {
   const [feedbackLoading, setFeedbackLoading] = useState(false);

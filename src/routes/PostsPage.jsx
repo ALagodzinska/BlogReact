@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import HomePost from "../components/homePost.component";
 import UserContext from "../user.context";
-import { fetchPageCount, fetchPosts } from "../post.actions";
+import { fetchPageCount, fetchPosts } from "../services/postService";
 import SkeletonHomePost from "../loading_components/skeleton_HomePost.component";
 import { POSTS_LIST_ERROR, POSTS_PER_PAGE } from "../constants";
 
@@ -108,7 +108,7 @@ function PostsPage() {
         {(loading ? Array.from(new Array(POSTS_PER_PAGE)) : posts).map(
           (post, index) => (
             <Box key={index}>{renderPostContent(post)}</Box>
-          )
+          ),
         )}
       </Stack>
       {pageCount && (

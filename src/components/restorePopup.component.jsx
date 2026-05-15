@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
+import { getUserFromLocalStorage, validateUser } from "../services/userService";
 import UserContext from "../user.context";
-import { restorePost } from "../post.actions";
+import { restorePost } from "../services/postService";
 import {
   ALERT_MESSAGE_TYPE,
   POPUP_TYPE,
@@ -41,7 +41,7 @@ export default function RestorePopup({
       .then(
         setTimeout(() => {
           refreshPostsMethod();
-        }, 2500)
+        }, 2500),
       )
       .catch((error) => {
         console.error(error);

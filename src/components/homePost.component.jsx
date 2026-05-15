@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../user.context";
 import DeletePopup from "./deletePopup.component";
-import { truncate } from "../post.actions";
+import { truncate } from "../services/postService";
 import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
 import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
 import FeaturePopup from "./featurePopup.component";
@@ -27,11 +27,14 @@ function HomePost({ post, refreshPostsAction }) {
     setOpenFeaturePopup(true);
   };
 
-  const formattedDate = new Date(post.creationDate).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  const formattedDate = new Date(post.creationDate).toLocaleDateString(
+    undefined,
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    },
+  );
 
   return (
     <Box>
@@ -60,7 +63,9 @@ function HomePost({ post, refreshPostsAction }) {
               <Box
                 component="div"
                 sx={styles.postPreview}
-                dangerouslySetInnerHTML={{ __html: truncate(post.content, 400) }}
+                dangerouslySetInnerHTML={{
+                  __html: truncate(post.content, 400),
+                }}
               />
             </Box>
             <Box sx={styles.imageColumn}>
@@ -71,9 +76,7 @@ function HomePost({ post, refreshPostsAction }) {
                   alt={post.title}
                   sx={styles.image}
                 />
-                <Box sx={styles.authorBadge}>
-                  {post.user}
-                </Box>
+                <Box sx={styles.authorBadge}>{post.user}</Box>
 
                 {user &&
                   (post.isFeatured ? (
@@ -86,7 +89,9 @@ function HomePost({ post, refreshPostsAction }) {
                       title="Make featured"
                       onClick={openFeatureWindow}
                       variant="contained"
-                      startIcon={<StarOutlineRoundedIcon sx={styles.featureButtonIcon} />}
+                      startIcon={
+                        <StarOutlineRoundedIcon sx={styles.featureButtonIcon} />
+                      }
                       sx={styles.featureButton}
                     >
                       Feature
@@ -105,7 +110,11 @@ function HomePost({ post, refreshPostsAction }) {
               Read More
             </Button>
             {user && (
-              <Stack direction="row" alignItems="center" sx={styles.adminActionGroup}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                sx={styles.adminActionGroup}
+              >
                 <Button
                   component={Link}
                   to={`/edit/${post.blogPostId}`}
@@ -118,7 +127,9 @@ function HomePost({ post, refreshPostsAction }) {
                 <Button
                   variant="outlined"
                   onClick={openDeleteWindow}
-                  startIcon={<DeleteOutlineRoundedIcon sx={styles.adminActionIcon} />}
+                  startIcon={
+                    <DeleteOutlineRoundedIcon sx={styles.adminActionIcon} />
+                  }
                   sx={styles.deleteButton}
                 >
                   Delete

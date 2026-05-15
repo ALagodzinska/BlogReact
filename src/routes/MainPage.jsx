@@ -2,7 +2,7 @@ import { Box, Container } from "@mui/material";
 import SkeletonFeaturedPost from "../loading_components/skeleton_FeaturedPost.component";
 import { Fragment, useEffect, useState } from "react";
 import { useAlertMessage } from "../useAlertMessage";
-import { fetchFeaturedPost, fetchLatestPosts } from "../post.actions";
+import { fetchFeaturedPost, fetchLatestPosts } from "../services/postService";
 import { ALERT_MESSAGE_TYPE, POSTS_LIST_ERROR } from "../constants";
 import FeaturedPost from "../components/featuredPost.component";
 import RecentPosts from "../components/recentPosts.component";
