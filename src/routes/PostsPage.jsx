@@ -28,6 +28,8 @@ function PostsPage() {
 
   const refreshPosts = () => {
     setLoading(true);
+    setLoadingError(null);
+
     Promise.all([fetchPageCount(), fetchPosts(page)])
       .then(([pageCount, posts]) => {
         setPosts(posts);
@@ -44,21 +46,6 @@ function PostsPage() {
 
   useEffect(() => {
     refreshPosts();
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchPosts(page)
-      .then((posts) => {
-        setPosts(posts);
-      })
-      .catch((error) => {
-        setLoadingError(error);
-        console.error("ERROR STATUS CODE", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
   }, [page]);
 
   const renderPostContent = (post) => {
