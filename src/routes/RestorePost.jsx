@@ -43,10 +43,11 @@ function RestorePost() {
       .then(([pageCount, posts]) => {
         setPosts(posts);
         setPageCount(pageCount);
-        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
@@ -54,19 +55,6 @@ function RestorePost() {
   useEffect(() => {
     setLoading(true);
     refreshPosts();
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchDeletedPosts(page, token)
-      .then((posts) => {
-        setPosts(posts);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
   }, [page]);
 
   const [openRestore, setOpenRestore] = useState(false);

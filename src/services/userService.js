@@ -1,5 +1,3 @@
-import { jwtDecode } from "jwt-decode";
-
 async function loginUser(email, password) {
   const response = await fetch("/login", {
     method: "POST",
@@ -13,7 +11,7 @@ async function loginUser(email, password) {
   else {
     if (response.status === 401) {
       throw new Error(
-        `User does not exist. Request failed with status ${response.status}`
+        `User does not exist. Request failed with status ${response.status}`,
       );
     }
   }
@@ -93,7 +91,7 @@ export async function validateUser(setUserContext) {
           "TOKEN IS EXPIRED",
           localStorageUser.expiryDate,
           "NOW",
-          Math.floor(Date.now() / 1000)
+          Math.floor(Date.now() / 1000),
         );
         const response = await refreshToken(localStorageUser.refreshToken);
         console.log("Received refresh token response", response);
@@ -125,7 +123,7 @@ async function refreshToken(refreshToken) {
   else {
     if (response.status === 401) {
       throw new Error(
-        `User does not exist. Request failed with status ${response.status}`
+        `User does not exist. Request failed with status ${response.status}`,
       );
     }
   }
