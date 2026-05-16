@@ -73,11 +73,15 @@ function AddPost() {
     const token = getUserFromLocalStorage()?.accessToken;
     const backgroundImgType = inputFields.backgroundImg.type;
     const previewImgType = inputFields.previewImg.type;
+
     let backgroundImgString;
     let previewImgString;
+
     try {
-      backgroundImgString = await getBase64(inputFields.backgroundImg);
-      previewImgString = await getBase64(inputFields.previewImg);
+      [backgroundImgString, previewImgString] = await Promise.all([
+        getBase64(inputFields.backgroundImg),
+        getBase64(inputFields.previewImg),
+      ]);
     } catch (error) {
       setLoading(false);
       alertMsg.openMessage({
@@ -88,33 +92,35 @@ function AddPost() {
       return;
     }
 
-    createPost(
-      inputFields.title,
-      inputFields.content,
-      backgroundImgString,
-      previewImgString,
-      backgroundImgType,
-      previewImgType,
-      token,
-    )
-      .then((postId) => {
-        console.log(postId);
-        alertMsg.openMessage({
-          message: CREATE_SUCCESSFUL_MESSAGE,
-          type: ALERT_MESSAGE_TYPE.SUCCESS,
-        });
-        setTimeout(() => {
-          navigate("/posts");
-        }, 2500);
-      })
-      .catch((error) => {
-        setLoading(false);
-        alertMsg.openMessage({
-          message: FORM_SUBMISSION_ERROR,
-          type: ALERT_MESSAGE_TYPE.ERROR,
-        });
-        console.error(error);
+    try {
+      const postId = await createPost(
+        inputFields.title,
+        inputFields.content,
+        backgroundImgString,
+        previewImgString,
+        backgroundImgType,
+        previewImgType,
+        token,
+      );
+
+      console.log(postId);
+
+      alertMsg.openMessage({
+        message: CREATE_SUCCESSFUL_MESSAGE,
+        type: ALERT_MESSAGE_TYPE.SUCCESS,
       });
+
+      setTimeout(() => {
+        navigate("/posts");
+      }, 2500);
+    } catch (error) {
+      setLoading(false);
+      alertMsg.openMessage({
+        message: FORM_SUBMISSION_ERROR,
+        type: ALERT_MESSAGE_TYPE.ERROR,
+      });
+      console.error(error);
+    }
   };
 
   return (
