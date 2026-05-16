@@ -21,24 +21,25 @@ function ShowPost() {
     fetchPost(id)
       .then((post) => {
         setPost(post);
-        setLoading(false);
       })
       .catch((error) => {
-        setLoading(false);
         alertMsg.openMessage({
           message: POST_LOADING_ERROR,
           type: ALERT_MESSAGE_TYPE.ERROR,
         });
         console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [id]);
 
   return (
     <Fragment>
       <AlertMessage alertMessage={alertMsg} />
-      {!post || loading ? (
+      {loading ? (
         <LinearProgress />
-      ) : (
+      ) : post ? (
         <Box sx={styles.pageWrap}>
           <Container maxWidth="md" sx={styles.container}>
             <PostHeader post={post} />
@@ -48,7 +49,6 @@ function ShowPost() {
                 sx={styles.articleContent}
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
-              {/*<ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> - alternative*/}
             </Box>
             <Button
               component={Link}
@@ -61,7 +61,7 @@ function ShowPost() {
             </Button>
           </Container>
         </Box>
-      )}
+      ) : null}
     </Fragment>
   );
 }
