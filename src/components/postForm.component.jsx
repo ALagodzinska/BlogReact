@@ -41,7 +41,6 @@ function PostForm({
   loading,
   formType,
 }) {
-  // FOR FUTURE - can make one method HANDLE FIELD CHANGE and pass Key and value( for objects can use ....["key"])
   const handleTitleChange = (event) => {
     setInputFields((inputFields) => {
       return { ...inputFields, title: event.target.value };
