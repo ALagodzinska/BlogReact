@@ -5,6 +5,39 @@ const styles = {
   container: {
     mt: 1,
   },
+  likeContainer: {
+    px: 0,
+    my: 2.25,
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  likeButton: {
+    textTransform: "none",
+    fontWeight: 800,
+    px: 2,
+    py: 0.85,
+    minWidth: 112,
+    borderRadius: 99,
+    color: "#b42345",
+    border: "1px solid rgba(180, 35, 69, 0.28)",
+    backgroundColor: "rgba(255, 245, 247, 0.95)",
+    boxShadow: "0 8px 18px rgba(180, 35, 69, 0.12)",
+    "&:hover": {
+      color: "#9f1239",
+      borderColor: "rgba(180, 35, 69, 0.45)",
+      backgroundColor: "#fff0f3",
+      boxShadow: "0 10px 22px rgba(180, 35, 69, 0.16)",
+    },
+    "&.Mui-disabled": {
+      color: "#b42345",
+      borderColor: "rgba(180, 35, 69, 0.24)",
+      backgroundColor: "#fff5f7",
+      opacity: 0.8,
+    },
+  },
+  likeIcon: {
+    fontSize: "1.2rem",
+  },
   backButton: {
     textTransform: "none",
     fontWeight: 700,
