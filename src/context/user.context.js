@@ -14,13 +14,15 @@ export const UserProvider = ({ children }) => {
         await validateUser(setUser);
         const localStorageUser = await getValidUser();
         setUser(localStorageUser);
-        if (!localStorageUser) window.localStorage.clear();
+        if (!localStorageUser) {
+          window.localStorage.removeItem("user");
+        }
         setLoading(false);
       } catch (error) {
         console.error(error);
         setLoading(false);
         setUser(null);
-        window.localStorage.clear();
+        window.localStorage.removeItem("user");
       }
     })();
   }, []);
