@@ -172,11 +172,9 @@ export function truncate(str, n) {
 
 export function getLikesFromLocalStorage() {
   var item = window.localStorage.getItem("likes");
-  console.log(item);
 
   if (item === null || !item) {
-    console.log("Empty storage");
-    window.localStorage.setItem("likes", []);
+    window.localStorage.setItem("likes", JSON.stringify([]));
   } else {
     var array = JSON.parse(item);
     return array;
@@ -187,7 +185,7 @@ export function getLikesFromLocalStorage() {
 
 export function checkIfPostIsLiked(array, id) {
   for (let i = 0; i < array.length; i++) {
-    if (array[i] === id) {
+    if (String(array[i]) === String(id)) {
       return true;
     }
   }
@@ -200,4 +198,61 @@ export function addLikeToLocalStorage(array, id) {
   window.localStorage.setItem("likes", JSON.stringify(updatedLikes));
 
   return updatedLikes;
+}
+
+export async function incrementNumberOfViews(id) {
+  const response = await fetch(
+    `/api/blogpost/incrementViewCount?postId=${id}`,
+    {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response.json();
+}
+
+export function getViewsFromLocalStorage() {
+  var views = window.localStorage.getItem("views");
+
+  if (views === null || !views) {
+    window.localStorage.setItem("views", JSON.stringify([]));
+  } else {
+    return JSON.parse(views);
+  }
+
+  return [];
+}
+
+export function checkIfPostIsViewed(arrayOfIds, postId) {
+  for (var i = 0; i < arrayOfIds.length; i++) {
+    if (String(arrayOfIds[i]) === String(postId)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export function addViewsToLocalStorage(array, id) {
+  if (checkIfPostIsViewed(array, id)) {
+    return array;
+  }
+
+  var updatedViews = [...array, id];
+  window.localStorage.setItem("views", JSON.stringify(updatedViews));
+
+  return updatedViews;
+}
+
+export function removeViewFromLocalStorage(id) {
+  var updatedViews = getViewsFromLocalStorage().filter(
+    (viewedPostId) => String(viewedPostId) !== String(id),
+  );
+
+  window.localStorage.setItem("views", JSON.stringify(updatedViews));
+
+  return updatedViews;
 }
