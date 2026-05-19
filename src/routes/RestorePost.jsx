@@ -15,10 +15,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { fetchDeletedPosts, fetchDeletedPostsPageCount } from "../post.actions";
-import { getUserFromLocalStorage } from "../user.actions";
+import {
+  fetchDeletedPosts,
+  fetchDeletedPostsPageCount,
+} from "../services/postService";
+import { getUserFromLocalStorage } from "../services/userService";
 import RestoreIcon from "@mui/icons-material/Restore";
-import RestorePopup from "../components/restorePopup.component";
+import RestorePopup from "../components/popups/restorePopup.component";
 import styles from "../styles/pages/restorePost.styles";
 
 function RestorePost() {
@@ -40,10 +43,11 @@ function RestorePost() {
       .then(([pageCount, posts]) => {
         setPosts(posts);
         setPageCount(pageCount);
-        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
@@ -51,19 +55,6 @@ function RestorePost() {
   useEffect(() => {
     setLoading(true);
     refreshPosts();
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchDeletedPosts(page, token)
-      .then((posts) => {
-        setPosts(posts);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
   }, [page]);
 
   const [openRestore, setOpenRestore] = useState(false);
@@ -95,7 +86,11 @@ function RestorePost() {
         </Stack>
 
         <TableContainer component={Box} sx={styles.tableContainer}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="deleted posts table">
+          <Table
+            sx={{ minWidth: 650 }}
+            size="small"
+            aria-label="deleted posts table"
+          >
             <TableHead>
               <TableRow>
                 <TableCell sx={styles.tableHeadCell}>ID</TableCell>

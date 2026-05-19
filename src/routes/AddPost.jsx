@@ -1,8 +1,8 @@
 import React, { Fragment, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
-import { getBase64, createPost } from "../post.actions";
+import { getUserFromLocalStorage, validateUser } from "../services/userService";
+import { getBase64, createPost } from "../services/postService";
 import PostForm from "../components/postForm.component";
 import {
   ALERT_MESSAGE_TYPE,
@@ -14,11 +14,11 @@ import {
   FORM_TYPE,
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
-} from "../constants";
-import UserContext from "../user.context";
+} from "../utils/constants";
+import UserContext from "../context/user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
-import { useAlertMessage } from "../useAlertMessage";
+import { useAlertMessage } from "../hooks/useAlertMessage";
 
 const validateValues = (inputValues) => {
   let errors = {};
@@ -57,25 +57,31 @@ function AddPost() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    await validateUser(setUser);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);
     const isValid = Object.keys(localErrors).length === 0;
-    if (isValid) {
-      finishSubmit();
+    if (!isValid) {
+      return;
     }
+
+    setLoading(true);
+    await validateUser(setUser);
+    await finishSubmit();
   };
 
   const finishSubmit = async () => {
     const token = getUserFromLocalStorage()?.accessToken;
     const backgroundImgType = inputFields.backgroundImg.type;
     const previewImgType = inputFields.previewImg.type;
+
     let backgroundImgString;
     let previewImgString;
+
     try {
-      backgroundImgString = await getBase64(inputFields.backgroundImg);
-      previewImgString = await getBase64(inputFields.previewImg);
+      [backgroundImgString, previewImgString] = await Promise.all([
+        getBase64(inputFields.backgroundImg),
+        getBase64(inputFields.previewImg),
+      ]);
     } catch (error) {
       setLoading(false);
       alertMsg.openMessage({
@@ -86,33 +92,35 @@ function AddPost() {
       return;
     }
 
-    createPost(
-      inputFields.title,
-      inputFields.content,
-      backgroundImgString,
-      previewImgString,
-      backgroundImgType,
-      previewImgType,
-      token
-    )
-      .then((postId) => {
-        console.log(postId);
-        alertMsg.openMessage({
-          message: CREATE_SUCCESSFUL_MESSAGE,
-          type: ALERT_MESSAGE_TYPE.SUCCESS,
-        });
-        setTimeout(() => {
-          navigate("/posts");
-        }, 2500);
-      })
-      .catch((error) => {
-        setLoading(false);
-        alertMsg.openMessage({
-          message: FORM_SUBMISSION_ERROR,
-          type: ALERT_MESSAGE_TYPE.ERROR,
-        });
-        console.error(error);
+    try {
+      const postId = await createPost(
+        inputFields.title,
+        inputFields.content,
+        backgroundImgString,
+        previewImgString,
+        backgroundImgType,
+        previewImgType,
+        token,
+      );
+
+      console.log(postId);
+
+      alertMsg.openMessage({
+        message: CREATE_SUCCESSFUL_MESSAGE,
+        type: ALERT_MESSAGE_TYPE.SUCCESS,
       });
+
+      setTimeout(() => {
+        navigate("/posts");
+      }, 2500);
+    } catch (error) {
+      setLoading(false);
+      alertMsg.openMessage({
+        message: FORM_SUBMISSION_ERROR,
+        type: ALERT_MESSAGE_TYPE.ERROR,
+      });
+      console.error(error);
+    }
   };
 
   return (

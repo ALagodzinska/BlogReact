@@ -1,13 +1,16 @@
 import * as React from "react";
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
-import UserContext from "../user.context";
-import { deletePost } from "../post.actions";
+import {
+  getUserFromLocalStorage,
+  validateUser,
+} from "../../services/userService";
+import UserContext from "../../context/user.context";
+import { deletePost } from "../../services/postService";
 import {
   ALERT_MESSAGE_TYPE,
   DELETE_ERROR,
   DELETE_SUCCESSFUL_MESSAGE,
   POPUP_TYPE,
-} from "../constants";
+} from "../../utils/constants";
 import PopupBase from "./popupBase.component";
 
 export default function DeletePopup({
@@ -40,7 +43,7 @@ export default function DeletePopup({
       .then(
         setTimeout(() => {
           refreshPostsAction();
-        }, 2500)
+        }, 2500),
       )
       .catch((error) => {
         console.error(error);

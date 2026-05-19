@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { getValidUser, validateUser } from "./user.actions";
+import { getValidUser, validateUser } from "../services/userService";
 
 const UserContext = createContext(null);
 
@@ -14,14 +14,15 @@ export const UserProvider = ({ children }) => {
         await validateUser(setUser);
         const localStorageUser = await getValidUser();
         setUser(localStorageUser);
-        if (!localStorageUser) window.localStorage.clear();
+        if (!localStorageUser) {
+          window.localStorage.removeItem("user");
+        }
         setLoading(false);
       } catch (error) {
-        setLoading(false);
-        console.log("YOU ARE LOGGED OUT JUST BECAUSE!");
         console.error(error);
+        setLoading(false);
         setUser(null);
-        window.localStorage.clear();
+        window.localStorage.removeItem("user");
       }
     })();
   }, []);

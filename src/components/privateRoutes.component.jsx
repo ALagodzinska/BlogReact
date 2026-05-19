@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Navigate, Outlet } from "react-router-dom";
-import { getUserFromLocalStorage } from "../user.actions";
+import { getUserFromLocalStorage } from "../services/userService";
 
 export const PrivateRouteLoggedOut = () => {
   const localStorageUser = getUserFromLocalStorage();

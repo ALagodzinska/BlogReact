@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import FormImageDisplay from "./formImageDisplay.component";
-import { fetchBackgroundImage } from "../image.actions";
-import { getBase64 } from "../post.actions";
+import { fetchImage } from "../services/imageService";
+import { getBase64 } from "../services/postService";
 
 function ImageInput({
   title,
@@ -16,31 +16,35 @@ function ImageInput({
 
   const imageSelectedHandler = async (event) => {
     const uploadedImage = event.target.files[0];
+    if (!uploadedImage) return;
+
     const imageString = await getBase64(uploadedImage);
-    const resizedImage = await fetchBackgroundImage(
+    const resizedImage = await fetchImage(
       imageString,
       uploadedImage.type,
-      imageType
+      imageType,
     );
     setSelectedImage(uploadedImage, resizedImage);
   };
 
   const clearImageHandler = (event) => {
     event.preventDefault();
-    inputRef.current.value = "";
+    if (inputRef.current) inputRef.current.value = "";
     setSelectedImage(null);
   };
 
   return (
     <Box>
       <Typography sx={{ pb: 2 }}>{title}</Typography>
-      <input
-        type="file"
-        ref={inputRef}
-        multiple={false}
-        accept="image/"
-        onChange={imageSelectedHandler}
-      />
+      {!selectedImage && (
+        <input
+          type="file"
+          ref={inputRef}
+          multiple={false}
+          accept="image/*"
+          onChange={imageSelectedHandler}
+        />
+      )}
       {error && (
         <Typography variant="caption" color={"red"} sx={{ display: "flex" }}>
           {error}

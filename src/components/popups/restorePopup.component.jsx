@@ -1,14 +1,17 @@
 import * as React from "react";
 
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
-import UserContext from "../user.context";
-import { restorePost } from "../post.actions";
+import {
+  getUserFromLocalStorage,
+  validateUser,
+} from "../../services/userService";
+import UserContext from "../../context/user.context";
+import { restorePost } from "../../services/postService";
 import {
   ALERT_MESSAGE_TYPE,
   POPUP_TYPE,
   RESTORE_ERROR,
   RESTORE_SUCCESSFUL_MESSAGE,
-} from "../constants";
+} from "../../utils/constants";
 import PopupBase from "./popupBase.component";
 
 export default function RestorePopup({
@@ -41,7 +44,7 @@ export default function RestorePopup({
       .then(
         setTimeout(() => {
           refreshPostsMethod();
-        }, 2500)
+        }, 2500),
       )
       .catch((error) => {
         console.error(error);

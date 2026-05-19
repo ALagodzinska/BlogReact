@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchPost, getBase64, updatePost } from "../post.actions";
+import { fetchPost, getBase64, updatePost } from "../services/postService";
 import {
   ALERT_MESSAGE_TYPE,
   BACKGROUND_IMG_ERROR_MESSAGE,
@@ -12,13 +12,13 @@ import {
   POST_LOADING_ERROR,
   PREVIEW_IMG_ERROR_MESSAGE,
   TITLE_ERROR_MESSAGE,
-} from "../constants";
+} from "../utils/constants";
 import PostForm from "../components/postForm.component";
-import { getUserFromLocalStorage, validateUser } from "../user.actions";
-import UserContext from "../user.context";
+import { getUserFromLocalStorage, validateUser } from "../services/userService";
+import UserContext from "../context/user.context";
 import { LinearProgress } from "@mui/material";
 import AlertMessage from "../components/alertMessage.component";
-import { useAlertMessage } from "../useAlertMessage";
+import { useAlertMessage } from "../hooks/useAlertMessage";
 function EditPost() {
   const [, setUser] = useContext(UserContext);
 
@@ -58,14 +58,16 @@ function EditPost() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    await validateUser(setUser);
     const localErrors = validateValues(inputFields);
     setErrors(localErrors);
     const isValid = Object.keys(localErrors).length === 0;
-    if (isValid) {
-      finishSubmit();
+    if (!isValid) {
+      return;
     }
+
+    setLoading(true);
+    await validateUser(setUser);
+    await finishSubmit();
   };
 
   const finishSubmit = async () => {
@@ -105,7 +107,7 @@ function EditPost() {
         previewImgString,
         backgroundImgFormat,
         previewImgFormat,
-        token
+        token,
       );
       alertMsg.openMessage({
         message: EDIT_SUCCESSFUL_MESSAGE,
@@ -141,6 +143,7 @@ function EditPost() {
         setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         alertMsg.openMessage({
           message: POST_LOADING_ERROR,
           type: ALERT_MESSAGE_TYPE.ERROR,

@@ -9,10 +9,10 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import HomePost from "../components/homePost.component";
-import UserContext from "../user.context";
-import { fetchPageCount, fetchPosts } from "../post.actions";
+import UserContext from "../context/user.context";
+import { fetchPageCount, fetchPosts } from "../services/postService";
 import SkeletonHomePost from "../loading_components/skeleton_HomePost.component";
-import { POSTS_LIST_ERROR, POSTS_PER_PAGE } from "../constants";
+import { POSTS_LIST_ERROR, POSTS_PER_PAGE } from "../utils/constants";
 
 function PostsPage() {
   const [posts, setPosts] = useState([]);
@@ -28,6 +28,8 @@ function PostsPage() {
 
   const refreshPosts = () => {
     setLoading(true);
+    setLoadingError(null);
+
     Promise.all([fetchPageCount(), fetchPosts(page)])
       .then(([pageCount, posts]) => {
         setPosts(posts);
@@ -44,21 +46,6 @@ function PostsPage() {
 
   useEffect(() => {
     refreshPosts();
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchPosts(page)
-      .then((posts) => {
-        setPosts(posts);
-      })
-      .catch((error) => {
-        setLoadingError(error);
-        console.error("ERROR STATUS CODE", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
   }, [page]);
 
   const renderPostContent = (post) => {
@@ -108,7 +95,7 @@ function PostsPage() {
         {(loading ? Array.from(new Array(POSTS_PER_PAGE)) : posts).map(
           (post, index) => (
             <Box key={index}>{renderPostContent(post)}</Box>
-          )
+          ),
         )}
       </Stack>
       {pageCount && (

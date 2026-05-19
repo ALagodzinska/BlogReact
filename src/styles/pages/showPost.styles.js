@@ -5,6 +5,48 @@ const styles = {
   container: {
     mt: 1,
   },
+  likeContainer: {
+    px: 0,
+    my: 2.25,
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  likeButton: {
+    textTransform: "none",
+    fontWeight: 800,
+    px: 2,
+    py: 0.85,
+    minWidth: 112,
+    borderRadius: 99,
+    color: "#b42345",
+    border: "1px solid rgba(180, 35, 69, 0.28)",
+    backgroundColor: "rgba(255, 245, 247, 0.95)",
+    boxShadow: "0 8px 18px rgba(180, 35, 69, 0.12)",
+    "&:hover": {
+      color: "#9f1239",
+      borderColor: "rgba(180, 35, 69, 0.45)",
+      backgroundColor: "#fff0f3",
+      boxShadow: "0 10px 22px rgba(180, 35, 69, 0.16)",
+    },
+    "&.Mui-disabled": {
+      color: "#b42345",
+      borderColor: "rgba(180, 35, 69, 0.24)",
+      backgroundColor: "#fff5f7",
+      opacity: 0.8,
+    },
+  },
+  likeIcon: {
+    fontSize: "1.2rem",
+  },
+  postActions: {
+    mt: 3,
+    mb: 1.5,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 2,
+    flexWrap: "wrap",
+  },
   backButton: {
     textTransform: "none",
     fontWeight: 700,
@@ -18,8 +60,6 @@ const styles = {
       borderColor: "#2c4d3b",
       bgcolor: "#f3f7f5",
     },
-    mt: 3,
-    mb: 1.5,
   },
   article: {
     border: "1px solid rgba(20, 45, 33, 0.08)",
@@ -41,6 +81,43 @@ const styles = {
       lineHeight: 1.25,
       color: "text.primary",
     },
+  },
+  viewsWrap: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  viewsBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 0.75,
+    minHeight: 40,
+    px: 1.45,
+    py: 0.75,
+    borderRadius: 99,
+    color: "#274536",
+    border: "1px solid rgba(39, 69, 54, 0.2)",
+    background:
+      "linear-gradient(135deg, rgba(247, 250, 248, 0.98), rgba(232, 241, 235, 0.92))",
+    boxShadow: "0 10px 24px rgba(13, 34, 24, 0.1)",
+  },
+  viewsIcon: {
+    fontSize: "1.15rem",
+    color: "#52735f",
+  },
+  viewsNumber: {
+    fontWeight: 900,
+    fontSize: "1rem",
+    lineHeight: 1,
+    color: "#183326",
+    fontVariantNumeric: "tabular-nums",
+  },
+  viewsLabel: {
+    fontSize: "0.78rem",
+    lineHeight: 1,
+    fontWeight: 800,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    color: "rgba(39, 69, 54, 0.72)",
   },
 };
 

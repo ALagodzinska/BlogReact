@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Skeleton, Stack } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import { RECENT_POSTS_PER_PAGE } from "../constants";
+import { RECENT_POSTS_PER_PAGE } from "../utils/constants";
 import SkeletonRecentPost from "./skeleton_RecentPosts.component";
 
 function SkeletonFeaturedPost() {

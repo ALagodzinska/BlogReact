@@ -7,7 +7,21 @@ import {
   Typography,
 } from "@mui/material";
 import styles from "../styles/components/postFeedback.styles";
-import { generateTitles, getFeedback } from "../writingAssistant.actions";
+import {
+  generateTitles,
+  getFeedback,
+} from "../services/writingAssistantService";
+
+const CONTENT_REQUIRED_MESSAGE = "Content is required to make a request.";
+
+const isContentEmpty = (content) => {
+  const textContent = content
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .trim();
+
+  return textContent === "";
+};
 
 function PostFeedback({ title, content, loading, onSelectTitle }) {
   const [feedbackLoading, setFeedbackLoading] = useState(false);
@@ -28,6 +42,12 @@ function PostFeedback({ title, content, loading, onSelectTitle }) {
     setFeedbackData(null);
     setTitleSuggestions([]);
     setAssistantError("");
+
+    if (isContentEmpty(content)) {
+      setAssistantError(CONTENT_REQUIRED_MESSAGE);
+      return;
+    }
+
     setFeedbackLoading(true);
 
     try {
@@ -45,6 +65,12 @@ function PostFeedback({ title, content, loading, onSelectTitle }) {
     setFeedbackData(null);
     setTitleSuggestions([]);
     setAssistantError("");
+
+    if (isContentEmpty(content)) {
+      setAssistantError(CONTENT_REQUIRED_MESSAGE);
+      return;
+    }
+
     setTitlesLoading(true);
 
     try {
