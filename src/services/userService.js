@@ -18,7 +18,7 @@ async function loginUser(email, password) {
 }
 
 export function logoutUser() {
-  window.localStorage.clear();
+  window.localStorage.removeItem("user");
 }
 
 export async function getUsername(token) {
