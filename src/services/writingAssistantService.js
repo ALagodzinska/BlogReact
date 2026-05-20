@@ -1,7 +1,11 @@
 export async function getFeedback(content) {
-  const response = await fetch(
-    `/api/WritingAssistant/GetFeedback?content=${encodeURIComponent(content)}`,
-  );
+  const response = await fetch("/api/WritingAssistant/GetFeedback", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(content),
+  });
 
   if (!response.ok) {
     throw new Error(`Request failed with status ${response.status}`);
@@ -11,14 +15,13 @@ export async function getFeedback(content) {
 }
 
 export async function generateTitles(title, content) {
-  const queryParams = new URLSearchParams({
-    title,
-    content,
+  const response = await fetch("/api/WritingAssistant/GenerateTitles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, content }),
   });
-
-  const response = await fetch(
-    `/api/WritingAssistant/GenerateTitles?${queryParams.toString()}`,
-  );
 
   if (!response.ok) {
     throw new Error(`Request failed with status ${response.status}`);
