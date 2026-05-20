@@ -84,7 +84,6 @@ export async function getValidUser() {
 export async function validateUser(setUserContext) {
   const localStorageUser = getUserFromLocalStorage();
   if (localStorageUser) {
-    console.log("USER FOUND IN LOCAL STORAGE");
     if (localStorageUser.expiryDate <= Math.floor(Date.now() / 1000)) {
       try {
         console.log(
